@@ -31,6 +31,8 @@ Nous aurons un nœud contenant :
 - String : `"ls"`
 - Token : `6` (CMD)
 
+### Un autre un peu plus complexe maintenant
+
 Pour la commande Bash suivante :
 ```bash
 cat | rev
