@@ -51,6 +51,29 @@ Et enfin
 - String : `"rev"`
 - Token : `6` (CMD)
 
+## Règles de Tokenisation  
+
+La tokenisation suit des **règles simples** pour identifier chaque élément d'une commande.
+
+(merci a l'Homme qui a mis ca sur github c'est trop une legende)
+
+### Attribution des TOKENS  
+
+**Redirections** (`<`, `>`, `<<`, `>>`)  
+- `<` → **INPUT** `(1)`  
+- `<<` → **HEREDOC** `(2)`  
+- `>` → **TRUNC** `(3)`  
+- `>>` → **APPEND** `(4)`  
+
+**Commandes et Arguments**  
+- Le **premier token** sera **CMD** `(6)`, sauf en cas de redirection au début.  
+- Tout token après un **CMD** ou une **redirection** sera un **ARG** `(7)`.  
+
+**Pipes** (`|`)  
+- Un pipe (`|`) sera identifié comme **PIPE** `(5)`.  
+- Après un **PIPE**, le prochain token sera soit une **redirection**, soit une **CMD**.  
+
+Ces règles assurent une tokenisation claire et cohérente pour un parsing efficace.
 
 
 
