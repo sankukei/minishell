@@ -55,7 +55,7 @@ Et enfin
 
 La tokenisation suit des **règles simples** pour identifier chaque élément d'une commande.
 
-(merci a l'Homme qui a mis ca sur github c'est trop une legende)
+> Merci a l'Homme qui a mis ca sur github c'est trop une legende
 
 ### Attribution des TOKENS  
 
