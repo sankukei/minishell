@@ -1,0 +1,1 @@
+-lreadline a la compilation
