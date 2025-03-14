@@ -26,7 +26,7 @@ typedef struct s_data
 void		minishell_launcher(t_data *data);
 
 // parsing
-void		parsing(t_data	*data);
+void		parsing(t_data	*data, char *input);
 
 // struct_utils
 t_token		*find_last_token(t_token *token);

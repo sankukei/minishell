@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_launcher.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sankukei <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:04:03 by amedenec          #+#    #+#             */
-/*   Updated: 2025/03/14 03:57:43 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/03/14 16:53:26 by sankukei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 void	minishell_launcher(t_data *data)
 {
-	//char	*input;
+	char	*input;
 
-	//while (1)
-	//{
-		//input = readline("minishell> ");
-		//if (!input)
-		//{
-		//	printf("exit\n");
-		//	exit(0);
-		//}
-		parsing(data);
-	//	printf("%s", input);
-	//	free(input);		
-	//}
+	while (1)
+	{
+		input = readline("minishell> ");
+		if (!input)
+		{
+			printf("exit\n");
+			exit(0);
+		}
+		parsing(data, input);
+	//	printf("%s\n", input);
+		free(input);		
+	}
 }
