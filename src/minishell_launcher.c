@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell_launcher.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/14 02:40:16 by amedenec          #+#    #+#             */
-/*   Updated: 2025/03/14 03:57:25 by amedenec         ###   ########.fr       */
+/*   Created: 2025/03/14 02:04:03 by amedenec          #+#    #+#             */
+/*   Updated: 2025/03/14 03:57:43 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	main(int ac, char **av)
+void	minishell_launcher(t_data *data)
 {
-	t_data	*data;
+	//char	*input;
 
-	data = malloc(sizeof(t_data));
-	
-	(void)ac;
-	(void)av;
-	minishell_launcher(data);
-	return (0);
+	//while (1)
+	//{
+		//input = readline("minishell> ");
+		//if (!input)
+		//{
+		//	printf("exit\n");
+		//	exit(0);
+		//}
+		parsing(data);
+	//	printf("%s", input);
+	//	free(input);		
+	//}
 }

@@ -5,4 +5,32 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
+// def struct
+typedef struct s_token
+{
+	char			*str;
+	int				type;
+	struct s_token	*next;
+}   t_token;
+
+typedef struct s_data
+{
+	int				nothing;
+	t_token			*token;
+}   t_data;
+
+
+
+// main
+void		minishell_launcher(t_data *data);
+
+// parsing
+void		parsing(t_data	*data);
+
+// struct_utils
+t_token		*find_last_token(t_token *token);
+t_token		*find_penultimate_token(t_token *token);
+int			count_token(t_token *token);
+int			add_token(t_token **token, char *str, int nombre);
 #endif

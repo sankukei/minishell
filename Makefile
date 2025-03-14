@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -Werror -g3 -I.
 
 SRC_DIR = ./src
 OBJ_DIR = ./obj
-SRC = main.c
+SRC = main.c minishell_launcher.c parsing.c struct_utils.c
 OBJS = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
 
 all: $(NAME)
