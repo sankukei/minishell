@@ -34,7 +34,7 @@ int     count_token(t_token *token)
         return (i + 1);
 }
 
-int     add_token(t_token **token, char *str, int nombre)
+int     add_token(t_token **token, char *str, int type)
 {
         t_token    *new_token;
         t_token    *last_token;
@@ -46,7 +46,7 @@ int     add_token(t_token **token, char *str, int nombre)
                 return (1);
         new_token->next = NULL;
 		new_token->str = str;
-        new_token->type = nombre;
+        new_token->type = type;
         if (*token == NULL)
             *token = new_token;
         else

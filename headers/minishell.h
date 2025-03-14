@@ -16,7 +16,7 @@ typedef struct s_token
 
 typedef struct s_data
 {
-	int				nothing;
+	char			*input;
 	t_token			*token;
 }   t_data;
 
@@ -26,11 +26,11 @@ typedef struct s_data
 void		minishell_launcher(t_data *data);
 
 // parsing
-void		parsing(t_data	*data, char *input);
+void		parsing(t_data	*data);
 
 // struct_utils
 t_token		*find_last_token(t_token *token);
 t_token		*find_penultimate_token(t_token *token);
 int			count_token(t_token *token);
-int			add_token(t_token **token, char *str, int nombre);
+int			add_token(t_token **token, char *str, int type);
 #endif
