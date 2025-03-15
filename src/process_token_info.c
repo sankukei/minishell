@@ -55,6 +55,18 @@ void	init_token_rules(t_data *data)
 		data->token->rules = dup_str(ARG_RULES);
 }
 
+int	process_token_info(t_data **data)
+{
+	t_token *current;
+	
+	current = (*data)->token;
+	while (current && current->next)
+	{
+		current = current->next;
+	}
+	return (0);
+}
+
 /* 
  * echo "hello" >> text.txt
  *  6	   7	4     7

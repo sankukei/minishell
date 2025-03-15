@@ -25,8 +25,8 @@ void	minishell_launcher(t_data *data)
 			printf("exit\n");
 			exit(0);
 		}
-		parsing(data);
-	//	printf("%s\n", input);
+		add_token(&data->token, "xd", 6);
+		init_token_rules(data);
 		free(input);		
 	}
 }
