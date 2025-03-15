@@ -7,6 +7,12 @@
 # include <readline/history.h>
 
 // def struct
+typedef enum s_boolen
+{
+	false,
+	true,
+}	t_boolen;
+
 typedef struct s_token
 {
 	char			*str;
