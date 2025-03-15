@@ -11,6 +11,7 @@ typedef struct s_token
 {
 	char			*str;
 	int				type;
+	char			*rules;
 	struct s_token	*next;
 }   t_token;
 
@@ -27,6 +28,7 @@ void		minishell_launcher(t_data *data);
 
 // parsing
 void		parsing(t_data	*data);
+void	init_token_rules(t_data *data);
 
 // struct_utils
 t_token		*find_last_token(t_token *token);

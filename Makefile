@@ -8,7 +8,9 @@ OBJ_DIR = ./obj
 SRC = main.c \
       __EXEC_BOOT__.c \
       parsing_user_input.c \
-      search_list_utils.c
+      search_list_utils.c \
+      process_token_info.c \
+
 OBJS = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
 
 all: $(NAME)
