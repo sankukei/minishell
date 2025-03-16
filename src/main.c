@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sankukei <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adam <adam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:40:16 by amedenec          #+#    #+#             */
-/*   Updated: 2025/03/14 16:49:43 by sankukei         ###   ########.fr       */
+/*   Updated: 2025/03/16 02:15:21 by adam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ int	main(int ac, char **av)
 	t_data	*data;
 
 	data = (t_data *)malloc(sizeof(t_data));
-	
+	if (!data)
+		return (1);
+	data->single_quote = false;
+	data->double_quote = false;
 	(void)ac;
 	(void)av;
 	minishell_launcher(data);

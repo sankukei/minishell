@@ -7,6 +7,12 @@
 # include <readline/history.h>
 
 // def struct
+typedef enum s_boolen
+{
+	false,
+	true,
+}	t_boolen;
+
 typedef struct s_token
 {
 	char			*str;
@@ -18,6 +24,8 @@ typedef struct s_token
 typedef struct s_data
 {
 	char			*input;
+	t_boolen		single_quote;
+	t_boolen		double_quote;
 	t_token			*token;
 }   t_data;
 
@@ -35,4 +43,5 @@ t_token		*find_last_token(t_token *token);
 t_token		*find_penultimate_token(t_token *token);
 int			count_token(t_token *token);
 int			add_token(t_token **token, char *str, int type);
+
 #endif
