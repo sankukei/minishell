@@ -6,7 +6,7 @@
 /*   By: adam <adam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:04:03 by amedenec          #+#    #+#             */
-/*   Updated: 2025/03/14 17:35:21 by adam             ###   ########.fr       */
+/*   Updated: 2025/03/16 05:39:16 by adam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ void	minishell_launcher(t_data *data)
 			printf("exit\n");
 			exit(0);
 		}
-		add_token(&data->token, "xd", 6);
-		init_token_rules(data);
-		free(input);		
+		parsing(data);
 	}
 }

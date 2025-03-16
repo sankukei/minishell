@@ -5,6 +5,7 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include "libft/libft.h"
 
 // def struct
 typedef enum s_boolen
@@ -34,14 +35,24 @@ typedef struct s_data
 // main
 void		minishell_launcher(t_data *data);
 
-// parsing
+// start parsing
 void		parsing(t_data	*data);
-void	init_token_rules(t_data *data);
+
+// parsing input
+void		check_quote_error(t_data *data);
+void		var_env_handler(t_data *data);
+char		*detect_var_env(char *input);
+
+// parsing tokinsation
+void		init_token_rules(t_data *data);
 
 // struct_utils
 t_token		*find_last_token(t_token *token);
 t_token		*find_penultimate_token(t_token *token);
 int			count_token(t_token *token);
 int			add_token(t_token **token, char *str, int type);
+
+// string_utils
+int     ft_iscapitalise(char c);
 
 #endif
