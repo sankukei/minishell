@@ -1,5 +1,5 @@
 
-#include "headers/minishell.h"
+#include "../../minishell.h"
 
 t_token *find_last_token(t_token *token)
 {

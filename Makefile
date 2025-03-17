@@ -18,7 +18,7 @@ SRC = main.c \
       parsing_user_input.c \
       search_list_utils.c \
       string_utils.c \
-      process_token_info.c
+      process_token_info.c \
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a

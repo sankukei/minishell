@@ -1,12 +1,4 @@
-/*#include "../headers/minishell.h"
-
-#define INPUT_RULES 	FD
-#define HEREDOC_RULES 	ARGS
-#define TRUNC_RULES 	FD
-#define APPEND_RULES 	FD
-#define PIPES_RULES 	CMD
-#define CMD_RULES 	ARGS|PIPES|REDIR
-#define ARG_RULES 	ARGS|PIPES
+#include "../../headers/minishell.h"
 
 int	check_rules(int	type, int next)
 {
@@ -31,12 +23,12 @@ int	process(t_token *token)
 {
 	while (token && token->next)
 	{
-		if (!(check_rules(token->next)))
-			return (FALSE);
+		if (!(check_rules(token->type, token->next->type)))
+			return (0);
 		token = token->next;
 	}
-	return (TRUE);
-}*/
+	return (1);
+}
 
 /* 
  * echo "hello" >> text.txt
