@@ -6,7 +6,7 @@
 /*   By: adam <adam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/03/16 06:46:19 by adam             ###   ########.fr       */
+/*   Updated: 2025/03/16 07:01:35 by adam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	parsing(t_data	*data)
 {
 	check_quote_error(data);
 	var_env_handler(data);
-	//TODO creat all tokens form the output user
+	//TODO creat all tokens from the output user
 	// check readme parsing
 	//add_token(&data->token, "ls", 6);
 }
