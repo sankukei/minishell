@@ -7,7 +7,7 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 
-#DEFINE FALSE 0
+#define FALSE 0
 #define TRUE 1
 
 // def struct
