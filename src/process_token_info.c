@@ -8,52 +8,34 @@
 #define CMD_RULES 	"ARGS|PIPES|REDIR"
 #define ARG_RULES 	"ARGS|PIPES"
 
-char	*dup_str(char *str)
+int	check_rules(int	type, int next)
 {
-	char	*res;
-	char	*ptr;
-
-	res = (char *)malloc(ft_strlen(str) + 1);
-	if (!res)
-		return (NULL);
-	ptr = res;
-	while (*str)
-		*ptr++ = *str++;
-	*ptr= '\0';
-	return (res);
-}
-
-void	init_token_rules(t_data *data)
-{
-	int	type;
-	
-	type = data->token->type;
-	if (type == 1)
-		data->token->rules = dup_str(INPUT_RULES);
-	else if (type == 2)
-		data->token->rules = dup_str(HEREDOC_RULES);
-	else if (type == 3)
-		data->token->rules = dup_str(TRUNC_RULES);
-	else if (type == 4)
-		data->token->rules = dup_str(APPEND_RULES);
-	else if (type == 5)
-		data->token->rules = dup_str(PIPES_RULES);
-	else if (type == 6)
-		data->token->rules = dup_str(CMD_RULES);
-	else if (type == 7)
-		data->token->rules = dup_str(ARG_RULES);
-}
-
-int	process_token_info(t_data **data)
-{
-	t_token *current;
-	
-	current = (*data)->token;
-	while (current && current->next)
-	{
-		current = current->next;
-	}
+	if (type == 1 && next != FD)
+		return (1);
+	else if (type == 2 && next != ARGS)
+		return (1);
+	else if (type == 3 && next != FD)
+		return (1);
+	else if (type == 4 && next != FD)
+		return (1);
+	else if (type == 5 && next != CMD)
+		return (1);
+	else if (type == 6 && (next != ARGS || next != PIPES || next != REDIR))
+		return (1);
+	else if (type == 7 && (next != ARGS || next != PIPES))
+		return (1);
 	return (0);
+}
+
+int	process(t_token *token)
+{
+	while (token && token->next)
+	{
+		if (!(check_rules(token->next)))
+			return (FALSE);
+		token = token->next;
+	}
+	return (TRUE);
 }
 
 /* 

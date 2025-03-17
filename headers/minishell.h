@@ -7,6 +7,9 @@
 # include <readline/history.h>
 # include "libft/libft.h"
 
+#DEFINE FALSE 0
+#define TRUE 1
+
 // def struct
 typedef enum s_boolen
 {
