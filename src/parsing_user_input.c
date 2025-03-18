@@ -58,7 +58,6 @@ void	var_env_handler(t_data *data)
 	}
 }
 
-
 void	check_quote_error(t_data *data)
 {
 	char		*input;
@@ -78,7 +77,6 @@ void	check_quote_error(t_data *data)
 		exit(0);
 	}
 }
-
 
 void	parsing(t_data	*data)
 {

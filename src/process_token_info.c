@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   process_token_info.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: leothoma <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/18 14:55:13 by leothoma          #+#    #+#             */
+/*   Updated: 2025/03/18 14:55:14 by leothoma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../headers/minishell.h"
 
 int	check_rules(int	type, int next)
@@ -21,6 +33,7 @@ int	check_rules(int	type, int next)
 
 int	process(t_token *token)
 {
+	// check le type du premier token et verifier que cmd ou redirr
 	while (token && token->next)
 	{
 		if (!(check_rules(token->type, token->next->type)))
@@ -39,7 +52,7 @@ int	process(t_token *token)
  * 	3 = TRUNC (>);
  * 	4 = APPEND (>>);
  * 	5 = PIPES (|);
- * 	6 = CMD (ex: 'ls');
+ * 	6 = CMD (ex: 'ls'); // a verifier que cest uniquement dans le path / builtin
  * 	7 = ARG (ex: ls '-l');
  * }
 

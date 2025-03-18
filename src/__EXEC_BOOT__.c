@@ -25,6 +25,7 @@ void	minishell_launcher(t_data *data)
 			printf("exit\n");
 			exit(0);
 		}
+		split_tokens(data);
 		parsing(data);
 	}
 }

@@ -17,3 +17,12 @@
 #define	ARGS 3
 #define PIPES 4
 #define REDIR 5
+
+// defines to parse the input and create token types
+
+#define INPUT_REDIR_STR "<"
+#define HEREDOC_STR "<<"
+#define HERESTRING_STR "<<<"
+#define REDIR_STR ">"
+#define	APPEND_STR ">>"
+#define PIPES_STR "|"

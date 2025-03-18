@@ -19,6 +19,7 @@ SRC = main.c \
       search_list_utils.c \
       string_utils.c \
       process_token_info.c \
+      init_token_types.c \
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a

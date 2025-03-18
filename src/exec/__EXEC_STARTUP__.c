@@ -25,8 +25,16 @@ int __EXEC_STARTUP__(t_token *token)
 	{
 		//dup stdin dans le pipe 0
 		//dup stdout dans le pipe 0
+		if (dup2(oldfd, newfd) == -1)
+		{
+			write(1, "error", 5);
+			exit(1);
+		}
+
 		if (i == number_of_commands)
-			dup2(stdin, p[2]);	
+			dup2(stdin, p[2]);
+		else
+			dup2(p[2], stdout);
 		pid = fork();
 		if (pid < 0)
 		{

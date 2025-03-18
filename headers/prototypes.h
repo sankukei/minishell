@@ -23,6 +23,9 @@ char		*detect_var_env(char *input);
 
 // parsing tokinsation
 void		init_token_rules(t_data *data);
+void		init_token_types(t_data *data, char **tokens);
+void		check_token_types(t_data *data, char *str);
+void		split_tokens(t_data *data);
 
 // struct_utils
 t_token		*find_last_token(t_token *token);
