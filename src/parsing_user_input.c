@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/03/20 04:18:27 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/03/20 05:47:47 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,11 @@ void	replace_var_env(t_data *data, char *var, int i, int len)
 	dest[len_new_input] = '\0';
 	ft_strlcpy(dest, data->input, i + 1);
 	ft_strlcpy(dest + i, var, ft_strlen(var) + 1);
-	ft_strlcpy(dest + i + ft_strlen(var), data->input + i + len + 1, len_new_input); // MAX len off a var
+	ft_strlcpy(dest + i + ft_strlen(var), data->input + i + len + 1, len_new_input);
 	data->input = dest;
 
 }
-// TODO faire la fonction qui permet de modifier l intput (origine)
-// pour mettre les var d env a la place
+
 void	var_env_handler(t_data *data)
 {
 	char	*input;
