@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/03/17 18:33:02 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/03/18 04:55:38 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,20 @@ int	count_var_len(char *input)
 	}
 	return (len);
 }
-void	replace_var_env(t_data *data, char *var, int i, int len)
+/*void	replace_var_env(t_data *data, char *var, int i, int len)
 {
+	//TODO
+	char	*input;
+	int		index;
 	
-}
-
+	input = data->input;
+	while (index < i)
+		index++;
+	while (index < i + len)
+	{
+		input[index] = 
+	}
+}*/
 // TODO faire la fonction qui permet de modifier l intput (origine)
 // pour mettre les var d env a la place
 void	var_env_handler(t_data *data)
@@ -76,7 +85,7 @@ void	var_env_handler(t_data *data)
 				printf("la variable :%s\n", getenv(var));
 				printf("input :%s\n", data->input);
 				printf("la len :%d\n", len);
-				//replace_var_env(data, var, i, len);				
+				//replace_var_env(data, var, i, len);
 			}
 		}
 		i++;
