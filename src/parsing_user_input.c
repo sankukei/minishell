@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/03/18 04:55:38 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/03/20 04:18:27 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,29 @@ int	count_var_len(char *input)
 	}
 	return (len);
 }
-/*void	replace_var_env(t_data *data, char *var, int i, int len)
+void	replace_var_env(t_data *data, char *var, int i, int len)
 {
 	//TODO
-	char	*input;
-	int		index;
-	
-	input = data->input;
-	while (index < i)
-		index++;
-	while (index < i + len)
+	int		len_new_input;
+	char	*dest;
+	char	*ptr;
+
+	len_new_input = ft_strlen(data->input) + ft_strlen(var) - (len + 1);
+	dest = malloc(sizeof(char) * len_new_input + 1);
+	if (!dest)
 	{
-		input[index] = 
+		// TODO free all clear exit;
+		exit(1);
 	}
-}*/
+	ptr = dest;
+	memset(dest, '\0', len_new_input);
+	dest[len_new_input] = '\0';
+	ft_strlcpy(dest, data->input, i + 1);
+	ft_strlcpy(dest + i, var, ft_strlen(var) + 1);
+	ft_strlcpy(dest + i + ft_strlen(var), data->input + i + len + 1, len_new_input); // MAX len off a var
+	data->input = dest;
+
+}
 // TODO faire la fonction qui permet de modifier l intput (origine)
 // pour mettre les var d env a la place
 void	var_env_handler(t_data *data)
@@ -82,15 +91,14 @@ void	var_env_handler(t_data *data)
 			len = count_var_len(&input[i]);
 			if (getenv(var))
 			{
-				printf("la variable :%s\n", getenv(var));
-				printf("input :%s\n", data->input);
-				printf("la len :%d\n", len);
-				//replace_var_env(data, var, i, len);
+				var = getenv(var);
+				replace_var_env(data, var, i, len);
+				input = data->input;
 			}
 		}
 		i++;
 	}
-}
+} // facile a norme, enelever input = data->input et remplacer tout les input par data->input
 
 
 void	check_quote_error(t_data *data)
