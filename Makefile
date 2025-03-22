@@ -33,6 +33,7 @@ $(NAME): $(OBJS) $(LIBFT)
 	@echo "$(BLUE)Linking object files and libft...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L$(LIBFT_DIR) -lft -lreadline
 	@echo "$(GREEN)Compilation complete! ✅$(RESET)"
+	@cat ./ascii/sky
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@echo "$(YELLOW)Compiling $<...$(RESET)"
