@@ -19,7 +19,7 @@ SRC = main.c \
       search_list_utils.c \
       string_utils.c \
       process_token_info.c \
-      init_token_types.c \
+      lexer.c \
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -33,6 +33,7 @@ $(NAME): $(OBJS) $(LIBFT)
 	@echo "$(BLUE)Linking object files and libft...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L$(LIBFT_DIR) -lft -lreadline
 	@echo "$(GREEN)Compilation complete! ✅$(RESET)"
+	@cat ./ascii/sky
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@echo "$(YELLOW)Compiling $<...$(RESET)"
