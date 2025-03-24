@@ -36,12 +36,12 @@ int	check_token_type(t_data *data, char *str)
 	{
 		printf(" APPEND ");
 		return (4);
-	}	
+	}
 	else if (!ft_memcmp(str, PIPES_STR, ft_strlen(str)))
 	{
 		printf(" PIPES ");
 		return (5);
-	}		
+	}
 	return (0);
 	// missing CMD / ARGS
 	// CMD -> parse $PATH and check for implemenbted builtins
@@ -63,7 +63,7 @@ int	check_token_type(t_data *data, char *str)
 
 int	is_spaces(char c)
 {
-	return (c == 32 || (c > 8 && c < 12));
+	return (c == 32 || (c > 8 && c < 14) || c == 0);
 }
 
 //void	handle_quotes(t_data **data, char c)
@@ -93,7 +93,7 @@ int	get_world_len(char *str, t_data *data)
 		data->single_quote = !(data->single_quote);
 	if (str[0] == '\"' || str[0] == '\'')
 		len++;
-	while ((!is_spaces(str[len]) && str[len]) || data->double_quote || data->single_quote)
+	while ((!is_spaces(str[len]) && *str) || data->double_quote || data->single_quote)
 	{
 		if ((str[len] == '\"') && (data->single_quote == false))
 			data->double_quote = !(data->double_quote);
@@ -101,7 +101,6 @@ int	get_world_len(char *str, t_data *data)
 			data->single_quote = !(data->single_quote);
 		len++;
 	}
-
 	return (len);
 }
 
@@ -123,19 +122,15 @@ void	lexer(t_data *data, char *str)
 		type = check_token_type(data, buffer);
 		add_token(&data->token, buffer, type);
 		free(buffer);
-		str += len + 1;
+		if (len == 1)
+			str+= len;
+		else
+			str += len + 1;
 	}
 	t_token *token = data->token;
 	while (token)
 	{
-		printf("%s\n", token->str);
-		printf("%s\n", token->str);
+		printf("STRING : %s -> TYPE : %d\n", token->str, token->type);
 		token = token->next;
 	}
-	// while (data->token)
-	// {
-	// 	printf("%s", data->token->str);
-	// 	data->token = data->token->next;
-	// }
-	//print_list(&data, "TOKEN");
 }
