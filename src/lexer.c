@@ -12,29 +12,41 @@
 
 #include "../headers/minishell.h"
 
-/*void	check_token_type(t_data *data, char *str)
+int	check_token_type(t_data *data, char *str)
 {
 	t_token *token;
 	
 	token = data->token;
-	if (!ft_memcmp(str, INPUT_REDIR_STR, ft_strlen(buffer)))
+	if (!ft_memcmp(str, INPUT_REDIR_STR, ft_strlen(str)))
 	{
-		add_token(&token, str, 1);
-		printf("%d", data->token->type);
-
+		return (1);
+		printf(" REDIR ", data->token->type);
 	}
 	else if (!ft_memcmp(str, HEREDOC_STR, ft_strlen(str)))
-		add_token(&token, str, 2);
+	{
+		printf(" HEREDOC ");
+		return (2);
+	}
 	else if (!ft_memcmp(str, REDIR_STR, ft_strlen(str)))
-		add_token(&token, str, 3);
+	{
+		printf(" REDIR ");
+		return (3);
+	}
 	else if (!ft_memcmp(str, APPEND_STR, ft_strlen(str)))
-		add_token(&token, str, 4);
+	{
+		printf(" APPEND ");
+		return (4);
+	}	
 	else if (!ft_memcmp(str, PIPES_STR, ft_strlen(str)))
-		add_token(&token, str, 5);
+	{
+		printf(" PIPES ");
+		return (5);
+	}		
+	return (0);
 	// missing CMD / ARGS
 	// CMD -> parse $PATH and check for implemenbted builtins
 	// the rest is all ARGS
-}*/
+}
 
 
 /*void	init_token_types(t_data *data, char **tokens)
@@ -96,7 +108,7 @@ int	get_world_len(char *str, t_data *data)
 void	lexer(t_data *data, char *str)
 {
 	char	*buffer;
-	int	typee;
+	int	type;
 	int	len;
 
 	len = 0;
@@ -108,14 +120,15 @@ void	lexer(t_data *data, char *str)
 		buffer = malloc(len * sizeof(char) + 1);
 		memset(buffer, '\0', len);
 		ft_strlcpy(buffer, str, len + 1);
-		//type = check_token_type(buffer,);
-		add_token(&data->token, buffer, 1);
+		type = check_token_type(data, buffer);
+		add_token(&data->token, buffer, type);
 		free(buffer);
 		str += len + 1;
 	}
 	t_token *token = data->token;
 	while (token)
 	{
+		printf("%s\n", token->str);
 		printf("%s\n", token->str);
 		token = token->next;
 	}
