@@ -123,6 +123,7 @@ void	parsing(t_data	*data)
 {
 	check_quote_error(data);
 	var_env_handler(data);
+	lexer(data, data->input);
 	//TODO creat all tokens from the output user
 	// check readme parsing
 	//add_token(&data->token, "ls", 6);
