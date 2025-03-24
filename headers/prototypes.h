@@ -32,6 +32,8 @@ t_token		*find_last_token(t_token *token);
 t_token		*find_penultimate_token(t_token *token);
 int			count_token(t_token *token);
 int			add_token(t_token **token, char *str, int type);
+void		print_list(t_data **data, char const *option);
+
 
 // string_utils
 int     ft_iscapitalise(char c);

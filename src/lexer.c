@@ -36,6 +36,7 @@ void	check_token_types(t_data *data, char *str)
 	// the rest is all ARGS
 }
 
+
 void	init_token_types(t_data *data, char **tokens)
 {
 	int	i;
@@ -48,20 +49,57 @@ void	init_token_types(t_data *data, char **tokens)
 	}
 }
 
-void	split_tokens(t_data *data)
+int	is_spaces(char c)
 {
-	char	**tokens;
+	return (c == 32 || (c > 8 && c < 12));
+}
 
-	tokens = ft_split(data->input, ' ');
-//	while (*tokens)
-//	{
-//		printf("%s", *tokens++);
-//
-//	}
-	init_token_types(data, tokens);
-	while (data->token)
+void	handle_quotes(t_data **data, char c)
+{
+	
+}
+
+int	get_world_len(char *str, t_data *data)
+{
+	int	len;
+
+	len = 0;
+	if ((str[len] == '\"') && (data->single_quote == false))
+		data->double_quote = !(data->double_quote);
+	else if ((str[len] == '\'') && (data->double_quote == false))
+		data->single_quote = !(data->single_quote);
+	if (str[0] == '\"' || str[0] == '\'')
+		len++;
+	while ((!is_spaces(str[len]) && str[len]) || data->double_quote || data->single_quote)
 	{
-		printf("%s", data->token->str);
-		data->token = data->token->next;
+		if ((str[len] == '\"') && (data->single_quote == false))
+			data->double_quote = !(data->double_quote);
+		else if ((str[len] == '\'') && (data->double_quote == false))
+			data->single_quote = !(data->single_quote);
+		len++;
 	}
+
+	return (len);
+}
+
+void	lexer(t_data *data, char *str)
+{
+	char	*buffer;
+	int	typee;
+	int	len;
+
+	while (*str)
+	{
+		len = get_world_len(str, data);		
+		if (0 == len)
+			return ; // A REVOIR
+		buffer = malloc(len * sizeof(char) + 1);
+		ft_strlcpy(buffer, str, len + 1);
+		//type = check_token_type(token);
+		add_token(&data->token, buffer, 1);
+		//printf("%d", len);
+//		free(token);
+		str += len + 1;
+	}
+	print_list(&data, "TOKEN");
 }

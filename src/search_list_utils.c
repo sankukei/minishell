@@ -10,6 +10,21 @@ t_token *find_last_token(t_token *token)
         return (token);
 }
 
+void    print_list(t_data **data, char const *option)
+{
+
+        t_token  *current;
+
+	(void)option;
+        current = (*data)->token;
+        while (current) 
+        {
+                printf("string-> %s\n", current->str);
+                printf("TYPE-> %d\n", current->type);
+                current = current->next;
+        }
+}
+
 t_token    *find_penultimate_token(t_token *token)
 {
         if (!token)

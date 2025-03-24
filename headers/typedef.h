@@ -28,7 +28,7 @@ typedef struct s_token
 
 typedef struct s_data
 {
-	char			*input;
+	char 			*input;
 	t_boolen		single_quote;
 	t_boolen		double_quote;
 	t_token			*token;
