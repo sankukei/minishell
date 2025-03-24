@@ -14,13 +14,16 @@ void    print_list(t_data **data, char const *option)
 {
 
         t_token  *current;
+        int     i;
 
 	(void)option;
+        i = 0;
         current = (*data)->token;
         while (current) 
         {
+                printf("index : %d\n", i++);
                 printf("string-> %s\n", current->str);
-                printf("TYPE-> %d\n", current->type);
+                // printf("TYPE-> %d\n", current->type);
                 current = current->next;
         }
 }
@@ -60,7 +63,8 @@ int     add_token(t_token **token, char *str, int type)
         if (!new_token)
                 return (1);
         new_token->next = NULL;
-		new_token->str = str;
+	// new_token->str = malloc(ft_strlen(str) * sizeof(char));
+	new_token->str = ft_strdup(str);
         new_token->type = type;
         if (*token == NULL)
             *token = new_token;

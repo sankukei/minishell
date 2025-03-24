@@ -12,12 +12,12 @@
 
 #include "../headers/minishell.h"
 
-void	check_token_types(t_data *data, char *str)
+/*void	check_token_type(t_data *data, char *str)
 {
 	t_token *token;
 	
 	token = data->token;
-	if (!ft_memcmp(str, INPUT_REDIR_STR, ft_strlen(str)))
+	if (!ft_memcmp(str, INPUT_REDIR_STR, ft_strlen(buffer)))
 	{
 		add_token(&token, str, 1);
 		printf("%d", data->token->type);
@@ -34,10 +34,10 @@ void	check_token_types(t_data *data, char *str)
 	// missing CMD / ARGS
 	// CMD -> parse $PATH and check for implemenbted builtins
 	// the rest is all ARGS
-}
+}*/
 
 
-void	init_token_types(t_data *data, char **tokens)
+/*void	init_token_types(t_data *data, char **tokens)
 {
 	int	i;
 
@@ -47,17 +47,28 @@ void	init_token_types(t_data *data, char **tokens)
 		check_token_types(data, tokens[i]);
 		i++;
 	}
-}
+}*/
 
 int	is_spaces(char c)
 {
 	return (c == 32 || (c > 8 && c < 12));
 }
 
-void	handle_quotes(t_data **data, char c)
-{
+//void	handle_quotes(t_data **data, char c)
+//{
 	
-}
+//}
+
+/*void	check_quotes(char c, t_data *data)
+{
+
+	if ((c == '\"') && (data->single_quote == false))
+		data->double_quote = !(data->double_quote);
+	else if (c == '\'') && (data->double_quote == false))
+		data->single_quote = !(data->single_quote);
+
+	return (0);
+}*/
 
 int	get_world_len(char *str, t_data *data)
 {
@@ -88,18 +99,30 @@ void	lexer(t_data *data, char *str)
 	int	typee;
 	int	len;
 
+	len = 0;
 	while (*str)
 	{
 		len = get_world_len(str, data);		
 		if (0 == len)
 			return ; // A REVOIR
 		buffer = malloc(len * sizeof(char) + 1);
+		memset(buffer, '\0', len);
 		ft_strlcpy(buffer, str, len + 1);
-		//type = check_token_type(token);
+		//type = check_token_type(buffer,);
 		add_token(&data->token, buffer, 1);
-		//printf("%d", len);
-//		free(token);
+		free(buffer);
 		str += len + 1;
 	}
-	print_list(&data, "TOKEN");
+	t_token *token = data->token;
+	while (token)
+	{
+		printf("%s\n", token->str);
+		token = token->next;
+	}
+	// while (data->token)
+	// {
+	// 	printf("%s", data->token->str);
+	// 	data->token = data->token->next;
+	// }
+	//print_list(&data, "TOKEN");
 }
