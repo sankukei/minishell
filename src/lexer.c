@@ -60,16 +60,22 @@ void	check_quotes(char c, t_data *data)
 		data->single_quote = !(data->single_quote);
 }
 
-int	get_world_len(char *str, t_data *data)
+int	get_world_len(char **str, t_data *data)
 {
 	int	len;
 
 	len = 0;
-	check_quotes(*str, data);
-	if (str[0] == '\"' || str[0] == '\'')
+	check_quotes(**str, data);
+	data->test = 0;
+	if ((*str)[0] == '\"' || (*str)[0] == '\'')
 		len++;
-	while ((!is_spaces(str[len]) && *str) || data->double_quote || data->single_quote)
-		check_quotes(str[len++], data);
+	while (is_spaces(**str))
+		*str += 1;
+	while ((!is_spaces((*str)[len]) && **str) || data->double_quote || data->single_quote)
+	{
+		check_quotes((*str)[len], data);
+		len++;
+	}
 	return (len);
 }
 
@@ -82,7 +88,7 @@ void	lexer(t_data *data, char *str)
 	len = 0;
 	while (*str)
 	{
-		len = get_world_len(str, data);		
+		len = get_world_len(&str, data);		
 		if (0 == len)
 			return ; // A REVOIR
 		buffer = malloc(len * sizeof(char) + 1);
@@ -91,10 +97,7 @@ void	lexer(t_data *data, char *str)
 		type = check_token_type(data, buffer);
 		add_token(&data->token, buffer, type);
 		free(buffer);
-		if (len == 1)
-			str+= len;
-		else
-			str += len + 1;
+		str += len;
 	}
 	t_token *token = data->token;
 	while (token)

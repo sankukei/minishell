@@ -32,5 +32,6 @@ typedef struct s_data
 	t_boolen		single_quote;
 	t_boolen		double_quote;
 	t_token			*token;
+	int test;
 }   t_data;
 
