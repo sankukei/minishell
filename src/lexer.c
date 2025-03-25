@@ -14,40 +14,26 @@
 
 int	check_token_type(t_data *data, char *str)
 {
+	int	len;
 	t_token *token;
 	
+	len = ft_strlen(str);
 	token = data->token;
-	if (!ft_memcmp(str, INPUT_REDIR_STR, ft_strlen(str)))
-	{
+	if (!ft_memcmp(str, INPUT_REDIR_STR, len))
 		return (1);
-		printf(" REDIR ", data->token->type);
-	}
-	else if (!ft_memcmp(str, HEREDOC_STR, ft_strlen(str)))
-	{
-		printf(" HEREDOC ");
+	else if (!ft_memcmp(str, HEREDOC_STR, len))
 		return (2);
-	}
-	else if (!ft_memcmp(str, REDIR_STR, ft_strlen(str)))
-	{
-		printf(" REDIR ");
+	else if (!ft_memcmp(str, REDIR_STR, len))
 		return (3);
-	}
-	else if (!ft_memcmp(str, APPEND_STR, ft_strlen(str)))
-	{
-		printf(" APPEND ");
+	else if (!ft_memcmp(str, APPEND_STR, len))
 		return (4);
-	}
-	else if (!ft_memcmp(str, PIPES_STR, ft_strlen(str)))
-	{
-		printf(" PIPES ");
+	else if (!ft_memcmp(str, PIPES_STR, len))
 		return (5);
-	}
-	return (0);
-	// missing CMD / ARGS
+	else
+		return (7);
+	// missing CMD / ARGS for type 6
 	// CMD -> parse $PATH and check for implemenbted builtins
-	// the rest is all ARGS
 }
-
 
 /*void	init_token_types(t_data *data, char **tokens)
 {
@@ -66,41 +52,24 @@ int	is_spaces(char c)
 	return (c == 32 || (c > 8 && c < 14) || c == 0);
 }
 
-//void	handle_quotes(t_data **data, char c)
-//{
-	
-//}
-
-/*void	check_quotes(char c, t_data *data)
+void	check_quotes(char c, t_data *data)
 {
-
-	if ((c == '\"') && (data->single_quote == false))
+	if (c == '\"' && data->single_quote == false)
 		data->double_quote = !(data->double_quote);
-	else if (c == '\'') && (data->double_quote == false))
+	else if (c == '\'' && data->double_quote == false)
 		data->single_quote = !(data->single_quote);
-
-	return (0);
-}*/
+}
 
 int	get_world_len(char *str, t_data *data)
 {
 	int	len;
 
 	len = 0;
-	if ((str[len] == '\"') && (data->single_quote == false))
-		data->double_quote = !(data->double_quote);
-	else if ((str[len] == '\'') && (data->double_quote == false))
-		data->single_quote = !(data->single_quote);
+	check_quotes(*str, data);
 	if (str[0] == '\"' || str[0] == '\'')
 		len++;
 	while ((!is_spaces(str[len]) && *str) || data->double_quote || data->single_quote)
-	{
-		if ((str[len] == '\"') && (data->single_quote == false))
-			data->double_quote = !(data->double_quote);
-		else if ((str[len] == '\'') && (data->double_quote == false))
-			data->single_quote = !(data->single_quote);
-		len++;
-	}
+		check_quotes(str[len++], data);
 	return (len);
 }
 
