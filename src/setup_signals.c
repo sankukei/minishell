@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   setup_signals.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/14 02:40:16 by amedenec          #+#    #+#             */
-/*   Updated: 2025/03/26 06:12:15 by amedenec         ###   ########.fr       */
+/*   Created: 2025/03/26 04:16:05 by amedenec          #+#    #+#             */
+/*   Updated: 2025/03/26 04:17:05 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	main(int ac, char **av)
+void	handle_sigint(int signum)
 {
-	t_data	*data;
+	(void)signum;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 
-	data = (t_data *)malloc(sizeof(t_data));
-	if (!data)
-		return (1);
-	data->token = NULL;
-	data->single_quote = false;
-	data->double_quote = false;
-	(void)ac;
-	(void)av;
-	minishell_launcher(data);
-	return (0);
+void	setup_signals(void)
+{
+	struct sigaction sa;
+	sa.sa_handler = handle_sigint;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
 }

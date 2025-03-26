@@ -1,29 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   clear_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/14 02:40:16 by amedenec          #+#    #+#             */
-/*   Updated: 2025/03/26 06:12:15 by amedenec         ###   ########.fr       */
+/*   Created: 2025/03/26 03:18:00 by amedenec          #+#    #+#             */
+/*   Updated: 2025/03/26 06:31:16 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	main(int ac, char **av)
+void	clear_struct(t_token **tokens)
 {
-	t_data	*data;
+	t_token	*tmp;
 
-	data = (t_data *)malloc(sizeof(t_data));
-	if (!data)
-		return (1);
-	data->token = NULL;
-	data->single_quote = false;
-	data->double_quote = false;
-	(void)ac;
-	(void)av;
-	minishell_launcher(data);
-	return (0);
+	while (*tokens)
+	{
+		tmp = (*tokens)->next;
+		free((*tokens)->str);
+		free(*tokens);
+		*tokens = tmp;
+	}
+}
+
+void	prepare_next_input(t_data *data)
+{
+	clear_struct(&data->token);
+}
+
+void	exit_program(t_data *data)
+{
+	clear_struct(&data->token);
+	free(data);
+	exit(1);
 }

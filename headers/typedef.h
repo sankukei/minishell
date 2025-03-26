@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typedef.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:03:53 by leothoma          #+#    #+#             */
-/*   Updated: 2025/03/17 17:07:51 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/03/26 03:32:32 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef struct s_token
 {
 	char			*str;
 	int				type;
-	char			*rules;
+	//char			*rules;
 	struct s_token	*next;
 }   t_token;
 

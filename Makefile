@@ -20,6 +20,8 @@ SRC = main.c \
       string_utils.c \
       process_token_info.c \
       lexer.c \
+	  clear_utils.c \
+	  setup_signals.c
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
