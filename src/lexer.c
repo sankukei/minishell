@@ -35,17 +35,28 @@ int	check_token_type(t_data *data, char *str)
 	// CMD -> parse $PATH and check for implemenbted builtins
 }
 
-/*void	init_token_types(t_data *data, char **tokens)
+void	init_cmds(t_token *token)
 {
-	int	i;
+	t_token	*current;
+	t_token *before;
+	int	first;
 
-	i = 0;
-	while (tokens[i])
+	current = token;
+	first = 0;
+	if (first == 0 && current->type == 7)
+		current->type = 6;
+	while (current)
 	{
-		check_token_types(data, tokens[i]);
-		i++;
+		if (current->type == 7 && first != 0)
+		{
+			if (before->type == 2 || before->type == 5)
+				current->type = 6;
+		}
+		before = current;
+		first++;
+		current = current->next;
 	}
-}*/
+}
 
 int	is_spaces(char c)
 {
@@ -96,13 +107,15 @@ void	lexer(t_data *data, char *str)
 		ft_strlcpy(buffer, str, len + 1);
 		type = check_token_type(data, buffer);
 		add_token(&data->token, buffer, type);
-		free(buffer);
+		if (buffer)
+			free(buffer);
 		str += len;
 	}
+	init_cmds(data->token);
 	t_token *token = data->token;
 	while (token)
 	{
-		printf("STRING : %s -> TYPE : %d\n", token->str, token->type);
+		printf("TOKEN[STRING : %s -> TYPE : %d]\n", token->str, token->type);
 		token = token->next;
 	}
 }
