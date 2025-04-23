@@ -50,6 +50,5 @@ void	prepare_next_input(t_data *data);
 void	clear_struct(t_token **tokens);
 void	exit_program(t_data *data);
 
-
-
-
+// EXEC
+int	__EXEC_STARTUP__(t_token *token);

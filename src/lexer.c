@@ -112,9 +112,9 @@ void	lexer(t_data *data, char *str)
 	}
 	init_cmds(data->token);
 	t_token *token = data->token;
-	while (token)
-	{
-		printf("TOKEN[STRING : %s -> TYPE : %d]\n", token->str, token->type);
-		token = token->next;
-	}
+//	while (token)
+//	{
+//		printf("TOKEN[STRING : %s -> TYPE : %d]\n", token->str, token->type);
+//		token = token->next;
+//	}
 }

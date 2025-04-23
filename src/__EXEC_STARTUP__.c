@@ -10,11 +10,36 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/minishell.h"
+#include "../headers/minishell.h"
 
-int __EXEC_STARTUP__(t_token *token)
+int	exec_single(char *cmd)
 {
-	int	number_of_forks;
+	char	**path;
+	int	does_exist;
+
+	does_exist = 0;
+	path = ft_split(getenv("PATH"), ':');
+	while (*path)
+	{
+		if (access(*path, X_OK))
+			does_exist = 1;
+		*path++;
+	}
+	if (does_exist == 1)
+		//execve
+	else
+		write(1, "COmmand not found\n", 18);
+	return (0);
+}
+
+int	__EXEC_STARTUP__(t_token *token)
+{
+	while (token)
+	{
+		printf("EXEC %s\n", token->str);
+		token = token->next;
+	}
+/*	int	number_of_forks;
 	int	p[2];
 	pid_t	pid;
 	int	status;
@@ -30,7 +55,6 @@ int __EXEC_STARTUP__(t_token *token)
 			write(1, "error", 5);
 			exit(1);
 		}
-
 		if (i == number_of_commands)
 			dup2(stdin, p[2]);
 		else
@@ -50,4 +74,5 @@ int __EXEC_STARTUP__(t_token *token)
 	while (wait(&status) > 0)
 		;
 	return (0);
+*/
 }
