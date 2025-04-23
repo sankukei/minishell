@@ -14,6 +14,9 @@
 
 int	exec_single(char *cmd)
 {
+	char	**cmds;
+	*cmds = malloc(ft_strlen(cmd) + 1);
+	*cmds = cmd;
 	char	**path;
 	int	does_exist;
 
@@ -21,25 +24,57 @@ int	exec_single(char *cmd)
 	path = ft_split(getenv("PATH"), ':');
 	while (*path)
 	{
-		if (access(*path, X_OK))
-			does_exist = 1;
+		char *tmp = ft_strjoin(*path, "/");
+		char *test1 = ft_strjoin(tmp, cmd);
+		if (!access(test1, X_OK))
+		{
+			printf("%s\n", test1);
+			char *argv[] = {"xddd", "-l", "/tmp", NULL};
+			execve(test1, cmds, NULL);		
+			return (1);
+		}
 		*path++;
 	}
-	if (does_exist == 1)
-		//execve
-	else
-		write(1, "Command not found\n", 18);
+	write(1, "Command not found\n", 18);
 	return (0);
 }
 
 int	__EXEC_STARTUP__(t_token *token)
 {
-	while (token)
+/*
+	//token = token->next;
+	//printf("%s\n", token->str);
+	// recuperer tout les arguments et envoyer le double array a execve
+	//exec_single(token->str);
+	
+	int	n_forks;
+	pid_t	pid;
+	int	p[2];
+	int	i;
+
+	n = // fonction qui conmpte les pipes;
+	i = n;
+	if (token->type == heredoc)
 	{
-		printf("EXEC %s\n", token->str);
-		token = token->next;
+		open(token->str);
+		dup2(stdin, token->str);
 	}
-/*	int	number_of_forks;
+	while (n--)
+	{
+		if (i == n)
+			dup2(stdin, p[2]);
+		else
+			dup2(p[2], stdout);
+		pid = fork();
+		if (pid == 0)
+		{
+			if (!exec_single(args))
+				//free et kill les child 
+		}
+		while ()
+	}
+/*
+	int	number_of_forks;
 	int	p[2];
 	pid_t	pid;
 	int	status;
