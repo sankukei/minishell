@@ -43,7 +43,7 @@ int __EXEC_STARTUP__(t_token *token)
 		}
 		else if (pid == 0)
 		{
-			//exec cmd;
+			execve(token->str)
 			//execve(data->token_;
 		}
 	}

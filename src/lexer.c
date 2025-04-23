@@ -14,9 +14,9 @@
 
 int	check_token_type(t_data *data, char *str)
 {
-	int	len;
-	t_token *token;
-	
+	int		len;
+	t_token	*token;
+
 	len = ft_strlen(str);
 	token = data->token;
 	if (!ft_memcmp(str, INPUT_REDIR_STR, len))
@@ -31,15 +31,13 @@ int	check_token_type(t_data *data, char *str)
 		return (5);
 	else
 		return (7);
-	// missing CMD / ARGS for type 6
-	// CMD -> parse $PATH and check for implemenbted builtins
 }
 
 void	init_cmds(t_token *token)
 {
 	t_token	*current;
-	t_token *before;
-	int	first;
+	t_token	*before;
+	int		first;
 
 	current = token;
 	first = 0;
@@ -82,7 +80,8 @@ int	get_world_len(char **str, t_data *data)
 		len++;
 	while (is_spaces(**str))
 		*str += 1;
-	while ((!is_spaces((*str)[len]) && **str) || data->double_quote || data->single_quote)
+	while ((!is_spaces((*str)[len]) && **str) ||
+					data->double_quote || data->single_quote)
 	{
 		check_quotes((*str)[len], data);
 		len++;
@@ -93,15 +92,15 @@ int	get_world_len(char **str, t_data *data)
 void	lexer(t_data *data, char *str)
 {
 	char	*buffer;
-	int	type;
-	int	len;
+	int		type;
+	int		len;
 
 	len = 0;
 	while (*str)
 	{
-		len = get_world_len(&str, data);		
+		len = get_world_len(&str, data);
 		if (0 == len)
-			return ; // A REVOIR
+			return ;
 		buffer = malloc(len * sizeof(char) + 1);
 		memset(buffer, '\0', len);
 		ft_strlcpy(buffer, str, len + 1);
