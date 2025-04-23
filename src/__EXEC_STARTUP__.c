@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   __EXEC_STARTUP__.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/03/17 20:11:56 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/04/23 20:21:22 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	exec_single(char *cmd)
 	if (does_exist == 1)
 		//execve
 	else
-		write(1, "COmmand not found\n", 18);
+		write(1, "Command not found\n", 18);
 	return (0);
 }
 
