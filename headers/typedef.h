@@ -21,6 +21,7 @@ typedef enum s_boolen
 typedef struct s_token
 {
 	char			*str;
+	char			**args;
 	int				type;
 	//char			*rules;
 	struct s_token	*next;

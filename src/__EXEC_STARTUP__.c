@@ -15,12 +15,10 @@
 int	exec_single(char *cmd)
 {
 	char	**cmds;
+	char	**path;
 	*cmds = malloc(ft_strlen(cmd) + 1);
 	*cmds = cmd;
-	char	**path;
-	int	does_exist;
 
-	does_exist = 0;
 	path = ft_split(getenv("PATH"), ':');
 	while (*path)
 	{
@@ -39,26 +37,37 @@ int	exec_single(char *cmd)
 	return (0);
 }
 
+int	get_number_of_commands(t_token *token)
+{
+	int	i;
+
+	i = 0;
+	while (token)
+	{
+		if (token->type == 5)
+			i++;
+		token = token->next;
+	}
+	return (i);
+}
+
 int	__EXEC_STARTUP__(t_token *token)
 {
-/*
+
 	//token = token->next;
 	//printf("%s\n", token->str);
 	// recuperer tout les arguments et envoyer le double array a execve
 	//exec_single(token->str);
 	
-	int	n_forks;
+/*	
+	int	n;
 	pid_t	pid;
 	int	p[2];
 	int	i;
 
-	n = // fonction qui conmpte les pipes;
+	n = get_number_of_commands(token);
 	i = n;
-	if (token->type == heredoc)
-	{
-		open(token->str);
-		dup2(stdin, token->str);
-	}
+	// CHECK IF HEREDOC IN TOKENS -> if so while readline until EOF and feed it to execve as is
 	while (n--)
 	{
 		if (i == n)
@@ -71,7 +80,6 @@ int	__EXEC_STARTUP__(t_token *token)
 			if (!exec_single(args))
 				//free et kill les child 
 		}
-		while ()
 	}
 /*
 	int	number_of_forks;

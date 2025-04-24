@@ -89,6 +89,29 @@ int	get_world_len(char **str, t_data *data)
 	return (len);
 }
 
+void	init_args(t_token *token)
+{
+	t_token	*tmp;
+	int	i;
+	int	len;
+
+	i = 0;
+/*	while (token)
+	{
+		tmp = token;
+		while (tmp->type == 6 || tmp->type == 7)
+		{
+			len = ft_strlen(tmp->str);
+			tmp->args[i] = malloc(len * sizeof(char));
+			ft_memcpy(tmp->args[i], tmp->str, len);
+			tmp = tmp->next;
+			i++;
+		}
+		token = token->next;
+	}
+*/
+}
+
 void	lexer(t_data *data, char *str)
 {
 	char	*buffer;
@@ -111,10 +134,5 @@ void	lexer(t_data *data, char *str)
 		str += len;
 	}
 	init_cmds(data->token);
-	t_token *token = data->token;
-//	while (token)
-//	{
-//		printf("TOKEN[STRING : %s -> TYPE : %d]\n", token->str, token->type);
-//		token = token->next;
-//	}
+	init_args(data->token);
 }
