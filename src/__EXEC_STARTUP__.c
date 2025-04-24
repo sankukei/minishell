@@ -51,6 +51,26 @@ int	get_number_of_commands(t_token *token)
 	return (i);
 }
 
+char	**get_args(t_token **token)
+{
+	int	i;
+	char	**res;
+	t_token *tmp;
+
+	i = 0;
+	tmp = *token;
+	while (tmp->type == 6 || tmp->type == 7)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	res = malloc(i * sizeof(char *));
+	while ((*token)->type == 6 || (*token)->type == 7)
+	{
+		*token = (*token)->next;
+	}
+}
+
 int	__EXEC_STARTUP__(t_token *token)
 {
 
