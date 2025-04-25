@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:03:53 by leothoma          #+#    #+#             */
-/*   Updated: 2025/03/26 03:32:32 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/25 22:54:55 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_data
 	t_boolen		single_quote;
 	t_boolen		double_quote;
 	t_token			*token;
+	char			**env;
 	int test;
 }   t_data;
 

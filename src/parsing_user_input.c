@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/03/26 05:49:07 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/26 01:22:04 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ char	*detect_var_env(char *input)
 	input++; // pour passer le $
 	ptr = input;
 	len = 0;
-	while (*input != ' ' && *input  != '\0' && ft_iscapitalise(*input) == 1) // a voir si il faut mettre '\0'
+	while (*input != ' ' && *input  != '\0' && (ft_isalnum(*input) == 1 || *input == '_')) // a voir si il faut mettre '\0'
 	{
 		len++;
 		input++;
 	}
 	dest = malloc(sizeof(char) * len + 1);
-	while (*ptr != ' ' && *ptr != '\0' && ft_iscapitalise(*ptr) == 1)
+	while (*ptr != ' ' && *ptr != '\0' && (ft_isalnum(*ptr) == 1 || *ptr == '_'))
 		*dest++ = *ptr++;
 	*dest = '\0';
 	return (dest - len);
@@ -38,7 +38,7 @@ int	count_var_len(char *input)
 	
 	input++; // pour passer le $
 	len = 0;
-	while (*input != ' ' && *input  != '\0' && ft_iscapitalise(*input) == 1) // a voir si il faut mettre '\0'
+	while (*input != ' ' && *input  != '\0' && (ft_isalnum(*input) == 1 || *input == '_')) // a voir si il faut mettre '\0'
 	{
 		len++;
 		input++;
@@ -69,6 +69,23 @@ void	replace_var_env(t_data *data, char *var, int i, int len)
 
 }
 
+int	var_is_in_env(t_data *data, char *var)
+{
+	char	**env;
+	int		i;
+	
+	i = 0;
+	env = data->env;
+	while (env[i])
+	{
+		printf("je check la\n");
+		if (ft_strncmp(var, env[i], ft_strlen(var)) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	var_env_handler(t_data *data)
 {
 	char	*input;
@@ -88,7 +105,7 @@ void	var_env_handler(t_data *data)
 		{
 			var = detect_var_env(&input[i]);
 			len = count_var_len(&input[i]);
-			if (getenv(var))
+			if (var_is_in_env(data, var))
 			{
 				var = getenv(var);
 				replace_var_env(data, var, i, len);
@@ -97,7 +114,7 @@ void	var_env_handler(t_data *data)
 		}
 		i++;
 	}
-} // facile a norme, enelever input = data->input et remplacer tout les input par data->input
+}
 
 void	check_quote_error(t_data *data)
 {
@@ -123,8 +140,5 @@ void	parsing(t_data	*data)
 {
 	check_quote_error(data);
 	var_env_handler(data);
-	lexer(data, data->input);
-	//TODO creat all tokens from the output user
-	// check readme parsing
-	//add_token(&data->token, "ls", 6);
+	lexer(data, data->input); // a fix
 }

@@ -6,24 +6,22 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:40:16 by amedenec          #+#    #+#             */
-/*   Updated: 2025/03/26 06:12:15 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/25 23:02:06 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	main(int ac, char **av)
+int	main(int ac, char **av, char **envp)
 {
 	t_data	*data;
 
 	data = (t_data *)malloc(sizeof(t_data));
 	if (!data)
 		return (1);
-	data->token = NULL;
-	data->single_quote = false;
-	data->double_quote = false;
 	(void)ac;
 	(void)av;
+	init(data, envp);
 	minishell_launcher(data);
 	return (0);
 }
