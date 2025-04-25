@@ -75,7 +75,6 @@ int	get_world_len(char **str, t_data *data)
 
 	len = 0;
 	check_quotes(**str, data);
-	data->test = 0;
 	if ((*str)[0] == '\"' || (*str)[0] == '\'')
 		len++;
 	while (is_spaces(**str))
@@ -111,4 +110,10 @@ void	lexer(t_data *data, char *str)
 		str += len;
 	}
 	init_cmds(data->token);
+	t_token *token = data->token;
+	while (token)
+	{
+		printf("STRING : %s -> TYPE : %d\n", token->str, token->type);
+		token = token->next;
+	}
 }

@@ -51,91 +51,106 @@ int	get_number_of_commands(t_token *token)
 	return (i);
 }
 
-char	**get_args(t_token **token)
+char	**get_args(t_token *token)
 {
 	int	i;
 	char	**res;
+	char 	**temp;
 	t_token *tmp;
 
+	token = token->next;
 	i = 0;
-	tmp = *token;
+	tmp = token;
 	while (tmp->type == 6 || tmp->type == 7)
 	{
 		i++;
 		tmp = tmp->next;
 	}
 	res = malloc(i * sizeof(char *));
-	while ((*token)->type == 6 || (*token)->type == 7)
+	temp = res;
+	i = 0;
+	while (token->type == 6 || token->type == 7)
 	{
-		*token = (*token)->next;
+		write(1, "yes\n", 4);
+		res[i] = ft_strdup(token->str);
+		token = token->next;
+		i++;
 	}
+	res = temp;
+	i = 0;
+	while  (res[i++])
+	{
+		printf("YES xd %s\n", res[i]);
+	}
+	return (res);	
 }
 
 int	__EXEC_STARTUP__(t_token *token)
 {
 
+	get_args(token);
 	//token = token->next;
 	//printf("%s\n", token->str);
 	// recuperer tout les arguments et envoyer le double array a execve
 	//exec_single(token->str);
 	
-/*	
-	int	n;
-	pid_t	pid;
-	int	p[2];
-	int	i;
+	
+	// int	n;
+	// pid_t	pid;
+	// int	p[2];
+	// int	i;
 
-	n = get_number_of_commands(token);
-	i = n;
-	// CHECK IF HEREDOC IN TOKENS -> if so while readline until EOF and feed it to execve as is
-	while (n--)
-	{
-		if (i == n)
-			dup2(stdin, p[2]);
-		else
-			dup2(p[2], stdout);
-		pid = fork();
-		if (pid == 0)
-		{
-			if (!exec_single(args))
-				//free et kill les child 
-		}
-	}
-/*
-	int	number_of_forks;
-	int	p[2];
-	pid_t	pid;
-	int	status;
+	// n = get_number_of_commands(token);
+	// i = n;
+	// // CHECK IF HEREDOC IN TOKENS -> if so while readline until EOF and feed it to execve as is
+	// while (n--)
+	// {
+	// 	if (i == n)
+	// 		dup2(stdin, p[2]);
+	// 	else
+	// 		dup2(p[2], stdout);
+	// 	pid = fork();
+	// 	if (pid == 0)
+	// 	{
+	// 		if (!exec_single(args))
+	// 			//free et kill les child 
+	// 	}
+	// }
 
-	//number_of_commands = get_command_number(); //theoretical
-	i = number_of_commands;
-	while (number_of_forks--)
-	{
-		//dup stdin dans le pipe 0
-		//dup stdout dans le pipe 0
-		if (dup2(oldfd, newfd) == -1)
-		{
-			write(1, "error", 5);
-			exit(1);
-		}
-		if (i == number_of_commands)
-			dup2(stdin, p[2]);
-		else
-			dup2(p[2], stdout);
-		pid = fork();
-		if (pid < 0)
-		{
-			write(1, "no", 2);
-			exit(1);
-		}
-		else if (pid == 0)
-		{
-			execve(token->str)
-			//execve(data->token_;
-		}
-	}
-	while (wait(&status) > 0)
-		;
-	return (0);
-*/
+	// int	number_of_forks;
+	// int	p[2];
+	// pid_t	pid;
+	// int	status;
+
+	// //number_of_commands = get_command_number(); //theoretical
+	// i = number_of_commands;
+	// while (number_of_forks--)
+	// {
+	// 	//dup stdin dans le pipe 0
+	// 	//dup stdout dans le pipe 0
+	// 	if (dup2(oldfd, newfd) == -1)
+	// 	{
+	// 		write(1, "error", 5);
+	// 		exit(1);
+	// 	}
+	// 	if (i == number_of_commands)
+	// 		dup2(stdin, p[2]);
+	// 	else
+	// 		dup2(p[2], stdout);
+	// 	pid = fork();
+	// 	if (pid < 0)
+	// 	{
+	// 		write(1, "no", 2);
+	// 		exit(1);
+	// 	}
+	// 	else if (pid == 0)
+	// 	{
+	// 		execve(token->str)
+	// 		//execve(data->token_;
+	// 	}
+	// }
+	// while (wait(&status) > 0)
+	// 	;
+	// return (0);
+
 }
