@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 22:58:02 by amedenec          #+#    #+#             */
-/*   Updated: 2025/04/26 01:08:10 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/26 01:45:03 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ void    init(t_data *data, char **envp)
 
     int i;
     i = 0;
-    //while (data->env[i])
-    //   printf("%s\n", data->env[i++]);
+    while (data->env[i])
+       printf("%s\n", data->env[i++]);
 }

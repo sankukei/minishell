@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/04/26 01:22:04 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/26 01:59:11 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ int	var_is_in_env(t_data *data, char *var)
 	env = data->env;
 	while (env[i])
 	{
-		printf("je check la\n");
+		//printf("je check la\n");
 		if (ft_strncmp(var, env[i], ft_strlen(var)) == 0)
-			return (1);
+			return (1);			
 		i++;
 	}
 	return (0);
@@ -105,7 +105,7 @@ void	var_env_handler(t_data *data)
 		{
 			var = detect_var_env(&input[i]);
 			len = count_var_len(&input[i]);
-			if (var_is_in_env(data, var))
+			if (len && var_is_in_env(data, var))
 			{
 				var = getenv(var);
 				replace_var_env(data, var, i, len);
