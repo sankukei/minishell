@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/04/26 20:28:09 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/26 22:22:20 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,11 +181,16 @@ int	skip_quote(char *str, int i)
 	char	quote;
 
 	quote = str[i++];
+
+	if (str[i] == quote) // le if est pour gerer le cas "" (extremement degeu mais ca passe)
+	{
+		while (str[i] && str[i] != quote)
+			i++;
+		return (i);
+	}	
 	while (str[i] && str[i] != quote)
 		i++;
 	i--;
-	//if (str[i] == quote) // a pas enlever dans le doute
-	//	i++;
 	return (i);
 }
 
@@ -224,7 +229,7 @@ void	tokenisation(t_data *data)
 				token = ft_substr(data->input, i++, 1);
 		}
 		else
-			token = extract_token(data->input, &i); // a faire
+			token = extract_token(data->input, &i);
 		if (token && *token)
 			add_token_refacto(&list, token);
 		else
@@ -244,22 +249,21 @@ void	affiche_token_test(t_token *token)
 	}
 }
 
+void	type_tokens(t_data *data)
+{
+	// check les tokens de gauche a droit
+	// mettre les hardcoded, | < > << >>
+	// si ce n'est pas un hardcoded, on regarde si on attend une commande
+	// si oui CMD
+	// sinon regarder si le token precedent est une redirection si oui, le token est un FD
+	// sinon c'est un ARG
+}
 
 void	parsing(t_data	*data)
 {
 	check_quote_error(data);
 	var_env_handler(data);
 	tokenisation(data);
+	type_tokens(data);
 	affiche_token_test(data->token);
-	//lexer(data, data->input); // faire
 }
-
-/*
-objectif pour la tokenisation
-parser l input en sautant tout les espaces, puis check si c'est
-un token < > << >> ou | sinon c'est un token classque
-Pour les tokens classique tu parses jusqu'a croiser un autre espace ou un < > << >> |
-le truc check dans les token classique
-c'est les quotes, si on tombe dessus on ignore tout jusqu'au prochaine
-du meme type
-*/
