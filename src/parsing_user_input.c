@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/04/26 04:14:22 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/26 15:29:04 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,30 @@ static void	quote_check(t_data *data, int i)
 			data->single_quote = !(data->single_quote);
 }
 
+char *get_my_env(t_data *data, char *str)
+{
+	char **env;
+	int	i;
+	int	j;
+	
+	i = 0;
+	j = 0;
+	env = data->env;
+	while (env[i])
+	{
+		//printf("je check la\n");
+		if (ft_strncmp(str, env[i], ft_strlen(str)) == 0)
+		{
+			while (env[i][j] != '=')
+				j++;
+			j++;
+			return (&env[i][j]);
+		}			
+		i++;
+	}
+	return (NULL);
+}
+
 void	var_env_handler(t_data *data)
 {
 	char	*input;
@@ -112,7 +136,7 @@ void	var_env_handler(t_data *data)
 			len = count_var_len(&input[i]);
 			if (len && var_is_in_env(data, var))
 			{
-				var = getenv(var);
+				var = get_my_env(data, var);
 				replace_var_env(data, var, i, len);
 				input = data->input;
 			}
