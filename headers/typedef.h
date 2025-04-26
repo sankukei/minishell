@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:03:53 by leothoma          #+#    #+#             */
-/*   Updated: 2025/04/25 22:54:55 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/26 03:25:46 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ typedef enum s_boolen
 typedef struct s_token
 {
 	char			*str;
-	char			**args;
 	int				type;
-	//char			*rules;
 	struct s_token	*next;
 }   t_token;
 

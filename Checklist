@@ -2,3 +2,11 @@ EDGE CASE CHIANT
 {
 	ca"t |" | ls
 }
+
+
+reminder pour Adam
+
+-Generaliser a tout les fonctions qui utilisent les quotes des fonctions
+-Dans var_env_handler faire en sort de recup la var via le nouvel env
+-Refacto la tokenisation
+

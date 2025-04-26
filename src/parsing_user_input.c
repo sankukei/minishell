@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/04/26 01:59:11 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/26 04:14:22 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,14 @@ int	var_is_in_env(t_data *data, char *var)
 	return (0);
 }
 
+static void	quote_check(t_data *data, int i)
+{
+	if ((data->input[i] == '\"') && (data->single_quote == false))
+			data->double_quote = !(data->double_quote);
+	else if ((data->input[i] == '\'') && (data->double_quote == false))
+			data->single_quote = !(data->single_quote);
+}
+
 void	var_env_handler(t_data *data)
 {
 	char	*input;
@@ -97,10 +105,7 @@ void	var_env_handler(t_data *data)
 	i = 0;
 	while (input[i])
 	{
-		if ((input[i] == '\"') && (data->single_quote == false))
-			data->double_quote = !(data->double_quote);
-		else if ((input[i] == '\'') && (data->double_quote == false))
-			data->single_quote = !(data->single_quote);
+		quote_check(data, i);
 		if (input[i] == '$' && data->single_quote != true)
 		{
 			var = detect_var_env(&input[i]);
@@ -136,9 +141,19 @@ void	check_quote_error(t_data *data)
 	}
 }
 
+///////////////////////////////////////////////////////
+
+/*void	tokenisation(t_data *data)
+{
+	int	i;
+
+	while (data->input[i])
+}*/
+
 void	parsing(t_data	*data)
 {
 	check_quote_error(data);
 	var_env_handler(data);
-	lexer(data, data->input); // a fix
+	//tokenisation(data);
+	lexer(data, data->input); // faire
 }

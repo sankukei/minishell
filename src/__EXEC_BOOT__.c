@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:04:03 by amedenec          #+#    #+#             */
-/*   Updated: 2025/04/26 01:04:57 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/26 03:47:02 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	minishell_launcher(t_data *data)
 			printf("exit\n");
 			exit(0);
 		}
-		// split_tokens(data);
 		parsing(data);
 		__EXEC_STARTUP__(data);
 		if (0 == strcmp(data->token->str, "exit"))
