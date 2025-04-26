@@ -75,3 +75,25 @@ int     add_token(t_token **token, char *str, int type)
 		}
 		return (0);
 }
+
+void	add_token_refacto(t_token **list, char *str)
+{
+	t_token	*new;
+	t_token	*tmp;
+
+	new = malloc(sizeof(t_token));
+	if (!new)
+		return ;
+	new->str = str;
+	new->type = -1;
+	new->next = NULL;
+	if (!*list)
+		*list = new;
+	else
+	{
+		tmp = *list;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+}

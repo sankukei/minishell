@@ -6,13 +6,13 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 15:40:10 by leothoma          #+#    #+#             */
-/*   Updated: 2025/04/26 04:13:31 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/26 20:26:49 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
-
-int	check_token_type(t_data *data, char *str)
+// ANCIEN CODE
+/*int	check_token_type(t_data *data, char *str)
 {
 	int		len;
 	t_token	*token;
@@ -87,16 +87,16 @@ int	get_world_len(char **str, t_data *data)
 		len++;
 	}
 	return (len);
-}
-
-void	init_args(t_token *token)
+}*/
+// ANCIEN CODE
+/*void	init_args(t_token *token)
 {
 	t_token	*tmp;
 	int	i;
 	int	len;
 
 	i = 0;
-/*	while (token)
+	while (token)
 	{
 		tmp = token;
 		while (tmp->type == 6 || tmp->type == 7)
@@ -109,10 +109,9 @@ void	init_args(t_token *token)
 		}
 		token = token->next;
 	}
-*/
-}
-
-void	lexer(t_data *data, char *str)
+}*/
+// ANCIEN CODE
+/*void	lexer(t_data *data, char *str)
 {
 	char	*buffer;
 	int		type;
@@ -135,4 +134,4 @@ void	lexer(t_data *data, char *str)
 	}
 	init_cmds(data->token);
 	init_args(data->token);
-}
+}*/
