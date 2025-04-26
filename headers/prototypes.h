@@ -6,12 +6,15 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/03/26 06:16:44 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/25 23:13:12 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // main
 void		minishell_launcher(t_data *data);
+
+// init
+void    init(t_data *data, char **envp);
 
 // start parsing
 void		parsing(t_data	*data);
