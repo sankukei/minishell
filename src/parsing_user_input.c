@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/04/26 22:22:20 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/27 03:29:08 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,19 +179,24 @@ int	is_operator(char c)
 int	skip_quote(char *str, int i)
 {
 	char	quote;
-
 	quote = str[i++];
+	int	len;
 
-	if (str[i] == quote) // le if est pour gerer le cas "" (extremement degeu mais ca passe)
-	{
-		while (str[i] && str[i] != quote)
-			i++;
-		return (i);
-	}	
+	len = 0;
+	//if (str[i] == quote) // le if est pour gerer le cas "" (extremement degeu mais ca passe)
+	//{
+	//	while (str[i] && str[i] != quote)
+	//		i++;
+	//	return (i);
+	//}	
 	while (str[i] && str[i] != quote)
+	{
 		i++;
-	i--;
-	return (i);
+		len++;
+		//printf("jeskip\n");		
+	}
+	//i++;
+	return (len + 2);
 }
 
 char	*extract_token(char *str, int *i)
@@ -206,6 +211,7 @@ char	*extract_token(char *str, int *i)
 		else
 			(*i)++;
 	}
+	//printf("start :%d\ni:%d\n", start, *i);
 	return (ft_substr(str, start, *i - start));
 }
 
@@ -234,8 +240,8 @@ void	tokenisation(t_data *data)
 			add_token_refacto(&list, token);
 		else
 			free(token);
-		data->token = list;
 	}
+	data->token = list;
 }
 void	affiche_token_test(t_token *token)
 {

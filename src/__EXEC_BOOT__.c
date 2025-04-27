@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:04:03 by amedenec          #+#    #+#             */
-/*   Updated: 2025/04/26 22:17:59 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/27 03:29:36 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,22 @@ void	minishell_launcher(t_data *data)
 	while (1)
 	{
 		input = readline("minishell> ");
-		//input = "coucou a";
-		data->input = input;
-		if (!input)
+		//input = "'a' e e";
+		if (ft_strlen(input))
 		{
-			printf("exit\n");
-			exit(0);
+			data->input = input;
+			if (!input)
+			{
+				printf("exit\n");
+				exit(0);
+			}
+			add_history(input);
+			parsing(data);
+			//__EXEC_STARTUP__(data);
+			if (0 == strcmp(data->token->str, "exit"))
+				exit_program(data);
+			//printf("%s\n", data->input);
+			prepare_next_input(data);
 		}
-		parsing(data);
-		//__EXEC_STARTUP__(data);
-		if (0 == strcmp(data->token->str, "exit"))
-			exit_program(data);
-		//printf("%s\n", data->input);
-		prepare_next_input(data);
 	}
 }
