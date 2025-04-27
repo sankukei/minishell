@@ -3,21 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   __EXEC_STARTUP__.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sankukei <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/04/23 20:21:22 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/27 14:46:20 by sankukei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	exec_single(char *cmd)
+int	exec_single(char *cmd, char **args)
 {
-	char	**cmds;
 	char	**path;
-	*cmds = malloc(ft_strlen(cmd) + 1);
-	*cmds = cmd;
 
 	path = ft_split(getenv("PATH"), ':');
 	while (*path)
@@ -27,8 +24,7 @@ int	exec_single(char *cmd)
 		if (!access(test1, X_OK))
 		{
 			printf("%s\n", test1);
-			char *argv[] = {"xddd", "-l", "/tmp", NULL};
-			execve(test1, cmds, NULL);		
+			execve(test1, args, NULL);		
 			return (1);
 		}
 		*path++;
@@ -58,37 +54,47 @@ char	**get_args(t_token *token)
 	char 	**temp;
 	t_token *tmp;
 
-	token = token->next;
+	//token = token->next;
 	i = 0;
 	tmp = token;
-	while (tmp->type == 6 || tmp->type == 7)
+	while (token && (token->type == 6 || token->type == 7))
 	{
 		i++;
-		tmp = tmp->next;
+		token = token->next;
 	}
-	res = malloc(i * sizeof(char *));
-	temp = res;
+	res = malloc(i * sizeof(char *) + 1);
+	if (!res)
+		return (0);
 	i = 0;
+	token = tmp;
 	while (token->type == 6 || token->type == 7)
 	{
-		write(1, "yes\n", 4);
 		res[i] = ft_strdup(token->str);
+		if (!res[i])
+		{
+				//call free_arr();
+		}
 		token = token->next;
 		i++;
 	}
-	res = temp;
+	res[i] = 0;
 	i = 0;
-	while  (res[i++])
+	while  (res[i])
 	{
 		printf("YES xd %s\n", res[i]);
+		i++;
 	}
 	return (res);	
 }
 
 int	__EXEC_STARTUP__(t_token *token)
 {
+	char	**args;
 
-	get_args(token);
+	if (!(args = get_args(args)))
+		return (0);
+
+	exec_single(token->str, args);
 	//token = token->next;
 	//printf("%s\n", token->str);
 	// recuperer tout les arguments et envoyer le double array a execve

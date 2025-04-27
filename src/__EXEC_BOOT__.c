@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   __EXEC_BOOT__.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sankukei <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:04:03 by amedenec          #+#    #+#             */
-/*   Updated: 2025/03/26 06:36:51 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/27 14:29:27 by sankukei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	minishell_launcher(t_data *data)
 		}
 		// split_tokens(data);
 		parsing(data);
-		__EXEC_STARTUP__(data);
+		__EXEC_STARTUP__(data->token);
 		if (0 == strcmp(data->token->str, "exit"))
 			exit_program(data);
 		printf("%s\n", data->input);
