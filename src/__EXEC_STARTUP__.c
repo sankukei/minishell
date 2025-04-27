@@ -6,7 +6,7 @@
 /*   By: sankukei <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/04/27 14:46:20 by sankukei         ###   ########.fr       */
+/*   Updated: 2025/04/27 17:53:35 by sankukei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	exec_single(char *cmd, char **args)
 		char *test1 = ft_strjoin(tmp, cmd);
 		if (!access(test1, X_OK))
 		{
-			printf("%s\n", test1);
 			execve(test1, args, NULL);		
 			return (1);
 		}
@@ -47,81 +46,80 @@ int	get_number_of_commands(t_token *token)
 	return (i);
 }
 
-char	**get_args(t_token *token)
+char	**get_args(t_token **token)
 {
 	int	i;
 	char	**res;
-	char 	**temp;
 	t_token *tmp;
 
-	//token = token->next;
 	i = 0;
-	tmp = token;
-	while (token && (token->type == 6 || token->type == 7))
+	tmp = *token;
+	while (token && (*token) && ((*token)->type == 6 || (*token)->type == 7))
 	{
 		i++;
-		token = token->next;
+		(*token) = (*token)->next;
 	}
 	res = malloc(i * sizeof(char *) + 1);
 	if (!res)
 		return (0);
 	i = 0;
-	token = tmp;
-	while (token->type == 6 || token->type == 7)
+	*token = tmp;
+	while (token && (*token) && ((*token)->type == 6 || (*token)->type == 7))
 	{
-		res[i] = ft_strdup(token->str);
+		res[i] = ft_strdup((*token)->str);
 		if (!res[i])
 		{
 				//call free_arr();
 		}
-		token = token->next;
+		(*token) = (*token)->next;
 		i++;
 	}
+	// un peu de la magie noir, mais ca alligne le pointeur au prochain cmd pour pouvoir call get_args en boucle et en restant sur le debut du prochain pipe a chaque call
+	// tldr -> sombre
+	if ((*token)->next)
+		(*token) = (*token)->next;
 	res[i] = 0;
-	i = 0;
-	while  (res[i])
-	{
-		printf("YES xd %s\n", res[i]);
-		i++;
-	}
 	return (res);	
 }
 
 int	__EXEC_STARTUP__(t_token *token)
 {
 	char	**args;
+	char		*cmd;
 
-	if (!(args = get_args(args)))
-		return (0);
+	cmd = token->str;
+	if (!(args = get_args(&token)))
+		return (0);	
+	exec_single(cmd, args);
 
-	exec_single(token->str, args);
-	//token = token->next;
-	//printf("%s\n", token->str);
-	// recuperer tout les arguments et envoyer le double array a execve
-	//exec_single(token->str);
-	
-	
-	// int	n;
-	// pid_t	pid;
-	// int	p[2];
-	// int	i;
+	int	n;
+	pid_t	pid;
+	int	p[2];
+	int	i;
+	int	status;
 
-	// n = get_number_of_commands(token);
-	// i = n;
-	// // CHECK IF HEREDOC IN TOKENS -> if so while readline until EOF and feed it to execve as is
-	// while (n--)
-	// {
-	// 	if (i == n)
-	// 		dup2(stdin, p[2]);
-	// 	else
-	// 		dup2(p[2], stdout);
-	// 	pid = fork();
-	// 	if (pid == 0)
-	// 	{
-	// 		if (!exec_single(args))
-	// 			//free et kill les child 
-	// 	}
-	// }
+	n = get_number_of_commands(token);
+	i = n;
+	// CHECK IF HEREDOC IN TOKENS -> if so while readline until EOF and feed it to execve as is
+	while (n--)
+	{
+		if (i == n)
+			dup2(stdin, p[2]);
+		else
+			dup2(p[2], stdout);
+		pid = fork();
+		if (pid == 0)
+		{
+			cmd = token->str;
+			args = get_args(&token);
+			if (!exec_single(cmd, args))
+				return(0);
+				//free et kill les child 
+		}
+		
+			while (wait(&status) > 0)
+			 	;
+	}
 
 	// int	number_of_forks;
 	// int	p[2];
