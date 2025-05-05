@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/04/27 03:29:08 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/05/05 06:20:37 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ void	check_quote_error(t_data *data)
 
 int	is_space(char c)
 {
-	return (c == ' '); // mettre tout les types d'espaces
+	return (c == ' ' || (c >= 9 && c <= 13)); // mettre tout les types d'espaces
 }
 int	is_operator(char c)
 {
@@ -243,6 +243,74 @@ void	tokenisation(t_data *data)
 	}
 	data->token = list;
 }
+
+char	*pop(char *str, unsigned char c)
+{
+	int	len;
+	char *dest;
+	int	i;
+	int	l;
+	int	count;
+
+	count = 0;
+	i = 0;
+	l = 0;
+	len = ft_strlen(str);
+	dest = malloc(sizeof(char) * (len));
+	while (str[i])
+	{
+		if (str[i] == c && str[i + 1] == c && count == 0)
+		{
+			i += 2;
+			count += 2;
+		}
+		if (str[i] == c && count < 2)
+		{
+			i++;
+			count++;	
+		}
+		if (str[i] != '\0')
+			dest[l++] = str[i++];
+	}
+	dest[l] = '\0';
+	return (dest);
+}
+
+char	*remove_quote(char *str)
+{
+	int				i;
+	unsigned char	c;
+	int	is_in_quote;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '\"')
+		{
+			c = str[i];
+			str = pop(str, c);
+		}
+		if (0 == str[i])
+			return (str);
+		i++;
+	}
+	return (str);
+}
+
+void	extern_quote_handler(t_data *data)
+{
+	t_token	*token;
+	char	*str;
+	
+	token = data->token;
+	while (token)
+	{
+		str = token->str;
+		token->str = remove_quote(str);
+		token = token->next;
+	}
+}
+
 void	affiche_token_test(t_token *token)
 {
 	int	i;
@@ -255,21 +323,34 @@ void	affiche_token_test(t_token *token)
 	}
 }
 
-void	type_tokens(t_data *data)
-{
-	// check les tokens de gauche a droit
-	// mettre les hardcoded, | < > << >>
-	// si ce n'est pas un hardcoded, on regarde si on attend une commande
-	// si oui CMD
-	// sinon regarder si le token precedent est une redirection si oui, le token est un FD
-	// sinon c'est un ARG
-}
+// void	put_hard_coded_type(t_data *data)
+// {
+// 	t_token	*token;
+	
+// 	token = data->token;
+// 	while (token)
+// 	{
+// 		token = token->next
+// 	}
+// }
+
+// void	type_tokens(t_data *data)
+// {
+// 	put_hard_coded_type(data);
+// }
+// check les tokens de gauche a droit
+// mettre les hardcoded, | < > << >>
+// si ce n'est pas un hardcoded, on regarde si on attend une commande
+// si oui CMD
+// sinon regarder si le token precedent est une redirection si oui, le token est un FD
+// sinon c'est un ARG
 
 void	parsing(t_data	*data)
 {
 	check_quote_error(data);
 	var_env_handler(data);
 	tokenisation(data);
-	type_tokens(data);
+	extern_quote_handler(data);
+	//type_tokens(data);
 	affiche_token_test(data->token);
 }

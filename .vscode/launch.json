@@ -1,0 +1,18 @@
+{
+    "version": "1.0.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "minishell",
+            "program": "${workspaceFolder}/minishell",
+            "args": [
+            ],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "build",
+            "env": {
+                "PATH": "${env:PATH}"
+            },
+        }
+    ]
+}

@@ -6,11 +6,22 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:03:53 by leothoma          #+#    #+#             */
-/*   Updated: 2025/04/26 03:25:46 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/05/05 00:26:05 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+typedef enum s_type
+{
+	HEREDOC = 1,  // <<
+	APPEND, // >>
+	INPUT, // >
+	TRUNC, // >
+	PIPE, // |
+	CMD,
+	ARG,
+}	t_type;
 
 typedef enum s_boolen
 {
