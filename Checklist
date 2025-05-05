@@ -6,7 +6,10 @@ EDGE CASE CHIANT
 
 reminder pour Adam
 
--Generaliser a tout les fonctions qui utilisent les quotes des fonctions
+-Generaliser a tout les fonctions qui utilisent les quotes des fonctions /TODO
 -Dans var_env_handler faire en sort de recup la var via le nouvel env /DONE
--Refacto la tokenisation /IN PROGRESS 
+-Refacto la tokenisation /IN PROGRESS
+-Gerer les leaks et proteger toutes les malloc/TODO
+-Retirer les quotes extern des tokens /DONE
+-Mettre 5fonctions par fichier max /TODO
 
