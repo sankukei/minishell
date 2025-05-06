@@ -76,7 +76,7 @@ char	**get_args(t_token **token)
 	}
 	// un peu de la magie noir, mais ca alligne le pointeur au prochain cmd pour pouvoir call get_args en boucle et en restant sur le debut du prochain pipe a chaque call
 	// tldr -> sombre
-	if ((*token)->next)
+	if (*token && (*token)->next)
 		(*token) = (*token)->next;
 	res[i] = 0;
 	return (res);	
@@ -90,23 +90,30 @@ int	__EXEC_STARTUP__(t_token *token)
 	cmd = token->str;
 	if (!(args = get_args(&token)))
 		return (0);	
-	exec_single(cmd, args);
+	//exec_single(cmd, args);
 
 	int	n;
 	pid_t	pid;
 	int	p[2];
 	int	i;
 	int	status;
+	int	fd;
+	char	*line;
 
 	n = get_number_of_commands(token);
 	i = n;
 	// CHECK IF HEREDOC IN TOKENS -> if so while readline until EOF and feed it to execve as is
 	while (n--)
 	{
+		pipe(p);
 		if (i == n)
-			dup2(stdin, p[2]);
+		{
+			dup2(stdin, p[0]);
+		}
 		else
-			dup2(p[2], stdout);
+		{
+			dup2(p[1], stdout);
+		}
 		pid = fork();
 		if (pid == 0)
 		{
@@ -116,8 +123,11 @@ int	__EXEC_STARTUP__(t_token *token)
 				return(0);
 				//free et kill les child 
 		}
-		
-			while (wait(&status) > 0)
+		else
+		{
+			//send data to child ? 
+		}
+		while (wait(&status) > 0)
 			 	;
 	}
 
