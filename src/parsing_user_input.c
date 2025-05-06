@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_user_input.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adam <adam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/05/05 06:20:37 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/05/06 03:28:53 by adam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,9 @@ int	count_var_len(char *input)
 }
 void	replace_var_env(t_data *data, char *var, int i, int len)
 {
-	//TODO
 	int		len_new_input;
 	char	*dest;
-	char	*ptr;
+	//char	*ptr;
 
 	len_new_input = ft_strlen(data->input) + ft_strlen(var) - (len + 1);
 	dest = malloc(sizeof(char) * len_new_input + 1);
@@ -59,7 +58,7 @@ void	replace_var_env(t_data *data, char *var, int i, int len)
 		// TODO free all clear exit;
 		exit(1);
 	}
-	ptr = dest;
+	//ptr = dest;
 	memset(dest, '\0', len_new_input);
 	dest[len_new_input] = '\0';
 	ft_strlcpy(dest, data->input, i + 1);
@@ -145,7 +144,7 @@ void	var_env_handler(t_data *data)
 	}
 }
 
-void	check_quote_error(t_data *data)
+int	check_quote_error(t_data *data)
 {
 	char		*input;
 
@@ -160,9 +159,12 @@ void	check_quote_error(t_data *data)
 	}
 	if (data->single_quote || data->double_quote)
 	{
+		data->single_quote = false;
+		data->double_quote = false;
 		printf("une quote n'est pas ferme\n");
-		exit(0);
+		return (1);
 	}
+	return (0);
 }
 
 ///////////////////////////////////////////////////////
@@ -345,12 +347,14 @@ void	affiche_token_test(t_token *token)
 // sinon regarder si le token precedent est une redirection si oui, le token est un FD
 // sinon c'est un ARG
 
-void	parsing(t_data	*data)
+int	parsing(t_data	*data)
 {
-	check_quote_error(data);
+	if (check_quote_error(data))
+		return (1);
 	var_env_handler(data);
 	tokenisation(data);
-	extern_quote_handler(data);
 	//type_tokens(data);
+	extern_quote_handler(data);
 	affiche_token_test(data->token);
+	return (0);
 }

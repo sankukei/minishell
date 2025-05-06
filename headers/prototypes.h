@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prototypes.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adam <adam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/04/26 16:40:38 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/05/06 03:18:31 by adam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void		minishell_launcher(t_data *data);
 void		init(t_data *data, char **envp);
 
 // start parsing
-void		parsing(t_data	*data);
+int		parsing(t_data	*data);
 
 // parsing input
-void		check_quote_error(t_data *data);
+int	        check_quote_error(t_data *data);
 void		var_env_handler(t_data *data);
 char		*detect_var_env(char *input);
 

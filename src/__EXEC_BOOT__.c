@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   __EXEC_BOOT__.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adam <adam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:04:03 by amedenec          #+#    #+#             */
-/*   Updated: 2025/05/05 06:05:29 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/05/06 03:27:47 by adam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,12 @@ void	minishell_launcher(t_data *data)
 		if (ft_strlen(input))
 		{
 			data->input = input;
-			if (!input)
-			{
-				printf("exit\n");
-				exit(0);
-			}
 			add_history(input);
-			parsing(data);
+			if (parsing(data))
+			{
+				prepare_next_input(data);
+				continue ;
+			}
 			//__EXEC_STARTUP__(data);
 			if (0 == strcmp(data->token->str, "exit"))
 				exit_program(data);
