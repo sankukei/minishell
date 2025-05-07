@@ -6,7 +6,7 @@
 /*   By: adam <adam@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/05/06 03:28:53 by adam             ###   ########.fr       */
+/*   Updated: 2025/05/07 02:43:08 by adam             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,7 +282,6 @@ char	*remove_quote(char *str)
 {
 	int				i;
 	unsigned char	c;
-	int	is_in_quote;
 
 	i = 0;
 	while (str[i])
