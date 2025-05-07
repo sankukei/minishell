@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_user_input.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adam <adam@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/05/07 02:43:08 by adam             ###   ########.fr       */
+/*   Updated: 2025/05/07 14:09:26 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	replace_var_env(t_data *data, char *var, int i, int len)
 {
 	int		len_new_input;
 	char	*dest;
-	//char	*ptr;
 
 	len_new_input = ft_strlen(data->input) + ft_strlen(var) - (len + 1);
 	dest = malloc(sizeof(char) * len_new_input + 1);
@@ -58,7 +57,6 @@ void	replace_var_env(t_data *data, char *var, int i, int len)
 		// TODO free all clear exit;
 		exit(1);
 	}
-	//ptr = dest;
 	memset(dest, '\0', len_new_input);
 	dest[len_new_input] = '\0';
 	ft_strlcpy(dest, data->input, i + 1);
@@ -77,7 +75,6 @@ int	var_is_in_env(t_data *data, char *var)
 	env = data->env;
 	while (env[i])
 	{
-		//printf("je check la\n");
 		if (ft_strncmp(var, env[i], ft_strlen(var)) == 0)
 			return (1);			
 		i++;
@@ -171,7 +168,7 @@ int	check_quote_error(t_data *data)
 
 int	is_space(char c)
 {
-	return (c == ' ' || (c >= 9 && c <= 13)); // mettre tout les types d'espaces
+	return (c == ' ' || (c >= 9 && c <= 13));
 }
 int	is_operator(char c)
 {
@@ -353,7 +350,7 @@ int	parsing(t_data	*data)
 	var_env_handler(data);
 	tokenisation(data);
 	//type_tokens(data);
-	extern_quote_handler(data);
+	extern_quote_handler(data); // a refacto (check checklist)
 	affiche_token_test(data->token);
 	return (0);
 }

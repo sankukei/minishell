@@ -12,4 +12,5 @@ reminder pour Adam
 -Gerer les leaks et proteger toutes les malloc/TODO
 -Retirer les quotes extern des tokens /DONE
 -Mettre 5fonctions par fichier max /TODO
+-Refacto la gestions des external quote --> "'a'" est sense faire 'a'
 
