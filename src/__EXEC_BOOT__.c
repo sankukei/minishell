@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   __EXEC_BOOT__.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adam <adam@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:04:03 by amedenec          #+#    #+#             */
-/*   Updated: 2025/05/06 03:27:47 by adam             ###   ########.fr       */
+/*   Updated: 2025/05/12 21:50:58 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	minishell_launcher(t_data *data)
 	while (1)
 	{
 		input = readline("minishell> ");
+		//input = "\'\'e\'\'";
 		if (ft_strlen(input))
 		{
 			data->input = input;

@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/05/07 14:09:26 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/05/12 22:13:18 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,37 +243,41 @@ void	tokenisation(t_data *data)
 	data->token = list;
 }
 
-char	*pop(char *str, unsigned char c)
+int	pop(char *str, int i, unsigned char c)
 {
-	int	len;
-	char *dest;
-	int	i;
-	int	l;
-	int	count;
-
-	count = 0;
-	i = 0;
-	l = 0;
-	len = ft_strlen(str);
-	dest = malloc(sizeof(char) * (len));
-	while (str[i])
-	{
-		if (str[i] == c && str[i + 1] == c && count == 0)
-		{
-			i += 2;
-			count += 2;
-		}
-		if (str[i] == c && count < 2)
-		{
-			i++;
-			count++;	
-		}
-		if (str[i] != '\0')
-			dest[l++] = str[i++];
-	}
-	dest[l] = '\0';
-	return (dest);
+	continue;
 }
+
+
+// char	*pop(char *str, int i, unsigned char c)
+// {
+// 	int	len;
+// 	char *dest;
+// 	int	l;
+// 	int	count;
+
+// 	count = 0;
+// 	l = 0;
+// 	len = ft_strlen(str);
+// 	dest = malloc(sizeof(char) * (len));
+// 	while (str[i])
+// 	{
+// 		if (str[i] == c && str[i + 1] == c && count == 0)
+// 		{
+// 			i += 2;
+// 			count += 2;
+// 		}
+// 		if (str[i] == c && count < 2)
+// 		{
+// 			i++;
+// 			count++;	
+// 		}
+// 		if (str[i] != '\0')
+// 			dest[l++] = str[i++];
+// 	}
+// 	dest[l] = '\0';
+// 	return (dest);
+// }
 
 char	*remove_quote(char *str)
 {
@@ -286,7 +290,7 @@ char	*remove_quote(char *str)
 		if (str[i] == '\'' || str[i] == '\"')
 		{
 			c = str[i];
-			str = pop(str, c);
+			str = pop(str, i, c);
 		}
 		if (0 == str[i])
 			return (str);
