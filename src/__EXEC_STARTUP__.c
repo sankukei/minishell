@@ -12,6 +12,24 @@
 
 #include "../headers/minishell.h"
 
+//BUILTINS
+void	cd(int arg_count)
+{
+	char	*path;
+
+	arg_count = 1;
+	if (arg_count == 1)
+	{
+		chdir("/home/$USER");
+		return ;
+	}
+	printf("PWD -> %s\n", path);
+	chdir("test");
+	path = getcwd(NULL, 0);
+	printf("PWD -> %s\n", path);
+	free(path);
+}
+
 int	exec_single(char *cmd, char **args)
 {
 	char	**path;
@@ -151,6 +169,7 @@ int	__EXEC_STARTUP__(t_token *token)
 				write(1, "pranked\n", 7);
 				return(0);
 			}
+			free(args);
 		}
 		i++;
 	}
@@ -163,10 +182,9 @@ int	__EXEC_STARTUP__(t_token *token)
 	}
 	while (wait(&status) > 0)
 		 	;
-	dup2(old_stdin, STDIN_FILENO);
 	close(old_stdin);
 	dup2(old_stdout, STDOUT_FILENO);
 	close(old_stdout);
-	fprintf(stderr, "youhou je sors\n");
+	cd(1);
 	 return (0);
 }
