@@ -13,21 +13,34 @@
 #include "../headers/minishell.h"
 
 //BUILTINS
-void	cd(int arg_count)
+void	cd(int arg_count, char *arg)
 {
 	char	*path;
 
-	arg_count = 1;
 	if (arg_count == 1)
 	{
-		chdir("/home/$USER");
+		chdir("/home/$NAME");
 		return ;
 	}
+	else if (arg_count == 2)
+	{
+		if (chdir(arg) == 0)
+			;
+		else
+			write(1, "error\n", 6);
+	}
+	else
+		write(1, "too many arguments\n", 19);
 	printf("PWD -> %s\n", path);
 	chdir("test");
 	path = getcwd(NULL, 0);
 	printf("PWD -> %s\n", path);
 	free(path);
+}
+
+void	pwd(void)
+{
+	printf("%s\n", getcwd(NULL, 0));
 }
 
 int	exec_single(char *cmd, char **args)
@@ -127,6 +140,11 @@ int	__EXEC_STARTUP__(t_token *token)
 	int	i = 0;
 	int	temp;
 
+	// if bultin
+	// 	exec_builtin
+	// else
+	//
+
 	n = get_number_of_commands(token);
 	temp = n;
 	pipes = malloc(n * sizeof(int *));
@@ -185,6 +203,5 @@ int	__EXEC_STARTUP__(t_token *token)
 	close(old_stdin);
 	dup2(old_stdout, STDOUT_FILENO);
 	close(old_stdout);
-	cd(1);
 	 return (0);
 }
