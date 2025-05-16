@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/05/12 22:13:18 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/05/16 11:40:00 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,60 +243,31 @@ void	tokenisation(t_data *data)
 	data->token = list;
 }
 
-int	pop(char *str, int i, unsigned char c)
-{
-	continue;
-}
-
-
-// char	*pop(char *str, int i, unsigned char c)
-// {
-// 	int	len;
-// 	char *dest;
-// 	int	l;
-// 	int	count;
-
-// 	count = 0;
-// 	l = 0;
-// 	len = ft_strlen(str);
-// 	dest = malloc(sizeof(char) * (len));
-// 	while (str[i])
-// 	{
-// 		if (str[i] == c && str[i + 1] == c && count == 0)
-// 		{
-// 			i += 2;
-// 			count += 2;
-// 		}
-// 		if (str[i] == c && count < 2)
-// 		{
-// 			i++;
-// 			count++;	
-// 		}
-// 		if (str[i] != '\0')
-// 			dest[l++] = str[i++];
-// 	}
-// 	dest[l] = '\0';
-// 	return (dest);
-// }
-
 char	*remove_quote(char *str)
 {
 	int				i;
+	int				l;
 	unsigned char	c;
+	char	*dest;
 
+	dest = malloc(sizeof(char) * (ft_strlen(str) + 1));
 	i = 0;
+	l = 0;
 	while (str[i])
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 		{
-			c = str[i];
-			str = pop(str, i, c);
+			c = str[i++];
+			while (str[i] && str[i] != c)
+				dest[l++] = str[i++];
+			i++; // passer le deuxieme "
 		}
-		if (0 == str[i])
-			return (str);
-		i++;
+		else
+			dest[l++] = str[i++];
+		dest[l] = 0;
 	}
-	return (str);
+	free(str);
+	return (dest);
 }
 
 void	extern_quote_handler(t_data *data)
@@ -354,7 +325,7 @@ int	parsing(t_data	*data)
 	var_env_handler(data);
 	tokenisation(data);
 	//type_tokens(data);
-	extern_quote_handler(data); // a refacto (check checklist)
+	extern_quote_handler(data);
 	affiche_token_test(data->token);
 	return (0);
 }
