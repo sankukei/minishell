@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prototypes.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adam <adam@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/05/06 03:18:31 by adam             ###   ########.fr       */
+/*   Updated: 2025/05/16 13:33:45 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,4 @@ void	clear_struct(t_token **tokens);
 void	exit_program(t_data *data);
 
 // EXEC
-int	__EXEC_STARTUP__(t_token *token);
+int	__exec_startup__(t_token *token);

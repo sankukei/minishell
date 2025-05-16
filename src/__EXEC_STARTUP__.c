@@ -3,32 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   __EXEC_STARTUP__.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sankukei <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/04/23 20:21:22 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/04/27 17:53:35 by sankukei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	exec_single(char *cmd)
+void	cd(int arg_count, char *arg)
 {
-	char	**cmds;
+	char	*path;
+
+	if (arg_count == 1)
+	{
+		chdir("/home/$NAME");
+		return ;
+	}
+	else if (arg_count == 2)
+	{
+		if (chdir(arg) == 0)
+			;
+		else
+			write(1, "error\n", 6);
+	}
+	else
+		write(1, "too many arguments\n", 19);
+	printf("PWD -> %s\n", path);
+	chdir("test");
+	path = getcwd(NULL, 0);
+	printf("PWD -> %s\n", path);
+	free(path);
+}
+
+void	pwd(void)
+{
+	printf("%s\n", getcwd(NULL, 0));
+}
+
+void	echo(void)
+{
+	;
+}
+
+int	exec_single(char *cmd, char **args)
+{
 	char	**path;
-	*cmds = malloc(ft_strlen(cmd) + 1);
-	*cmds = cmd;
+	char	*tmp;
+	char	*test1;
 
 	path = ft_split(getenv("PATH"), ':');
 	while (*path)
 	{
-		char *tmp = ft_strjoin(*path, "/");
-		char *test1 = ft_strjoin(tmp, cmd);
+		tmp = ft_strjoin(*path, "/");
+		test1 = ft_strjoin(tmp, cmd);
 		if (!access(test1, X_OK))
 		{
-			printf("%s\n", test1);
-			char *argv[] = {"xddd", "-l", "/tmp", NULL};
-			execve(test1, cmds, NULL);		
+			execve(test1, args, NULL);
 			return (1);
 		}
 		*path++;
@@ -48,74 +80,155 @@ int	get_number_of_commands(t_token *token)
 			i++;
 		token = token->next;
 	}
+	i++;
 	return (i);
 }
 
-int	__EXEC_STARTUP__(t_token *token)
+char	**get_args(t_token **token)
 {
+	int		i;
+	char	**res;
+	t_token	*tmp;
 
-	//token = token->next;
-	//printf("%s\n", token->str);
-	// recuperer tout les arguments et envoyer le double array a execve
-	//exec_single(token->str);
-	
-/*	
-	int	n;
-	pid_t	pid;
-	int	p[2];
+	i = 0;
+	tmp = *token;
+	while (token && (*token) && ((*token)->type == 6 || (*token)->type == 7))
+	{
+		i++;
+		(*token) = (*token)->next;
+	}
+	res = malloc((i + 1) * sizeof(char *));
+	if (!res)
+		return (0);
+	i = 0;
+	*token = tmp;
+	while (token && (*token) && ((*token)->type == 6 || (*token)->type == 7))
+	{
+		res[i] = ft_strdup((*token)->str);
+		if (!res[i])
+		{
+				//call free_arr();
+		}
+		(*token) = (*token)->next;
+		i++;
+	}
+	// un peu de la magie noir, mais ca alligne le pointeur au prochain cmd pour pouvoir call get_args en boucle et en restant sur le debut du prochain pipe a chaque call
+	// tldr -> sombre
+	if (*token && (*token)->next)
+		(*token) = (*token)->next;
+	res[i] = NULL;
+	return (res);
+}
+
+void	close_all_pipes(int **pipes, int n)
+{
 	int	i;
 
-	n = get_number_of_commands(token);
-	i = n;
-	// CHECK IF HEREDOC IN TOKENS -> if so while readline until EOF and feed it to execve as is
-	while (n--)
+	i = 0;
+	while (i < n)
 	{
-		if (i == n)
-			dup2(stdin, p[2]);
-		else
-			dup2(p[2], stdout);
-		pid = fork();
-		if (pid == 0)
-		{
-			if (!exec_single(args))
-				//free et kill les child 
-		}
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+		i++;
 	}
-/*
-	int	number_of_forks;
-	int	p[2];
+}
+
+int	check_if_builtin(char *str)
+{
+		int	len;
+
+		len = ft_strlen(str);
+		if (ft_strncmp(str, "echo", len) == 0)
+				return (1);
+		else if (ft_strncmp(str, "cd", len) == 0)
+				return (1);
+		else if (ft_strncmp(str, "pwd", len) == 0)
+				return (1);
+		else if (ft_strncmp(str, "export", len) == 0)
+				return (1);
+		else if (ft_strncmp(str, "unset", len) == 0)
+				return (1);
+		else if (ft_strncmp(str, "env", len) == 0)
+				return (1);
+		else if (ft_strncmp(str, "exit", len) == 0)
+				return (1);
+		return (0);
+}
+
+int	__exec_startup__(t_token *token)
+{
+	char	**args;
+	char		*cmd;
+	int	n;
+
 	pid_t	pid;
 	int	status;
+	int old_stdin = dup(STDIN_FILENO);
+	int old_stdout = dup(STDOUT_FILENO);
+	int	**pipes;
+	int	i = 0;
+	int	temp;
 
-	//number_of_commands = get_command_number(); //theoretical
-	i = number_of_commands;
-	while (number_of_forks--)
+	// if bultin
+	// 	exec_builtin
+	// else
+	//
+
+	n = get_number_of_commands(token);
+	temp = n;
+	pipes = malloc(n * sizeof(int *));
+	temp -= 1;
+	while (temp--)
 	{
-		//dup stdin dans le pipe 0
-		//dup stdout dans le pipe 0
-		if (dup2(oldfd, newfd) == -1)
-		{
-			write(1, "error", 5);
-			exit(1);
-		}
-		if (i == number_of_commands)
-			dup2(stdin, p[2]);
-		else
-			dup2(p[2], stdout);
+		pipes[i] = malloc(sizeof(int) * 2);
+		pipe(pipes[i]);
+		i++;
+	}
+	i = 0;
+	while (i < n)
+	{
 		pid = fork();
-		if (pid < 0)
+		cmd = token->str;
+		if (check_if_builtin(cmd) != 0)
 		{
-			write(1, "no", 2);
-			exit(1);
+				printf("ASDLKASLDJAS:DL");
 		}
-		else if (pid == 0)
+		args = get_args(&token);
+		if (pid == 0)
 		{
-			execve(token->str)
-			//execve(data->token_;
+			if (i != n - 1)
+			{
+				close(pipes[i][0]);
+				dup2(pipes[i][1], 1);
+				close(pipes[i][1]);
+			}
+			if (i != 0)
+			{
+				close(pipes[i - 1][1]);
+				dup2(pipes[i - 1][0], 0);
+				close(pipes[i -1][0]);
+			}
+			close_all_pipes(pipes, i);
+			if (!exec_single(cmd, args))
+			{
+				write(1, "pranked\n", 7);
+				return(0);
+			}
+			free(args);
 		}
+		i++;
+	}
+	i = 0;
+	while (i < n - 1)
+	{
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+		i++;
 	}
 	while (wait(&status) > 0)
-		;
-	return (0);
-*/
+		 	;
+	close(old_stdin);
+	dup2(old_stdout, STDOUT_FILENO);
+	close(old_stdout);
+	 return (0);
 }
