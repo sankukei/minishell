@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   __EXEC_STARTUP__.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sankukei <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/04/27 17:53:35 by sankukei         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:48:16 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,14 @@ void	echo(void)
 	;
 }
 
-int	exec_single(char *cmd, char **args)
+int	exec_single(t_data *data, char *cmd, char **args)
 {
 	char	**path;
 	char	*tmp;
 	char	*test1;
 
-	path = ft_split(getenv("PATH"), ':');
+	//path = ft_split(getenv("PATH"), ':');
+	path = ft_split(get_my_env(data, "PATH"), ':');
 	while (*path)
 	{
 		tmp = ft_strjoin(*path, "/");
@@ -155,7 +156,7 @@ int	check_if_builtin(char *str)
 		return (0);
 }
 
-int	__exec_startup__(t_token *token)
+int	__exec_startup__(t_data *data)
 {
 	char	**args;
 	char		*cmd;
@@ -174,7 +175,7 @@ int	__exec_startup__(t_token *token)
 	// else
 	//
 
-	n = get_number_of_commands(token);
+	n = get_number_of_commands(data->token);
 	temp = n;
 	pipes = malloc(n * sizeof(int *));
 	temp -= 1;
@@ -188,12 +189,12 @@ int	__exec_startup__(t_token *token)
 	while (i < n)
 	{
 		pid = fork();
-		cmd = token->str;
+		cmd = data->token->str;
 		if (check_if_builtin(cmd) != 0)
 		{
 				printf("ASDLKASLDJAS:DL");
 		}
-		args = get_args(&token);
+		args = get_args(&data->token);
 		if (pid == 0)
 		{
 			if (i != n - 1)
@@ -209,7 +210,7 @@ int	__exec_startup__(t_token *token)
 				close(pipes[i -1][0]);
 			}
 			close_all_pipes(pipes, i);
-			if (!exec_single(cmd, args))
+			if (!exec_single(data, cmd, args))
 			{
 				write(1, "pranked\n", 7);
 				return(0);
@@ -232,3 +233,4 @@ int	__exec_startup__(t_token *token)
 	close(old_stdout);
 	 return (0);
 }
+	

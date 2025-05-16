@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/05/16 13:33:45 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:49:01 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int		parsing(t_data	*data);
 int	        check_quote_error(t_data *data);
 void		var_env_handler(t_data *data);
 char		*detect_var_env(char *input);
+char        *get_my_env(t_data *data, char *str);
+
 
 // parsing tokinsation
 void		init_token_rules(t_data *data);
@@ -55,4 +57,4 @@ void	clear_struct(t_token **tokens);
 void	exit_program(t_data *data);
 
 // EXEC
-int	__exec_startup__(t_token *token);
+int	__exec_startup__(t_data *data);

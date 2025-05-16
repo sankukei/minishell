@@ -1,7 +1,7 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -g3 -I. 
+CFLAGS = -Wall -Wextra -g -g3 -I. 
 
 # Couleurs
 RED = \033[0;31m
