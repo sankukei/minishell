@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/05/16 11:40:00 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/05/16 12:37:26 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,26 +291,66 @@ void	affiche_token_test(t_token *token)
 	i = 1;
 	while (token)
 	{
-		printf("token numero %d: %s\n", i++, token->str);
+		printf("token numero %d: %s\ntype : %d\n", i++, token->str, token->type);
 		token = token->next;
 	}
 }
 
-// void	put_hard_coded_type(t_data *data)
-// {
-// 	t_token	*token;
+void	put_hard_coded_type(t_data *data)
+{
+	t_token	*token;
 	
-// 	token = data->token;
-// 	while (token)
-// 	{
-// 		token = token->next
-// 	}
-// }
+	token = data->token;
+	while (token)
+	{
+		if (token->str[0] == '|' && token->str[1] == '\0')
+			token->type = PIPE;
+		if (token->str[0] == '<' && token->str[1] == '\0')
+			token->type = INPUT;
+		if (token->str[0] == '>' && token->str[1] == '\0')
+			token->type = TRUNC;
+		if (token->str[0] == '<' && token->str[1] == '<' && token->str[2] == '\0')
+			token->type = HEREDOC;
+		if (token->str[0] == '>' && token->str[1] == '>' && token->str[2] == '\0')
+			token->type = APPEND;
+		token = token->next;
+	}
+}
 
-// void	type_tokens(t_data *data)
-// {
-// 	put_hard_coded_type(data);
-// }
+void	classify_cmd_and_args(t_token *token)
+{
+	t_boolen	expect_cmd;
+	t_type		prev_type;
+
+	expect_cmd = true;
+	prev_type = -1;
+	while (token)
+	{
+		if (token->type == -1)
+		{
+			if (expect_cmd)
+			{
+				token->type = CMD;
+				expect_cmd = false;
+			}
+			else if (prev_type >= HEREDOC && prev_type <= TRUNC)
+				token->type = ARG; // redirection
+			else
+				token->type = ARG; // simple argument
+		}
+		if (token->type == PIPE)
+			expect_cmd = true;
+		prev_type = token->type;
+		token = token->next;
+	}
+}
+
+
+void	type_tokens(t_data *data)
+{
+	put_hard_coded_type(data);
+	classify_cmd_and_args(data);
+}
 // check les tokens de gauche a droit
 // mettre les hardcoded, | < > << >>
 // si ce n'est pas un hardcoded, on regarde si on attend une commande
@@ -324,7 +364,7 @@ int	parsing(t_data	*data)
 		return (1);
 	var_env_handler(data);
 	tokenisation(data);
-	//type_tokens(data);
+	type_tokens(data);
 	extern_quote_handler(data);
 	affiche_token_test(data->token);
 	return (0);

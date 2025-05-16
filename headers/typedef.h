@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:03:53 by leothoma          #+#    #+#             */
-/*   Updated: 2025/05/05 00:26:05 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/05/16 11:53:22 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ typedef enum s_type
 {
 	HEREDOC = 1,  // <<
 	APPEND, // >>
-	INPUT, // >
+	INPUT, // <
 	TRUNC, // >
 	PIPE, // |
 	CMD,
