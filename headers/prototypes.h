@@ -51,4 +51,4 @@ void	clear_struct(t_token **tokens);
 void	exit_program(t_data *data);
 
 // EXEC
-int	__EXEC_STARTUP__(t_token *token);
+int	__exec_startup__(t_token *token);

@@ -29,7 +29,7 @@ void	minishell_launcher(t_data *data)
 		}
 		// split_tokens(data);
 		parsing(data);
-		__EXEC_STARTUP__(data->token);
+		__exec_startup__(data->token);
 		if (0 == strcmp(data->token->str, "exit"))
 			exit_program(data);
 		printf("%s\n", data->input);
