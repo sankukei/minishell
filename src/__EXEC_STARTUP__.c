@@ -12,21 +12,29 @@
 
 #include "../headers/minishell.h"
 
-void	cd(int arg_count, char *arg)
+void	cd(char **args)
 {
 	char	*path;
+	int	i;
 
-	if (arg_count == 1)
+	i = 0;
+	args++;
+	while (args[i])
+	{
+		printf("args dans cd -> %s\n", args[i]);
+		i++;
+	}
+	if (1 == 1)
 	{
 		chdir("/home/$NAME");
 		return ;
 	}
-	else if (arg_count == 2)
+	else if (i == 2)
 	{
-		if (chdir(arg) == 0)
-			;
-		else
-			write(1, "error\n", 6);
+		//if (chdir(args) == 0)
+		//	;
+		//else
+		//	write(1, "error\n", 6);
 	}
 	else
 		write(1, "too many arguments\n", 19);
@@ -37,12 +45,27 @@ void	cd(int arg_count, char *arg)
 	free(path);
 }
 
-void	pwd(void)
+void	pwd(char **args)
 {
 	printf("%s\n", getcwd(NULL, 0));
 }
 
-void	echo(void)
+void	echo(char **args)
+{
+	;
+}
+
+void	export(char **args)
+{
+	;
+}
+
+void	unset(char **args)
+{
+	;
+}
+
+void	env(char **args)
 {
 	;
 }
@@ -136,33 +159,52 @@ void	close_all_pipes(int **pipes, int n)
 
 int	check_if_builtin(char *str)
 {
-		int	len;
+	int	len;
 
-		len = ft_strlen(str);
-		if (ft_strncmp(str, "echo", len) == 0)
-				return (1);
-		else if (ft_strncmp(str, "cd", len) == 0)
-				return (1);
-		else if (ft_strncmp(str, "pwd", len) == 0)
-				return (1);
-		else if (ft_strncmp(str, "export", len) == 0)
-				return (1);
-		else if (ft_strncmp(str, "unset", len) == 0)
-				return (1);
-		else if (ft_strncmp(str, "env", len) == 0)
-				return (1);
-		else if (ft_strncmp(str, "exit", len) == 0)
-				return (1);
-		return (0);
+	len = ft_strlen(str);
+	if (ft_strncmp(str, "echo", len) == 0)
+		return (1);
+	else if (ft_strncmp(str, "cd", len) == 0)
+		return (2);
+	else if (ft_strncmp(str, "pwd", len) == 0)
+		return (3);
+	else if (ft_strncmp(str, "export", len) == 0)
+		return (4);
+	else if (ft_strncmp(str, "unset", len) == 0)
+		return (5);
+	else if (ft_strncmp(str, "env", len) == 0)
+		return (6);
+	else if (ft_strncmp(str, "exit", len) == 0)
+		return (7);
+	return (0);
+}
+
+void	exec_builtin(int selector, char **args)
+{
+	if (selector == 1)
+		echo(args);
+	else if (selector == 2)
+		cd(args);
+	else if (selector == 3)
+		pwd(args);
+	else if (selector == 4)
+		export(args);
+	else if (selector == 5)
+		unset(args);
+	else if (selector == 6)
+		env(args);
+	else if (selector == 7)
+		return ;
+	//	exit(args);
 }
 
 int	__exec_startup__(t_data *data)
 {
+	pid_t	pid;
+
 	char	**args;
 	char		*cmd;
 	int	n;
-
-	pid_t	pid;
 	int	status;
 	int old_stdin = dup(STDIN_FILENO);
 	int old_stdout = dup(STDOUT_FILENO);
@@ -185,16 +227,29 @@ int	__exec_startup__(t_data *data)
 		pipe(pipes[i]);
 		i++;
 	}
+	//call exit
 	i = 0;
+	cmd = data->token->str;
+	int	builtin = check_if_builtin(cmd);
+	if (n == 1 && builtin != 0)
+	{
+		args = get_args(&data->token);
+		exec_builtin(builtin, args);
+		i++;
+	}
+	printf("i == %d, n == %d\n", i, n);
 	while (i < n)
 	{
 		pid = fork();
+		write(1, "mdr\n", 4);
 		cmd = data->token->str;
-		if (check_if_builtin(cmd) != 0)
-		{
-				printf("ASDLKASLDJAS:DL");
-		}
 		args = get_args(&data->token);
+		builtin = check_if_builtin(cmd);
+		if (builtin != 0)
+		{
+			exec_builtin(builtin, args);
+			exit(1);
+		}
 		if (pid == 0)
 		{
 			if (i != n - 1)
@@ -212,13 +267,14 @@ int	__exec_startup__(t_data *data)
 			close_all_pipes(pipes, i);
 			if (!exec_single(data, cmd, args))
 			{
-				write(1, "pranked\n", 7);
+				printf("execve failed\n");
 				return(0);
 			}
 			free(args);
 		}
 		i++;
 	}
+
 	i = 0;
 	while (i < n - 1)
 	{

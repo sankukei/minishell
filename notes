@@ -8,3 +8,11 @@
   56   │  *  7 = ARG (ex: ls '-l');
   57   │  * }
 
+si une commande fail, par exemple ls -la | asdlkasd | wc -l, on se retrouve avec quelques chose comme ceci:
+
+asdlkasd: command not found
+0
+
+le bash feed un input a wc, de 0 vu que la commande n'a pas fonctionne. A voir avec le A si on fait la meme ou nsm
+
+exit : envoie sigusr1 et l'exit code
