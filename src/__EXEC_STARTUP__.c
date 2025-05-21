@@ -20,29 +20,21 @@ void	cd(char **args)
 	i = 0;
 	args++;
 	while (args[i])
-	{
-		printf("args dans cd -> %s\n", args[i]);
 		i++;
-	}
-	if (1 == 1)
+	if (i == 0)
 	{
-		chdir("/home/$NAME");
-		return ;
+		chdir("/home");
+		path = getcwd(NULL, 0);
 	}
-	else if (i == 2)
+	else if (i == 1)
 	{
-		//if (chdir(args) == 0)
-		//	;
-		//else
-		//	write(1, "error\n", 6);
+		chdir(*args);
+		path = getcwd(NULL, 0);
+		printf("PWD -> %s\n", path);
 	}
 	else
 		write(1, "too many arguments\n", 19);
-	printf("PWD -> %s\n", path);
-	chdir("test");
-	path = getcwd(NULL, 0);
-	printf("PWD -> %s\n", path);
-	free(path);
+	//free(path);
 }
 
 void	pwd(char **args)
@@ -52,7 +44,33 @@ void	pwd(char **args)
 
 void	echo(char **args)
 {
-	;
+	int	len;
+	int	backslash;
+	int	fd = 1;
+
+	args++;
+	backslash = 0;
+	len = ft_strlen(*args);
+	int 	i = 0;
+	while (args[i])
+	{
+		//printf("DANS ARGS DE I = %s", args[i]);
+		i++;
+	}
+	if (ft_strncmp(*args, "-n", len) == 0)
+		backslash = 1;
+	i = 0;
+	while (args[i])
+	{
+		len = ft_strlen(args[i]);
+		//printf("%s", args[i]);
+	
+		write(1, args[i], len);
+		//ft_putstr_fd(args, fd);
+		i++;
+	}
+	if (backslash)
+		write(fd, "\n", 1);
 }
 
 void	export(char **args)
@@ -76,7 +94,6 @@ int	exec_single(t_data *data, char *cmd, char **args)
 	char	*tmp;
 	char	*test1;
 
-	//path = ft_split(getenv("PATH"), ':');
 	path = ft_split(get_my_env(data, "PATH"), ':');
 	while (*path)
 	{
@@ -237,11 +254,9 @@ int	__exec_startup__(t_data *data)
 		exec_builtin(builtin, args);
 		i++;
 	}
-	printf("i == %d, n == %d\n", i, n);
 	while (i < n)
 	{
 		pid = fork();
-		write(1, "mdr\n", 4);
 		cmd = data->token->str;
 		args = get_args(&data->token);
 		builtin = check_if_builtin(cmd);
@@ -268,13 +283,13 @@ int	__exec_startup__(t_data *data)
 			if (!exec_single(data, cmd, args))
 			{
 				printf("execve failed\n");
+				// free, et close les pipes ??
 				return(0);
 			}
 			free(args);
 		}
 		i++;
 	}
-
 	i = 0;
 	while (i < n - 1)
 	{
