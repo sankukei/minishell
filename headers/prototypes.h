@@ -47,6 +47,8 @@ void	setup_signals(void);
 
 // string_utils
 int     ft_iscapitalise(char c);
+char	*ft_join(int size, char **strs, char *sep);
+
 
 // lexer
 void	lexer(t_data *data, char *str);

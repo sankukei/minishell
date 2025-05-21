@@ -44,32 +44,24 @@ void	pwd(char **args)
 
 void	echo(char **args)
 {
-	int	len;
 	int	backslash;
 	int	fd = 1;
+	int 	i = 0;
+	char	*str;
 
 	args++;
 	backslash = 0;
-	len = ft_strlen(*args);
-	int 	i = 0;
-	while (args[i])
+	if (ft_strncmp(*args, "-n", ft_strlen(*args)) == 0)
 	{
-		//printf("DANS ARGS DE I = %s", args[i]);
-		i++;
-	}
-	if (ft_strncmp(*args, "-n", len) == 0)
 		backslash = 1;
+		args++;
+	}
 	i = 0;
 	while (args[i])
-	{
-		len = ft_strlen(args[i]);
-		//printf("%s", args[i]);
-	
-		write(1, args[i], len);
-		//ft_putstr_fd(args, fd);
 		i++;
-	}
-	if (backslash)
+	str = ft_join(i, args, " ");
+	write(1, str, ft_strlen(str));
+	if (!backslash)
 		write(fd, "\n", 1);
 }
 

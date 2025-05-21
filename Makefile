@@ -23,7 +23,8 @@ SRC = main.c \
       clear_utils.c \
       setup_signals.c \
       __EXEC_STARTUP__.c \
-	  init.c
+      init.c \
+      join.c \
 
 
 LIBFT_DIR = ./libft
