@@ -15,4 +15,6 @@ asdlkasd: command not found
 
 le bash feed un input a wc, de 0 vu que la commande n'a pas fonctionne. A voir avec le A si on fait la meme ou nsm
 
+ya du garbage qui traine dans laffichage echo au bout d'un moment, il faut renforcer le cleaning de la data
+
 exit : envoie sigusr1 et l'exit code

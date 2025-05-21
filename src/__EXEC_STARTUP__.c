@@ -39,7 +39,13 @@ void	cd(char **args)
 
 void	pwd(char **args)
 {
-	printf("%s\n", getcwd(NULL, 0));
+	char	*path;
+	int	fd;
+
+	fd = 1;
+	path = getcwd(NULL, 0);
+	write(fd, path, ft_strlen(path));
+	write(fd, "\n", 1);
 }
 
 void	echo(char **args)
@@ -220,13 +226,23 @@ int	__exec_startup__(t_data *data)
 	int	**pipes;
 	int	i = 0;
 	int	temp;
+	int	builtin;
 
 	// if bultin
 	// 	exec_builtin
 	// else
 	//
-
+	i = 0;
 	n = get_number_of_commands(data->token);
+	cmd = data->token->str;
+	builtin = check_if_builtin(cmd);
+	if (n == 1 && builtin != 0)
+	{
+		args = get_args(&data->token);
+		exec_builtin(builtin, args);
+		free(args);
+		return 1;
+	}
 	temp = n;
 	pipes = malloc(n * sizeof(int *));
 	temp -= 1;
@@ -237,15 +253,6 @@ int	__exec_startup__(t_data *data)
 		i++;
 	}
 	//call exit
-	i = 0;
-	cmd = data->token->str;
-	int	builtin = check_if_builtin(cmd);
-	if (n == 1 && builtin != 0)
-	{
-		args = get_args(&data->token);
-		exec_builtin(builtin, args);
-		i++;
-	}
 	while (i < n)
 	{
 		pid = fork();
@@ -255,6 +262,7 @@ int	__exec_startup__(t_data *data)
 		if (builtin != 0)
 		{
 			exec_builtin(builtin, args);
+			dup2(old_stdout, STDOUT_FILENO);
 			exit(1);
 		}
 		if (pid == 0)
@@ -275,8 +283,7 @@ int	__exec_startup__(t_data *data)
 			if (!exec_single(data, cmd, args))
 			{
 				printf("execve failed\n");
-				// free, et close les pipes ??
-				return(0);
+				exit(0);
 			}
 			free(args);
 		}
