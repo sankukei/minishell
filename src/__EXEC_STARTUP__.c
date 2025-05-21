@@ -252,6 +252,7 @@ int	__exec_startup__(t_data *data)
 		pipe(pipes[i]);
 		i++;
 	}
+	i = 0;
 	//call exit
 	while (i < n)
 	{
@@ -259,12 +260,6 @@ int	__exec_startup__(t_data *data)
 		cmd = data->token->str;
 		args = get_args(&data->token);
 		builtin = check_if_builtin(cmd);
-		if (builtin != 0)
-		{
-			exec_builtin(builtin, args);
-			dup2(old_stdout, STDOUT_FILENO);
-			exit(1);
-		}
 		if (pid == 0)
 		{
 			if (i != n - 1)
@@ -280,6 +275,12 @@ int	__exec_startup__(t_data *data)
 				close(pipes[i -1][0]);
 			}
 			close_all_pipes(pipes, i);
+			//close_all_pipes ne marche pas ??
+			if (builtin != 0)
+			{
+				exec_builtin(builtin, args);
+				exit(0);
+			}
 			if (!exec_single(data, cmd, args))
 			{
 				printf("execve failed\n");
