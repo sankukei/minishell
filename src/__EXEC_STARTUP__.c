@@ -34,7 +34,6 @@ void	cd(char **args)
 	}
 	else
 		write(1, "too many arguments\n", 19);
-	//free(path);
 }
 
 void	pwd(char **args)
@@ -55,12 +54,20 @@ void	echo(char **args)
 	int 	i = 0;
 	char	*str;
 
-	args++;
 	backslash = 0;
-	if (ft_strncmp(*args, "-n", ft_strlen(*args)) == 0)
+	if (args[1])
 	{
-		backslash = 1;
 		args++;
+		if (ft_strncmp(*args, "-n", ft_strlen(*args)) == 0)
+		{
+			backslash = 1;
+			args++;
+		}
+	}
+	else
+	{
+		write(fd, "\n", 1);
+		return ;
 	}
 	i = 0;
 	while (args[i])
@@ -176,20 +183,19 @@ int	check_if_builtin(char *str)
 {
 	int	len;
 
-	len = ft_strlen(str);
-	if (ft_strncmp(str, "echo", len) == 0)
+	if (ft_strncmp(str, "echo", 4) == 0)
 		return (1);
-	else if (ft_strncmp(str, "cd", len) == 0)
+	else if (ft_strncmp(str, "cd", 2) == 0)
 		return (2);
-	else if (ft_strncmp(str, "pwd", len) == 0)
+	else if (ft_strncmp(str, "pwd", 3) == 0)
 		return (3);
-	else if (ft_strncmp(str, "export", len) == 0)
+	else if (ft_strncmp(str, "export", 6) == 0)
 		return (4);
-	else if (ft_strncmp(str, "unset", len) == 0)
+	else if (ft_strncmp(str, "unset", 5) == 0)
 		return (5);
-	else if (ft_strncmp(str, "env", len) == 0)
+	else if (ft_strncmp(str, "env", 3) == 0)
 		return (6);
-	else if (ft_strncmp(str, "exit", len) == 0)
+	else if (ft_strncmp(str, "exit", 4) == 0)
 		return (7);
 	return (0);
 }
@@ -213,6 +219,11 @@ void	exec_builtin(int selector, char **args)
 	//	exit(args);
 }
 
+int	check_if_redirr(char *str)
+{
+	return (0);
+}
+
 int	__exec_startup__(t_data *data)
 {
 	pid_t	pid;
@@ -228,10 +239,6 @@ int	__exec_startup__(t_data *data)
 	int	temp;
 	int	builtin;
 
-	// if bultin
-	// 	exec_builtin
-	// else
-	//
 	i = 0;
 	n = get_number_of_commands(data->token);
 	cmd = data->token->str;
@@ -253,11 +260,19 @@ int	__exec_startup__(t_data *data)
 		i++;
 	}
 	i = 0;
-	//call exit
 	while (i < n)
 	{
 		pid = fork();
 		cmd = data->token->str;
+	//	if (data->token->type != 6)
+	//	{
+	//		if (data->token->next)
+	//		{
+	//			open(data->token->str, O_CREAT);
+	//		}
+	//		//O_CLOEXEC close insta a la fin du process
+	//	}
+			//faire la redir mdrrrr pitie je veux mourir
 		args = get_args(&data->token);
 		builtin = check_if_builtin(cmd);
 		if (pid == 0)
@@ -304,4 +319,3 @@ int	__exec_startup__(t_data *data)
 	close(old_stdout);
 	 return (0);
 }
-	
