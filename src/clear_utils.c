@@ -44,6 +44,7 @@ void	prepare_next_input(t_data *data)
 
 void	exit_program(t_data *data)
 {
+	free(data->input);
 	clear_struct(&data->token);
 	clear_double_array(data->env);
 	free(data);

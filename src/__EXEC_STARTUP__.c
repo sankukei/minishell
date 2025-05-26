@@ -77,20 +77,134 @@ void	echo(char **args)
 	if (!backslash)
 		write(fd, "\n", 1);
 }
-
-void	export(char **args)
+//###############################################################################
+//								export & unset functions utils 
+static int	var_name_len(char *arg)
 {
-	;
+	int	i;
+
+	i = 0;
+	while (arg[i] && arg[i] != '=')
+		i++;
+	return (i);
 }
 
-void	unset(char **args)
+static int	is_same_var(char *env_entry, char *arg)
 {
-	;
+	int	len;
+
+	len = var_name_len(arg);
+	if (!env_entry)
+		return (0);
+	if (ft_strlen(env_entry) < len)
+		return (0);
+	if (ft_strncmp(env_entry, arg, len) != 0)
+		return (0);
+	if (env_entry[len] != '=')
+		return (0);
+	return (1);
 }
 
-void	env(char **args)
+static int	count_env_size(char **env)
 {
-	;
+	int	i;
+
+	i = 0;
+	while (env && env[i])
+		i++;
+	return (i);
+}
+
+void	env(t_data *data);
+//###############################################################################
+//							export
+void	export(t_data *data, char **args)
+{
+	char	**new_env;
+	int		i;
+	int		j;
+	int		exist;
+
+	if (!args[1])
+	{
+		env(data);
+		return ;
+	}
+	exist = 0;
+	i = count_env_size(data->env);
+	new_env = malloc(sizeof(char *) * (i + 2));
+	if (!new_env)
+		return ;
+	j = 0;
+	while (j < i)
+	{
+		if (is_same_var(data->env[j], args[1])) // pour remplacer une variable existant dans l env
+		{
+			free(data->env[j]);
+			new_env[j] = ft_strdup(args[1]);
+			exist = 1;
+		}
+		else
+			new_env[j] = data->env[j];		// sinon on copie
+		j++;
+	}
+	if (!exist)
+		new_env[j++] = ft_strdup(args[1]); // si elle existe pas on l ajoute a la fin
+	new_env[j] = NULL;
+	if (!exist)
+		free(data->env);
+	data->env = new_env;
+	return ;
+}
+//###############################################################################
+//							unset
+void	unset(t_data *data, char **args)
+{
+	char	**new_env;
+	int		i;
+	int		j;
+	int		k;
+	int		skip;
+
+	i = 0;
+	k = count_env_size(data->env);
+	new_env = malloc(sizeof(char *) * (k + 1));
+	if (!new_env)
+		return ;
+	j = 0;
+	while (data->env[i])
+	{
+		skip = 0;
+		k = 1;
+		while (args[k])
+		{
+			if (is_same_var(data->env[i], args[k++]))	// on regarde si elle est dans l env
+			{
+				skip = 1;
+				break ;
+			}
+		}
+		if (!skip)
+			new_env[j++] = data->env[i];	// si non on copie et j++
+		else
+			free(data->env[i]);			// ou on free
+		i++;
+	}
+	new_env[j] = NULL;
+	free(data->env);
+	data->env = new_env;
+}
+
+//###############################################################################
+void	env(t_data *data)
+{
+	int		i;
+	char	**env;
+
+	i = 0;
+	env = data->env;
+	while (env[i])
+		printf("%s\n", env[i++]); // changer le printf avec write
 }
 
 int	exec_single(t_data *data, char *cmd, char **args)
@@ -183,7 +297,7 @@ int	check_if_builtin(char *str)
 {
 	int	len;
 
-	if (ft_strncmp(str, "echo", 4) == 0)
+	if (ft_strncmp(str, "echo", 5) == 0)
 		return (1);
 	else if (ft_strncmp(str, "cd", 2) == 0)
 		return (2);
@@ -200,7 +314,7 @@ int	check_if_builtin(char *str)
 	return (0);
 }
 
-void	exec_builtin(int selector, char **args)
+void	exec_builtin(int selector, char **args, t_data *data)
 {
 	if (selector == 1)
 		echo(args);
@@ -209,11 +323,11 @@ void	exec_builtin(int selector, char **args)
 	else if (selector == 3)
 		pwd(args);
 	else if (selector == 4)
-		export(args);
+		export(data, args);
 	else if (selector == 5)
-		unset(args);
+		unset(data, args);
 	else if (selector == 6)
-		env(args);
+		env(data);
 	else if (selector == 7)
 		return ;
 	//	exit(args);
@@ -246,7 +360,7 @@ int	__exec_startup__(t_data *data)
 	if (n == 1 && builtin != 0)
 	{
 		args = get_args(&data->token);
-		exec_builtin(builtin, args);
+		exec_builtin(builtin, args, data);
 		free(args);
 		return 1;
 	}
@@ -293,7 +407,7 @@ int	__exec_startup__(t_data *data)
 			//close_all_pipes ne marche pas ??
 			if (builtin != 0)
 			{
-				exec_builtin(builtin, args);
+				exec_builtin(builtin, args, data);
 				exit(0);
 			}
 			if (!exec_single(data, cmd, args))
