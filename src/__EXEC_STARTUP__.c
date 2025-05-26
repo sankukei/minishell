@@ -244,6 +244,33 @@ int	get_number_of_commands(t_token *token)
 	return (i);
 }
 
+int	check_if_redir(t_token *token)
+{
+	int	i;
+
+	i = 0;
+	while (token)
+	{
+		if (token->type == 1 || token->type == 2 || token->type == 3 || token->type == 4)
+			return (1);
+		token = token->next;
+	}
+	return (0);
+}
+
+int	get_cmd_len(t_token *token)
+{
+	int	i;
+
+	i = 0;
+	while (token && token->type == 6 || token->type == 7)
+	{
+		i++;
+		token = token->next;
+	}
+	return (i);
+}
+
 char	**get_args(t_token **token)
 {
 	int		i;
@@ -299,17 +326,17 @@ int	check_if_builtin(char *str)
 
 	if (ft_strncmp(str, "echo", 5) == 0)
 		return (1);
-	else if (ft_strncmp(str, "cd", 2) == 0)
+	else if (ft_strncmp(str, "cd", 3) == 0)
 		return (2);
-	else if (ft_strncmp(str, "pwd", 3) == 0)
+	else if (ft_strncmp(str, "pwd", 4) == 0)
 		return (3);
-	else if (ft_strncmp(str, "export", 6) == 0)
+	else if (ft_strncmp(str, "export", 7) == 0)
 		return (4);
-	else if (ft_strncmp(str, "unset", 5) == 0)
+	else if (ft_strncmp(str, "unset", 6) == 0)
 		return (5);
-	else if (ft_strncmp(str, "env", 3) == 0)
+	else if (ft_strncmp(str, "env", 4) == 0)
 		return (6);
-	else if (ft_strncmp(str, "exit", 4) == 0)
+	else if (ft_strncmp(str, "exit", 5) == 0)
 		return (7);
 	return (0);
 }
@@ -333,11 +360,6 @@ void	exec_builtin(int selector, char **args, t_data *data)
 	//	exit(args);
 }
 
-int	check_if_redirr(char *str)
-{
-	return (0);
-}
-
 int	__exec_startup__(t_data *data)
 {
 	pid_t	pid;
@@ -352,9 +374,12 @@ int	__exec_startup__(t_data *data)
 	int	i = 0;
 	int	temp;
 	int	builtin;
+	int	reddir = 0;
 
 	i = 0;
 	n = get_number_of_commands(data->token);
+	if (n > 100)
+		exit(1);
 	cmd = data->token->str;
 	builtin = check_if_builtin(cmd);
 	if (n == 1 && builtin != 0)
@@ -378,6 +403,8 @@ int	__exec_startup__(t_data *data)
 	{
 		pid = fork();
 		cmd = data->token->str;
+		reddir = check_if_redir(data->token);
+		printf("%d -> reddir value\n", reddir);
 	//	if (data->token->type != 6)
 	//	{
 	//		if (data->token->next)
@@ -391,29 +418,37 @@ int	__exec_startup__(t_data *data)
 		builtin = check_if_builtin(cmd);
 		if (pid == 0)
 		{
-			if (i != n - 1)
-			{
-				close(pipes[i][0]);
-				dup2(pipes[i][1], 1);
-				close(pipes[i][1]);
-			}
-			if (i != 0)
-			{
-				close(pipes[i - 1][1]);
-				dup2(pipes[i - 1][0], 0);
-				close(pipes[i -1][0]);
-			}
-			close_all_pipes(pipes, i);
-			//close_all_pipes ne marche pas ??
-			if (builtin != 0)
+			if (reddir)
 			{
 				exec_builtin(builtin, args, data);
 				exit(0);
 			}
-			if (!exec_single(data, cmd, args))
+			else
 			{
-				printf("execve failed\n");
-				exit(0);
+				if (i != n - 1)
+				{
+					close(pipes[i][0]);
+					dup2(pipes[i][1], 1);
+					close(pipes[i][1]);
+				}
+				if (i != 0)
+				{
+					close(pipes[i - 1][1]);
+					dup2(pipes[i - 1][0], 0);
+					close(pipes[i -1][0]);
+				}
+				close_all_pipes(pipes, i);
+				//close_all_pipes ne marche pas ??
+				if (builtin != 0)
+				{
+					exec_builtin(builtin, args, data);
+					exit(0);
+				}
+				if (!exec_single(data, cmd, args))
+				{
+					printf("execve failed\n");
+					exit(0);
+				}
 			}
 			free(args);
 		}
