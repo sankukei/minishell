@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/05/16 13:48:16 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/05/31 10:52:25 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,13 @@ void	env(t_data *data)
 		printf("%s\n", env[i++]); // changer le printf avec write
 }
 
+void	ft_exit(t_data *data, char **args)
+{
+	if (args[1])
+		exit(ft_atoi(args[1])); // check le atoi si la range est assez grande du atoi
+	// si il n'y a pas d 'args[1] tu exit avec le dernier $? qui tu as TODO
+}
+
 int	exec_single(t_data *data, char *cmd, char **args)
 {
 	char	**path;
@@ -356,8 +363,8 @@ void	exec_builtin(int selector, char **args, t_data *data)
 	else if (selector == 6)
 		env(data);
 	else if (selector == 7)
-		return ;
-	//	exit(args);
+		ft_exit(data, args);
+	return ;
 }
 
 int	__exec_startup__(t_data *data)
