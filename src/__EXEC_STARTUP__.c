@@ -160,11 +160,13 @@ int	get_cmd_len(t_token *token)
 char	**get_args(t_token **token)
 {
 	int		i;
+	int		is_reddir;
 	char	**res;
 	t_token	*tmp;
 
 	i = 0;
 	tmp = *token;
+	is_reddir = 0;
 	while (token && (*token) && ((*token)->type == 6 || (*token)->type == 7))
 	{
 		i++;
@@ -175,8 +177,13 @@ char	**get_args(t_token **token)
 		return (0);
 	i = 0;
 	*token = tmp;
-	while (token && (*token) && ((*token)->type == 6 || (*token)->type == 7))
+	while (token && (*token) && ((*token)->type != 5))
 	{
+		if ((*token)->type == 1 || (*token)->type == 2 || (*token)->type == 3 || (*token)->type == 4)
+		{
+			is_reddir = 1;	
+			break;
+		}
 		res[i] = ft_strdup((*token)->str);
 		if (!res[i])
 		{
@@ -187,7 +194,7 @@ char	**get_args(t_token **token)
 	}
 	// un peu de la magie noir, mais ca alligne le pointeur au prochain cmd pour pouvoir call get_args en boucle et en restant sur le debut du prochain pipe a chaque call
 	// tldr -> sombre
-	if (*token && (*token)->next)
+	if (*token && (*token)->next && is_reddir == 0)
 		(*token) = (*token)->next;
 	res[i] = NULL;
 	return (res);
@@ -251,11 +258,11 @@ int	__exec_startup__(t_data *data)
 	pid_t	pid;
 
 	char	**args;
-	char		*cmd;
+	char	*cmd;
 	int	n;
 	int	status;
-	int old_stdin = dup(STDIN_FILENO);
-	int old_stdout = dup(STDOUT_FILENO);
+	int 	old_stdin = dup(STDIN_FILENO);
+	int 	old_stdout = dup(STDOUT_FILENO);
 	int	**pipes;
 	int	i = 0;
 	int	temp;
@@ -290,7 +297,7 @@ int	__exec_startup__(t_data *data)
 		pid = fork();
 		cmd = data->token->str;
 		reddir = check_if_redir(data->token);
-		printf("%d -> reddir value\n", reddir);
+		printf("is reddir ? -> %d\n", reddir);
 	//	if (data->token->type != 6)
 	//	{
 	//		if (data->token->next)
@@ -299,15 +306,24 @@ int	__exec_startup__(t_data *data)
 	//		}
 	//		//O_CLOEXEC close insta a la fin du process
 	//	}
-			//faire la redir mdrrrr pitie je veux mourir
+	//faire la redir mdrrrr pitie je veux mourir
 		args = get_args(&data->token);
+		int	a = 0;
+		while (args[a])
+		{
+			printf("%s args %d\n", args[a], a);
+			a++;
+		}
 		builtin = check_if_builtin(cmd);
 		if (pid == 0)
 		{
 			if (reddir)
 			{
-		//		int fd = open(args[1], O_CREAT);
+				//PROBLEME !!! quand on envoie une commande, si il y a une reddirection, get_args ne return que le nom de la commande, pas le token de reddirection ni le fd le suivant.
+				int fd = open(data->token->next->str, O_CREAT);
+				printf("wich reddir ? -> %d\n", data->token->type);
 				printf("papa johns\n");
+				exit(1);
 			}
 			else
 			{
