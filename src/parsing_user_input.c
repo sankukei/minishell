@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/05/16 12:37:26 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/01 20:43:43 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@ char	*detect_var_env(char *input)
 	input++; // pour passer le $
 	ptr = input;
 	len = 0;
+	if (*input == '?')
+	{
+		dest = malloc(sizeof(char) * 2);
+		dest[0] = '?';
+		dest[1] = '\0';
+		return (dest);						// ca a l air de marcher
+	}
 	while (*input != ' ' && *input  != '\0' && (ft_isalnum(*input) == 1 || *input == '_')) // a voir si il faut mettre '\0'
 	{
 		len++;
@@ -38,6 +45,8 @@ int	count_var_len(char *input)
 	
 	input++; // pour passer le $
 	len = 0;
+	if (*input == '?')
+		return (1);
 	while (*input != ' ' && *input  != '\0' && (ft_isalnum(*input) == 1 || *input == '_')) // a voir si il faut mettre '\0'
 	{
 		len++;
@@ -73,6 +82,8 @@ int	var_is_in_env(t_data *data, char *var)
 	
 	i = 0;
 	env = data->env;
+	if (ft_strncmp(var, "?", 2) == 0)
+		return (1);
 	while (env[i])
 	{
 		if (ft_strncmp(var, env[i], ft_strlen(var)) == 0)
@@ -99,6 +110,8 @@ char *get_my_env(t_data *data, char *str)
 	i = 0;
 	j = 0;
 	env = data->env;
+	if (ft_strncmp(str, "?", 2) == 0)
+		return (ft_itoa(data->last_exit_status));
 	while (env[i])
 	{
 		//printf("je check la\n");

@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/05/31 10:52:25 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/01 20:19:28 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,14 +204,23 @@ void	env(t_data *data)
 	i = 0;
 	env = data->env;
 	while (env[i])
-		printf("%s\n", env[i++]); // changer le printf avec write
+		printf("%s\n", env[i++]);
 }
 
 void	ft_exit(t_data *data, char **args)
 {
 	if (args[1])
-		exit(ft_atoi(args[1])); // check le atoi si la range est assez grande du atoi
+	{
+		printf("%s\n", "exit");
+		exit(ft_atoi(args[1])); // check le atoi si la range est assez grande du atoi		
+	}
+	else
+	{
+		printf("%s\n", "exit");
+		exit(data->last_exit_status);	
+	}
 	// si il n'y a pas d 'args[1] tu exit avec le dernier $? qui tu as TODO
+	// Apres avoir gerer les signaux faire en sort que si on est dans un pipe ca printf pas exit
 }
 
 int	exec_single(t_data *data, char *cmd, char **args)

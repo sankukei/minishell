@@ -15,3 +15,20 @@ reminder pour Adam
 -Refacto la gestions des external quote --> "'a'" est sense faire 'a' // DONE
 -exit doit write exit //TODO
 -gerer $? /TODO
+-Check si argv[1] est correct sinon mettre / bash: export: `*=a': not a valid identifier //TODO
+
+
+
+A dire a Leo pour exit
+
+
+Pour gerer exit qui doit changer l'exit code de $? je vais gerer $? en stocquant sa valeur dans data->last_exit_status
+Apres chaque chaque comment executer via un fork il va falloir recuprer l'exit code apres le waitpid comme ceci.
+
+waitpid(pid, &status, 0);
+data->last_exit_status = WEXITSTATUS(status);
+
+WEXITSTATUS est une macro de <sys/wait.h>
+apres ca je vais gerer l'affichage de la meme maniere que pour les variable d'env.
+
+
