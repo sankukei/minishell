@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   __EXEC_STARTUP__.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sankukei <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/01 20:19:28 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/02 23:39:29 by sankukei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,11 +290,13 @@ int	get_cmd_len(t_token *token)
 char	**get_args(t_token **token)
 {
 	int		i;
+	int		is_reddir;
 	char	**res;
 	t_token	*tmp;
 
 	i = 0;
 	tmp = *token;
+	is_reddir = 0;
 	while (token && (*token) && ((*token)->type == 6 || (*token)->type == 7))
 	{
 		i++;
@@ -305,8 +307,13 @@ char	**get_args(t_token **token)
 		return (0);
 	i = 0;
 	*token = tmp;
-	while (token && (*token) && ((*token)->type == 6 || (*token)->type == 7))
+	while (token && (*token) && ((*token)->type != 5))
 	{
+		if ((*token)->type == 1 || (*token)->type == 2 || (*token)->type == 3 || (*token)->type == 4)
+		{
+			is_reddir = 1;	
+			break;
+		}
 		res[i] = ft_strdup((*token)->str);
 		if (!res[i])
 		{
@@ -317,7 +324,7 @@ char	**get_args(t_token **token)
 	}
 	// un peu de la magie noir, mais ca alligne le pointeur au prochain cmd pour pouvoir call get_args en boucle et en restant sur le debut du prochain pipe a chaque call
 	// tldr -> sombre
-	if (*token && (*token)->next)
+	if (*token && (*token)->next && is_reddir == 0)
 		(*token) = (*token)->next;
 	res[i] = NULL;
 	return (res);
@@ -381,11 +388,11 @@ int	__exec_startup__(t_data *data)
 	pid_t	pid;
 
 	char	**args;
-	char		*cmd;
+	char	*cmd;
 	int	n;
 	int	status;
-	int old_stdin = dup(STDIN_FILENO);
-	int old_stdout = dup(STDOUT_FILENO);
+	int 	old_stdin = dup(STDIN_FILENO);
+	int 	old_stdout = dup(STDOUT_FILENO);
 	int	**pipes;
 	int	i = 0;
 	int	temp;
@@ -420,51 +427,60 @@ int	__exec_startup__(t_data *data)
 		pid = fork();
 		cmd = data->token->str;
 		reddir = check_if_redir(data->token);
-		printf("%d -> reddir value\n", reddir);
-	//	if (data->token->type != 6)
-	//	{
-	//		if (data->token->next)
-	//		{
-	//			open(data->token->str, O_CREAT);
-	//		}
-	//		//O_CLOEXEC close insta a la fin du process
-	//	}
-			//faire la redir mdrrrr pitie je veux mourir
 		args = get_args(&data->token);
+		int	a = 0;
 		builtin = check_if_builtin(cmd);
 		if (pid == 0)
 		{
 			if (reddir)
 			{
-				exec_builtin(builtin, args, data);
+				int fd;
+				if (data->token->type == 4)
+				{
+					fd = open(data->token->next->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+					if (fd < 0)
+						exit(1);
+					dup2(fd, 1);
+				}
+				else if (data->token->type == 3)
+				{
+					fd = open(data->token->next->str, O_RDONLY);
+					if (fd < 0)
+						exit(1);
+					dup2(fd, 0);
+				}
+				else if (data->token->type == 2)
+				{
+					fd = open(data->token->next->str, O_CREAT | O_WRONLY | O_APPEND, 0644);
+					if (fd < 0)
+						exit(1);
+					dup2(fd, 1);
+				}
+				close(fd);
+
+			}
+			if (i != n - 1)
+			{
+				close(pipes[i][0]);
+				dup2(pipes[i][1], 1);
+				close(pipes[i][1]);
+			}
+			if (i != 0)
+			{
+				close(pipes[i - 1][1]);
+				dup2(pipes[i - 1][0], 0);
+				close(pipes[i -1][0]);
+			}
+			close_all_pipes(pipes, i);
+			if (builtin != 0)
+			{
+				exec_builtin(builtin, args);
 				exit(0);
 			}
-			else
+			if (!exec_single(data, cmd, args))
 			{
-				if (i != n - 1)
-				{
-					close(pipes[i][0]);
-					dup2(pipes[i][1], 1);
-					close(pipes[i][1]);
-				}
-				if (i != 0)
-				{
-					close(pipes[i - 1][1]);
-					dup2(pipes[i - 1][0], 0);
-					close(pipes[i -1][0]);
-				}
-				close_all_pipes(pipes, i);
-				//close_all_pipes ne marche pas ??
-				if (builtin != 0)
-				{
-					exec_builtin(builtin, args, data);
-					exit(0);
-				}
-				if (!exec_single(data, cmd, args))
-				{
-					printf("execve failed\n");
-					exit(0);
-				}
+				printf("execve failed\n");
+				exit(0);
 			}
 			free(args);
 		}
