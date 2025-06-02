@@ -6,7 +6,7 @@
 /*   By: sankukei <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/02 23:39:29 by sankukei         ###   ########.fr       */
+/*   Updated: 2025/06/02 23:42:32 by sankukei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -474,7 +474,7 @@ int	__exec_startup__(t_data *data)
 			close_all_pipes(pipes, i);
 			if (builtin != 0)
 			{
-				exec_builtin(builtin, args);
+				exec_builtin(builtin, args, data);
 				exit(0);
 			}
 			if (!exec_single(data, cmd, args))
