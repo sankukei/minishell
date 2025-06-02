@@ -6,7 +6,7 @@
 /*   By: sankukei <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/02 23:32:06 by sankukei         ###   ########.fr       */
+/*   Updated: 2025/06/02 23:37:46 by sankukei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,7 +311,6 @@ int	__exec_startup__(t_data *data)
 					if (fd < 0)
 						exit(1);
 					dup2(fd, 1);
-					// close(fd);
 				}
 				else if (data->token->type == 3)
 				{
@@ -319,7 +318,6 @@ int	__exec_startup__(t_data *data)
 					if (fd < 0)
 						exit(1);
 					dup2(fd, 0);
-					// close(fd);
 				}
 				else if (data->token->type == 2)
 				{
@@ -327,7 +325,6 @@ int	__exec_startup__(t_data *data)
 					if (fd < 0)
 						exit(1);
 					dup2(fd, 1);
-					// close(fd);
 				}
 				close(fd);
 
@@ -355,7 +352,6 @@ int	__exec_startup__(t_data *data)
 				printf("execve failed\n");
 				exit(0);
 			}
-
 			free(args);
 		}
 		i++;
