@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   __EXEC_STARTUP__.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sankukei <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/05/16 13:48:16 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/02 23:32:06 by sankukei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,61 +297,65 @@ int	__exec_startup__(t_data *data)
 		pid = fork();
 		cmd = data->token->str;
 		reddir = check_if_redir(data->token);
-		printf("is reddir ? -> %d\n", reddir);
-	//	if (data->token->type != 6)
-	//	{
-	//		if (data->token->next)
-	//		{
-	//			open(data->token->str, O_CREAT);
-	//		}
-	//		//O_CLOEXEC close insta a la fin du process
-	//	}
-	//faire la redir mdrrrr pitie je veux mourir
 		args = get_args(&data->token);
 		int	a = 0;
-		while (args[a])
-		{
-			printf("%s args %d\n", args[a], a);
-			a++;
-		}
 		builtin = check_if_builtin(cmd);
 		if (pid == 0)
 		{
 			if (reddir)
 			{
-				//PROBLEME !!! quand on envoie une commande, si il y a une reddirection, get_args ne return que le nom de la commande, pas le token de reddirection ni le fd le suivant.
-				int fd = open(data->token->next->str, O_CREAT);
-				printf("wich reddir ? -> %d\n", data->token->type);
-				printf("papa johns\n");
-				exit(1);
+				int fd;
+				if (data->token->type == 4)
+				{
+					fd = open(data->token->next->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+					if (fd < 0)
+						exit(1);
+					dup2(fd, 1);
+					// close(fd);
+				}
+				else if (data->token->type == 3)
+				{
+					fd = open(data->token->next->str, O_RDONLY);
+					if (fd < 0)
+						exit(1);
+					dup2(fd, 0);
+					// close(fd);
+				}
+				else if (data->token->type == 2)
+				{
+					fd = open(data->token->next->str, O_CREAT | O_WRONLY | O_APPEND, 0644);
+					if (fd < 0)
+						exit(1);
+					dup2(fd, 1);
+					// close(fd);
+				}
+				close(fd);
+
 			}
-			else
+			if (i != n - 1)
 			{
-				if (i != n - 1)
-				{
-					close(pipes[i][0]);
-					dup2(pipes[i][1], 1);
-					close(pipes[i][1]);
-				}
-				if (i != 0)
-				{
-					close(pipes[i - 1][1]);
-					dup2(pipes[i - 1][0], 0);
-					close(pipes[i -1][0]);
-				}
-				close_all_pipes(pipes, i);
-				//close_all_pipes ne marche pas ??
-				if (builtin != 0)
-				{
-					exec_builtin(builtin, args);
-					exit(0);
-				}
-				if (!exec_single(data, cmd, args))
-				{
-					printf("execve failed\n");
-					exit(0);
-				}
+				close(pipes[i][0]);
+				dup2(pipes[i][1], 1);
+				close(pipes[i][1]);
 			}
+			if (i != 0)
+			{
+				close(pipes[i - 1][1]);
+				dup2(pipes[i - 1][0], 0);
+				close(pipes[i -1][0]);
+			}
+			close_all_pipes(pipes, i);
+			if (builtin != 0)
+			{
+				exec_builtin(builtin, args);
+				exit(0);
+			}
+			if (!exec_single(data, cmd, args))
+			{
+				printf("execve failed\n");
+				exit(0);
+			}
+
 			free(args);
 		}
 		i++;
