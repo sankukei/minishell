@@ -36,21 +36,18 @@ void	cd(char **args)
 		write(1, "too many arguments\n", 19);
 }
 
-void	pwd(char **args)
+void	pwd(char **args, int fd)
 {
 	char	*path;
-	int	fd;
 
-	fd = 1;
 	path = getcwd(NULL, 0);
 	write(fd, path, ft_strlen(path));
 	write(fd, "\n", 1);
 }
 
-void	echo(char **args)
+void	echo(char **args, int fd)
 {
 	int	backslash;
-	int	fd = 1;
 	int 	i = 0;
 	char	*str;
 
@@ -364,14 +361,41 @@ int	check_if_builtin(char *str)
 	return (0);
 }
 
-void	exec_builtin(int selector, char **args, t_data *data)
+int	get_fd_from_reddir(char *fd_name, int type)
+{
+	int	fd;
+	if (type == 4)
+	{
+		fd = open(fd_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (fd < 0)
+			exit(1);
+		dup2(fd, 1);
+	}
+	else if (type == 3)
+	{
+		fd = open(fd_name, O_RDONLY);
+		if (fd < 0)
+			exit(1);
+		dup2(fd, 0);
+	}
+	else if (type == 2)
+	{
+		fd = open(fd_name, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		if (fd < 0)
+			exit(1);
+		dup2(fd, 1);
+	}
+	return (fd);
+}
+
+void	exec_builtin(int selector, char **args, t_data *data, int fd)
 {
 	if (selector == 1)
-		echo(args);
+		echo(args, fd);
 	else if (selector == 2)
 		cd(args);
 	else if (selector == 3)
-		pwd(args);
+		pwd(args, fd);
 	else if (selector == 4)
 		export(data, args);
 	else if (selector == 5)
@@ -398,19 +422,28 @@ int	__exec_startup__(t_data *data)
 	int	temp;
 	int	builtin;
 	int	reddir = 0;
+	int 	fd;
 
+	fd = 1;
 	i = 0;
 	n = get_number_of_commands(data->token);
 	if (n > 100)
 		exit(1);
 	cmd = data->token->str;
 	builtin = check_if_builtin(cmd);
+	reddir = check_if_redir(data->token);
 	if (n == 1 && builtin != 0)
 	{
+
 		args = get_args(&data->token);
-		exec_builtin(builtin, args, data);
+		if (reddir)
+		{
+			fd = get_fd_from_reddir(data->token->next->str, data->token->type);
+		}
+		exec_builtin(builtin, args, data, fd);
 		free(args);
 		return 1;
+		exit(1);
 	}
 	temp = n;
 	pipes = malloc(n * sizeof(int *));
@@ -434,30 +467,7 @@ int	__exec_startup__(t_data *data)
 		{
 			if (reddir)
 			{
-				int fd;
-				if (data->token->type == 4)
-				{
-					fd = open(data->token->next->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-					if (fd < 0)
-						exit(1);
-					dup2(fd, 1);
-				}
-				else if (data->token->type == 3)
-				{
-					fd = open(data->token->next->str, O_RDONLY);
-					if (fd < 0)
-						exit(1);
-					dup2(fd, 0);
-				}
-				else if (data->token->type == 2)
-				{
-					fd = open(data->token->next->str, O_CREAT | O_WRONLY | O_APPEND, 0644);
-					if (fd < 0)
-						exit(1);
-					dup2(fd, 1);
-				}
-				close(fd);
-
+				fd = get_fd_from_reddir(data->token->next->str, data->token->type);
 			}
 			if (i != n - 1)
 			{
@@ -474,7 +484,7 @@ int	__exec_startup__(t_data *data)
 			close_all_pipes(pipes, i);
 			if (builtin != 0)
 			{
-				exec_builtin(builtin, args, data);
+				exec_builtin(builtin, args, data, fd);
 				exit(0);
 			}
 			if (!exec_single(data, cmd, args))
