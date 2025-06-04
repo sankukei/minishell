@@ -6,11 +6,39 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/04 00:47:14 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/04 02:17:23 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
+
+
+static char *get_my_env2(t_data *data, char *str)
+{
+	char **env;
+	int	i;
+	int	j;
+	
+	i = 0;
+	j = 0;
+	env = data->env;
+	if (ft_strncmp(str, "?", 2) == 0)
+		return (ft_itoa_stack(data->last_exit_status));
+	while (env[i])
+	{
+		//printf("je check la\n");
+		if (ft_strncmp(str, env[i], ft_strlen(str)) == 0)
+		{
+			while (env[i][j] != '=')
+				j++;
+			j++;
+			return (&env[i][j]);
+		}			
+		i++;
+	}
+	return (NULL);
+}
+
 
 void	cd(char **args)
 {
@@ -226,7 +254,7 @@ int	exec_single(t_data *data, char *cmd, char **args)
 	char	*tmp;
 	char	*test1;
 
-	path = ft_split(get_my_env(data, "PATH"), ':');
+	path = ft_split(get_my_env2(data, "PATH"), ':');
 	while (*path)
 	{
 		tmp = ft_strjoin(*path, "/");
