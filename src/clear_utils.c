@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 03:18:00 by amedenec          #+#    #+#             */
-/*   Updated: 2025/05/16 11:37:24 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/05 00:05:52 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,15 @@ void	clear_double_array(char **str)
 void	prepare_next_input(t_data *data)
 {
 	free(data->input);
-	clear_struct(&data->token);
+	clear_struct(&data->front_token);
+	//clear_struct(&data->token);
 }
 
 void	exit_program(t_data *data)
 {
 	free(data->input);
-	clear_struct(&data->token);
+	//clear_struct(&data->token);
+	clear_struct(&data->front_token);
 	clear_double_array(data->env);
 	free(data);
 	exit(1);

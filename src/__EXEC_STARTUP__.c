@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/04 04:30:52 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/04 23:52:32 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,11 +262,13 @@ void	ft_exit(t_data *data, char **args)
 	if (args[1])
 	{
 		printf("%s\n", "exit");
+		exit_program(data);
 		exit(ft_atoi(args[1])); // check le atoi si la range est assez grande du atoi		
 	}
 	else
 	{
 		printf("%s\n", "exit");
+		exit_program(data);
 		exit(data->last_exit_status);	
 	}
 	// si il n'y a pas d 'args[1] tu exit avec le dernier $? qui tu as TODO

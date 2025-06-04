@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 22:58:02 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/01 20:17:58 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/05 00:01:33 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void    init(t_data *data, char **envp)
     data->token = NULL;
 	data->single_quote = false;
 	data->double_quote = false;
+	data->front_token = NULL;
     data->env = dup_envp(envp);
 
 }
