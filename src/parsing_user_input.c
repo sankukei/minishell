@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/01 20:43:43 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/04 01:54:47 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	replace_var_env(t_data *data, char *var, int i, int len)
 
 }
 
-int	var_is_in_env(t_data *data, char *var)
+int	var_is_in_env(t_data *data, char *var, int len)
 {
 	char	**env;
 	int		i;
@@ -86,10 +86,11 @@ int	var_is_in_env(t_data *data, char *var)
 		return (1);
 	while (env[i])
 	{
-		if (ft_strncmp(var, env[i], ft_strlen(var)) == 0)
+		if (ft_strncmp(var, env[i], len) == 0)
 			return (1);			
 		i++;
 	}
+	free(var);
 	return (0);
 }
 
@@ -100,7 +101,57 @@ static void	quote_check(t_data *data, int i)
 	else if ((data->input[i] == '\'') && (data->double_quote == false))
 			data->single_quote = !(data->single_quote);
 }
+//######################
+#include <limits.h>
+static int	ft_nblen(long n)
+{
+	int	len;
 
+	len = 0;
+	if (n <= 0)
+	{
+		len++;
+		n = -n;
+	}
+	while (n)
+	{
+		n /= 10;
+		len++;
+	}
+	return (len);
+}
+
+static void	ft_fillnum(char *buf, long n, int len)
+{
+	buf[len] = '\0';
+	if (n == 0)
+		buf[0] = '0';
+	if (n < 0)
+	{
+		buf[0] = '-';
+		n = -n;
+	}
+	while (n > 0)
+	{
+		buf[--len] = (n % 10) + '0';
+		n /= 10;
+	}
+}
+
+char	*ft_itoa_stack(int n)
+{
+	static char	buf[12];
+	long		nb;
+	int			len;
+
+	nb = (long)n;
+	len = ft_nblen(nb);
+	ft_fillnum(buf, nb, len);
+	return (buf);
+}
+
+
+//#####################
 char *get_my_env(t_data *data, char *str)
 {
 	char **env;
@@ -111,7 +162,7 @@ char *get_my_env(t_data *data, char *str)
 	j = 0;
 	env = data->env;
 	if (ft_strncmp(str, "?", 2) == 0)
-		return (ft_itoa(data->last_exit_status));
+		return (free(str), ft_itoa_stack(data->last_exit_status));
 	while (env[i])
 	{
 		//printf("je check la\n");
@@ -120,11 +171,11 @@ char *get_my_env(t_data *data, char *str)
 			while (env[i][j] != '=')
 				j++;
 			j++;
-			return (&env[i][j]);
+			return (free(str), &env[i][j]);
 		}			
 		i++;
 	}
-	return (NULL);
+	return (free(str), NULL);
 }
 
 void	var_env_handler(t_data *data)
@@ -143,10 +194,13 @@ void	var_env_handler(t_data *data)
 		{
 			var = detect_var_env(&input[i]);
 			len = count_var_len(&input[i]);
-			if (len && var_is_in_env(data, var))
+			if (len == 0)
+				free(var);
+			if (len && var_is_in_env(data, var, len))
 			{
 				var = get_my_env(data, var);
 				replace_var_env(data, var, i, len);
+				free(input);
 				input = data->input;
 			}
 		}
