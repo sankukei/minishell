@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/04 02:17:23 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/04 04:30:52 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,34 @@ static int	count_env_size(char **env)
 void	env(t_data *data);
 //###############################################################################
 //							export
+
+static int	handle_export_error(t_data *data, char **args)
+{
+	int	i;
+
+	i = 0;
+	if (!args[1])
+	{
+		env(data);
+		return (1);
+	}
+	if (args[1][0] == '=')
+	{
+		printf("\"%s\": not a valid identifier\n", args[1]);
+		return (1);
+	}
+	while (args[1][i] && args[1][i] != '=')
+	{
+		if ((!ft_isalpha(args[1][i]) && !ft_isdigit(args[1][i])))
+		{
+			printf("\"%s\": not a valid identifier\n", args[1]);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 void	export(t_data *data, char **args)
 {
 	char	**new_env;
@@ -150,11 +178,8 @@ void	export(t_data *data, char **args)
 	int		j;
 	int		exist;
 
-	if (!args[1])
-	{
-		env(data);
+	if (handle_export_error(data, args))
 		return ;
-	}
 	exist = 0;
 	i = count_env_size(data->env);
 	new_env = malloc(sizeof(char *) * (i + 2));
