@@ -6,7 +6,7 @@
 /*   By: sankukei <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/02 23:42:32 by sankukei         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:45:19 by sankukei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,7 +264,7 @@ int	check_if_redir(t_token *token)
 	i = 0;
 	while (token)
 	{
-		if (token->type == 1 || token->type == 2 || token->type == 3 || token->type == 4)
+		if (token->type == 2 || token->type == 3 || token->type == 4)
 			return (1);
 		token = token->next;
 	}
@@ -364,6 +364,7 @@ int	check_if_builtin(char *str)
 int	get_fd_from_reddir(char *fd_name, int type)
 {
 	int	fd;
+
 	if (type == 4)
 	{
 		fd = open(fd_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -407,6 +408,40 @@ void	exec_builtin(int selector, char **args, t_data *data, int fd)
 	return ;
 }
 
+char	**heredoc(char **args)
+{
+	int	i;
+	char	*delimiter;
+	char **input = malloc(sizeof(char *) * 10000);
+	char *line;
+
+
+	write(1, "oui\n", 4);
+	i = 0;
+	while (1)
+	{
+		line = readline("heredoc> ");
+		if (!line)
+			break;
+		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0 &&
+			ft_strlen(line) == ft_strlen(delimiter))
+		{
+			free(line);
+			break;
+		}
+		input[i++] = line;
+		if (i == 9999)
+			break;
+	}
+
+	input[i] = NULL;
+	i = 0;
+	while (input[i])
+		printf("HEREDOC VALUE -> %s\n", input[i]);
+	// IL FAUT FREE ARGS 
+	return (input);
+}
+
 int	__exec_startup__(t_data *data)
 {
 	pid_t	pid;
@@ -423,7 +458,9 @@ int	__exec_startup__(t_data *data)
 	int	builtin;
 	int	reddir = 0;
 	int 	fd;
+	int	token_type;
 
+	token_type = 0;
 	fd = 1;
 	i = 0;
 	n = get_number_of_commands(data->token);
@@ -434,14 +471,22 @@ int	__exec_startup__(t_data *data)
 	reddir = check_if_redir(data->token);
 	if (n == 1 && builtin != 0)
 	{
-
+		token_type = data->token->next->type;
 		args = get_args(&data->token);
 		if (reddir)
 		{
 			fd = get_fd_from_reddir(data->token->next->str, data->token->type);
 		}
+		printf("%d -> TOKEN TYPE\n", token_type);
+		if (token_type == 1)
+		{
+			write(1, "qwe\n", 4);
+
+			args = heredoc(args);
+		}
 		exec_builtin(builtin, args, data, fd);
-		free(args);
+		if (token_type != 1)
+			free(args);
 		return 1;
 		exit(1);
 	}
