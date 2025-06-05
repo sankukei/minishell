@@ -334,6 +334,7 @@ void	sky(t_data *data)
 	pid_t	pid;
 	char	*args[] = {"/usr/bin/paplay", "ascii/sky.wav", NULL};
 
+	write(1, "\033[2J\033[H", 7);
 	pid = fork();
 	if (pid < 0)
 	{
