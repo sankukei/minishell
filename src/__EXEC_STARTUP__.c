@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/05 06:22:26 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/05 06:23:39 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,7 +312,7 @@ void	print_ap_flat(void)
 	const char *lyrics[] = {"Explique ? Hahaha, ouais c'est un peu chiant les gars",
 		"En gros luden c'est un mythique pas si mythique qui donne de la péné magique et donc en gros ça donne 6 de péné magique flat donc t'as..",
 		"2 items complets, donc il a 10 de péné flat donc en gros il ton- il monte à 16..",
-		"El a les bottes ça fait 18 donc 16+18 ça fait 34 si jdis pas de conneries, 34 + ..","euuuuh",
+		"Il a les bottes ça fait 18 donc 16+18 ça fait 34 si jdis pas de conneries, 34 + ..","euuuuh",
 		NULL};
 	int	i;
 	
