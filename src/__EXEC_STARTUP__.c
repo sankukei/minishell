@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/05 03:08:34 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/05 06:20:48 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,7 +263,7 @@ void	ft_exit(t_data *data, char **args)
 	{
 		printf("%s\n", "exit");
 		exit_program(data);
-		exit(ft_atoi(args[1])); // check le atoi si la range est assez grande du atoi		
+		exit(ft_atoi(args[1]) % 256);
 	}
 	else
 	{
@@ -273,6 +273,84 @@ void	ft_exit(t_data *data, char **args)
 	}
 	// si il n'y a pas d 'args[1] tu exit avec le dernier $? qui tu as TODO
 	// Apres avoir gerer les signaux faire en sort que si on est dans un pipe ca printf pas exit
+}
+// #include <fcntl.h>
+// #include <unistd.h>
+// #include <stdio.h>
+
+#define BUF_SIZE 1024
+
+void	ft_cat(const char *filename)
+{
+	int		fd;
+	ssize_t	bytes_read;
+	char	buffer[BUF_SIZE];
+
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+	{
+		perror("open");
+		return ;
+	}
+	while ((bytes_read = read(fd, buffer, BUF_SIZE)) > 0)
+	{
+		if (write(STDOUT_FILENO, buffer, bytes_read) < 0)
+		{
+			perror("write");
+			close(fd);
+			return ;
+		}
+	}
+	if (bytes_read < 0)
+		perror("read");
+	close(fd);
+	return ;
+}
+
+void	print_ap_flat(void)
+{
+	const char *lyrics[] = {"explique ? hahaha, ouais c'est un peu chiant les gars",
+		"en gros luden c'est un mythique pas si mythique qui donne de la péné magique et donc en gros ça donne 6 de péné magique flat donc t'as..",
+		"2 items complets, donc il a 10 de péné flat donc en gros il ton- il monte à 16..",
+		"il a les bottes ça fait 18 donc 16+18 ça fait 34 si jdis pas de conneries, 34 + ..","euuuuh",
+		NULL};
+	int	i;
+	
+	i = 0;
+
+	while (lyrics[i])
+	{
+		printf("%s\n", lyrics[i]);
+		fflush(stdout);
+		sleep(5);
+		i++;
+	}
+}
+
+void	sky(t_data *data)
+{
+	pid_t	pid;
+	char	*args[] = {"/usr/bin/paplay", "ascii/sky.wav", NULL};
+
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		return ;
+	}
+	else if (pid == 0)
+	{
+		execve(args[0], args, data->env);
+		perror("execve");
+		_exit(1);
+	}
+	else
+	{
+		ft_cat("ascii/sky");
+		print_ap_flat();
+		waitpid(pid, NULL, 0);
+	}
+	return ;
 }
 
 static char	**chang_args_ls(t_data *data, char **args)
@@ -455,6 +533,8 @@ int	check_if_builtin(char *str)
 		return (6);
 	else if (ft_strncmp(str, "exit", 5) == 0)
 		return (7);
+	else if (ft_strncmp(str, "sky", 3) == 0)
+		return (8);
 	return (0);
 }
 
@@ -501,6 +581,8 @@ void	exec_builtin(int selector, char **args, t_data *data, int fd)
 		env(data);
 	else if (selector == 7)
 		ft_exit(data, args);
+	else if (selector == 8)
+		sky(data);
 	return ;
 }
 
