@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/05/16 13:49:01 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/05 02:57:25 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	lexer(t_data *data, char *str);
 void	prepare_next_input(t_data *data);
 void	clear_struct(t_token **tokens);
 void	exit_program(t_data *data);
+void	clear_double_array(char **str);
 
 // EXEC
 int	__exec_startup__(t_data *data);

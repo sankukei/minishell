@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/04 23:52:32 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/05 03:08:34 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,24 +275,66 @@ void	ft_exit(t_data *data, char **args)
 	// Apres avoir gerer les signaux faire en sort que si on est dans un pipe ca printf pas exit
 }
 
+static char	**chang_args_ls(t_data *data, char **args)
+{
+	int		count;
+	char	**new_args;
+	int		i;
+
+	(void)data;
+	count = 0;
+	while (args[count])
+		count++;
+
+	new_args = malloc(sizeof(char *) * (count + 2));
+	if (!new_args)
+		return (NULL);
+
+	new_args[0] = ft_strdup("ls");
+	new_args[1] = ft_strdup("--color=auto"); // parce que args= {ls,--color=auto, -l etc..}
+
+	i = 1;
+	while (i < count)
+	{
+		new_args[i + 1] = ft_strdup(args[i]);  // ajoute les flags de ls apres 
+		i++;
+	}
+	new_args[i + 1] = NULL;
+	return (new_args); //sjp si faudrai free a voir
+}
+
 int	exec_single(t_data *data, char *cmd, char **args)
 {
 	char	**path;
 	char	*tmp;
 	char	*test1;
+	char	**str;
+	int		i;
 
 	path = ft_split(get_my_env2(data, "PATH"), ':');
-	while (*path)
+	if (!path)
+		return (0);
+	i = 0;
+	while (path[i])
 	{
-		tmp = ft_strjoin(*path, "/");
+		tmp = ft_strjoin(path[i], "/");
 		test1 = ft_strjoin(tmp, cmd);
+		free(tmp);
 		if (!access(test1, X_OK))
 		{
-			execve(test1, args, NULL);
-			return (1);
+			if (ft_strncmp(cmd, "ls", 3) == 0)
+			{
+				str = chang_args_ls(data, args);
+				execve(test1, str, data->env);
+			}
+			execve(test1, args, data->env);
+			free(test1);
+			break;
 		}
-		*path++;
+		free(test1);
+		i++;
 	}
+	clear_double_array(path);
 	write(1, "Command not found\n", 18);
 	return (0);
 }
