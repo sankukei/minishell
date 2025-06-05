@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/05 00:02:49 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/05 03:35:04 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -425,6 +425,41 @@ void	type_tokens(t_data *data)
 // sinon regarder si le token precedent est une redirection si oui, le token est un FD
 // sinon c'est un ARG
 
+int	check_token_syntax(t_token *head)
+{
+	t_token	*curr;
+
+	if (!head)
+		return (1); // rien à vérifier
+
+	// PIPE en premier ?
+	if (head->type == PIPE)
+		return (printf("Syntax error: unexpected token '|'\n"), 1);
+
+	curr = head;
+	while (curr)
+	{
+		if (curr->type == PIPE)
+		{
+			if (!curr->next)
+				return (printf("Syntax error: unexpected token '|'\n"), 1);
+			if (curr->next->type == PIPE)
+				return (printf("Syntax error: unexpected token '|'\n"), 1);
+		}
+		else if (curr->type == INPUT || curr->type == TRUNC
+			|| curr->type == HEREDOC || curr->type == APPEND)
+		{
+			if (!curr->next || curr->next->type != ARG)
+				return (printf("Syntax error near unexpected token '%s'\n",
+					curr->str), 1);
+		}
+		curr = curr->next;
+	}
+	return (0); // syntaxe correcte
+}
+
+
+
 int	parsing(t_data	*data)
 {
 	if (check_quote_error(data))
@@ -433,6 +468,8 @@ int	parsing(t_data	*data)
 	tokenisation(data);
 	data->front_token = data->token;
 	type_tokens(data);
+	if (check_token_syntax(data->token))
+		return (1);
 	extern_quote_handler(data);
 	affiche_token_test(data->token);
 	return (0);
