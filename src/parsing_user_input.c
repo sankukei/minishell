@@ -471,6 +471,6 @@ int	parsing(t_data	*data)
 	if (check_token_syntax(data->token))
 		return (1);
 	extern_quote_handler(data);
-	affiche_token_test(data->token);
+	//affiche_token_test(data->token);
 	return (0);
 }
