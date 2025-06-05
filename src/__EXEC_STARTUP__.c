@@ -154,7 +154,7 @@ static int	handle_export_error(t_data *data, char **args)
 		env(data);
 		return (1);
 	}
-	if (args[1][0] == '=')
+	if (!args[1][0] || args[1][0] == '=' || ft_isdigit(args[1][0]))
 	{
 		printf("\"%s\": not a valid identifier\n", args[1]);
 		return (1);
@@ -274,17 +274,12 @@ void	ft_exit(t_data *data, char **args)
 	// si il n'y a pas d 'args[1] tu exit avec le dernier $? qui tu as TODO
 	// Apres avoir gerer les signaux faire en sort que si on est dans un pipe ca printf pas exit
 }
-// #include <fcntl.h>
-// #include <unistd.h>
-// #include <stdio.h>
-
-#define BUF_SIZE 1024
 
 void	ft_cat(const char *filename)
 {
 	int		fd;
 	ssize_t	bytes_read;
-	char	buffer[BUF_SIZE];
+	char	buffer[1024];
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
@@ -292,7 +287,7 @@ void	ft_cat(const char *filename)
 		perror("open");
 		return ;
 	}
-	while ((bytes_read = read(fd, buffer, BUF_SIZE)) > 0)
+	while ((bytes_read = read(fd, buffer, 1024)) > 0)
 	{
 		if (write(STDOUT_FILENO, buffer, bytes_read) < 0)
 		{
