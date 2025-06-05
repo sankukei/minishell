@@ -310,9 +310,11 @@ void	ft_cat(const char *filename)
 void	print_ap_flat(void)
 {
 	const char *lyrics[] = {"Explique ? Hahaha, ouais c'est un peu chiant les gars",
-		"En gros luden c'est un mythique pas si mythique qui donne de la péné magique et donc en gros ça donne 6 de péné magique flat donc t'as..",
+		"En gros luden c'est un mythique, passif mytique qui donne de la péné magique et donc en gros ça donne 6 de péné magique flat donc t'as..",
 		"2 items complets, donc il a 10 de péné flat donc en gros il ton- il monte à 16..",
-		"Il a les bottes ça fait 18 donc 16+18 ça fait 34 si jdis pas de conneries, 34 + ..","euuuuh",
+		"Il a les bottes ça fait 18 donc 16+18 ça fait 34 si jdis pas de conneries, 34 + ..",
+		"euuuuh il avait shadow flame donc il aaaaaa 44 et il a 44 et après du coup",
+		"le void staff faut faire 44 divisé par 0.6 en gros il fait des dégats pur à...",
 		NULL};
 	int	i;
 	
