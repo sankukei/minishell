@@ -607,3 +607,50 @@ int	__exec_startup__(t_data *data)
 	close(old_stdout);
 	 return (0);
 }
+
+/////////
+void	init_exec_variables(t_exec *vars, t_data* data)
+{
+	vars->old_stdin = dup(STDIN_FILENO);
+	vars->old_stdout = dup(STDOUT_FILENO);
+	vars->fd = 1;
+	vars->is_reddir = 0;
+	vars->n_command = 0;
+	vars->is_builtin = 0;
+	vars->cmd = 0;
+}
+
+void	handle_single_builtin(t_exec *vars, t_data *data)
+{
+	if (vars->n > 100)
+		return (printf("too many commands\n"));
+	vars->is_builtin = check_if_builtin(data->token->str);
+	vars->is_reddir = check_if_reddir(data->token);
+	if (vars->n == 1 && vars->is_builtin != 0)	
+	{
+		vars->args = get+args(&data->token);
+		if (is_reddir)
+			vars->fd = get_fd_from_reddir(data->token->next->str, data->token->type);
+		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);
+		//free args and *args++;
+		return (1);
+	}
+}
+
+int	new_exec(t_data *data)
+{
+	int	i;
+	int	check;
+	t_exec *vars;
+
+	i = 0;
+	check = 0;
+
+	init_exec_variables(vars, data);
+	check = hande_single_builtin(vars, data);
+	// si init pipes s'execute, cela veut dire que
+	if (!check)
+		init_pipes();
+
+	return (0);
+}
