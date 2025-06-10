@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prototypes.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sankukei <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/05 02:57:25 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/11 00:13:50 by sankukei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,3 +61,17 @@ void	clear_double_array(char **str);
 
 // EXEC
 int	__exec_startup__(t_data *data);
+void    cd(char **args);
+void    pwd(char **args, int fd);
+char    *get_my_env2(t_data *data, char *str);
+void	ft_exit(t_data *data, char **args);
+void	echo(char **args, int fd);
+int     handle_export_error(t_data *data, char **args);
+void    export(t_data *data, char **args);
+int     count_env_size(char **env);
+int     is_same_var(char *env_entry, char *arg);
+int     var_name_len(char *arg);
+void	unset(t_data *data, char **args);
+void	env(t_data *data);
+char	**chang_args_ls(t_data *data, char **args);
+

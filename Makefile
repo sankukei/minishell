@@ -25,6 +25,9 @@ SRC = main.c \
       __EXEC_STARTUP__.c \
       init.c \
       join.c \
+      builtin_fn1.c \
+      builtin_fn2.c \
+      builtin_fn3.c \
 
 
 LIBFT_DIR = ./libft
