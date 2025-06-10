@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+#include <sys/types.h>
 typedef enum s_type
 {
 	HEREDOC = 1,  // <<
@@ -48,3 +48,18 @@ typedef struct s_data
 	int				last_exit_status;
 }   t_data;
 
+typedef struct s_exec
+{
+    pid_t	pid;
+    int		fd;
+    int		xd;
+    int		old_stdin;
+    int		old_stdout;
+    int		is_builtin;
+    int		is_reddir;
+    int		n_command;
+    int		**pipes;
+    int		status;
+    char	*cmd;
+    char	**args;
+} t_exec;

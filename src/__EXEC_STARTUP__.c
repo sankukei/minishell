@@ -12,13 +12,12 @@
 
 #include "../headers/minishell.h"
 
-
-static char *get_my_env2(t_data *data, char *str)
+static char	*get_my_env2(t_data *data, char *str)
 {
-	char **env;
-	int	i;
-	int	j;
-	
+	char	**env;
+	int		i;
+	int		j;
+
 	i = 0;
 	j = 0;
 	env = data->env;
@@ -26,24 +25,22 @@ static char *get_my_env2(t_data *data, char *str)
 		return (ft_itoa_stack(data->last_exit_status));
 	while (env[i])
 	{
-		//printf("je check la\n");
 		if (ft_strncmp(str, env[i], ft_strlen(str)) == 0)
 		{
 			while (env[i][j] != '=')
 				j++;
 			j++;
 			return (&env[i][j]);
-		}			
+		}
 		i++;
 	}
 	return (NULL);
 }
 
-
 void	cd(char **args)
 {
 	char	*path;
-	int	i;
+	int		i;
 
 	i = 0;
 	args++;
@@ -75,10 +72,11 @@ void	pwd(char **args, int fd)
 
 void	echo(char **args, int fd)
 {
-	int	backslash;
-	int 	i = 0;
+	int		backslash;
+	int		i;
 	char	*str;
 
+	i = 0;
 	backslash = 0;
 	if (args[1])
 	{
@@ -102,8 +100,7 @@ void	echo(char **args, int fd)
 	if (!backslash)
 		write(fd, "\n", 1);
 }
-//###############################################################################
-//								export & unset functions utils 
+
 static int	var_name_len(char *arg)
 {
 	int	i;
@@ -141,8 +138,6 @@ static int	count_env_size(char **env)
 }
 
 void	env(t_data *data);
-//###############################################################################
-//							export
 
 static int	handle_export_error(t_data *data, char **args)
 {
@@ -188,26 +183,25 @@ void	export(t_data *data, char **args)
 	j = 0;
 	while (j < i)
 	{
-		if (is_same_var(data->env[j], args[1])) // pour remplacer une variable existant dans l env
+		if (is_same_var(data->env[j], args[1]))
 		{
 			free(data->env[j]);
 			new_env[j] = ft_strdup(args[1]);
 			exist = 1;
 		}
 		else
-			new_env[j] = data->env[j];		// sinon on copie
+			new_env[j] = data->env[j];
 		j++;
 	}
 	if (!exist)
-		new_env[j++] = ft_strdup(args[1]); // si elle existe pas on l ajoute a la fin
+		new_env[j++] = ft_strdup(args[1]);
 	new_env[j] = NULL;
 	if (!exist)
 		free(data->env);
 	data->env = new_env;
 	return ;
 }
-//###############################################################################
-//							unset
+
 void	unset(t_data *data, char **args)
 {
 	char	**new_env;
@@ -228,16 +222,16 @@ void	unset(t_data *data, char **args)
 		k = 1;
 		while (args[k])
 		{
-			if (is_same_var(data->env[i], args[k++]))	// on regarde si elle est dans l env
+			if (is_same_var(data->env[i], args[k++]))
 			{
 				skip = 1;
 				break ;
 			}
 		}
 		if (!skip)
-			new_env[j++] = data->env[i];	// si non on copie et j++
+			new_env[j++] = data->env[i];
 		else
-			free(data->env[i]);			// ou on free
+			free(data->env[i]);
 		i++;
 	}
 	new_env[j] = NULL;
@@ -245,7 +239,6 @@ void	unset(t_data *data, char **args)
 	data->env = new_env;
 }
 
-//###############################################################################
 void	env(t_data *data)
 {
 	int		i;
@@ -263,7 +256,7 @@ void	ft_exit(t_data *data, char **args)
 	{
 		printf("%s\n", "exit");
 		exit_program(data);
-		exit(ft_atoi(args[1])); // check le atoi si la range est assez grande du atoi		
+		exit(ft_atoi(args[1]));		
 	}
 	else
 	{
@@ -504,7 +497,7 @@ void	exec_builtin(int selector, char **args, t_data *data, int fd)
 	return ;
 }
 
-int	__exec_startup__(t_data *data)
+int	OLD_EXEC(t_data *data)
 {
 	pid_t	pid;
 
@@ -558,7 +551,6 @@ int	__exec_startup__(t_data *data)
 		cmd = data->token->str;
 		reddir = check_if_redir(data->token);
 		args = get_args(&data->token);
-		int	a = 0;
 		builtin = check_if_builtin(cmd);
 		if (pid == 0)
 		{
@@ -609,7 +601,7 @@ int	__exec_startup__(t_data *data)
 }
 
 /////////
-void	init_exec_variables(t_exec *vars, t_data* data)
+void	init_exec_variables(t_exec *vars, t_data *data)
 {
 	vars->old_stdin = dup(STDIN_FILENO);
 	vars->old_stdout = dup(STDOUT_FILENO);
@@ -620,37 +612,135 @@ void	init_exec_variables(t_exec *vars, t_data* data)
 	vars->cmd = 0;
 }
 
-void	handle_single_builtin(t_exec *vars, t_data *data)
+void	init_pipes(t_exec *vars)
 {
-	if (vars->n > 100)
-		return (printf("too many commands\n"));
-	vars->is_builtin = check_if_builtin(data->token->str);
-	vars->is_reddir = check_if_reddir(data->token);
-	if (vars->n == 1 && vars->is_builtin != 0)	
+	int	i;
+	int	n;
+
+	i = 0;
+	n = vars->n_command;
+	vars->pipes = malloc(n * sizeof(int *));
+	n--;
+	while (n--)
 	{
-		vars->args = get+args(&data->token);
-		if (is_reddir)
-			vars->fd = get_fd_from_reddir(data->token->next->str, data->token->type);
-		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);
-		//free args and *args++;
-		return (1);
+		vars->pipes[i] = malloc(sizeof(int) * 2);
+		pipe(vars->pipes[i]);
+		i++;
 	}
 }
 
-int	new_exec(t_data *data)
+int	handle_single_builtin(t_exec *vars, t_data *data)
+{
+	vars->is_builtin = check_if_builtin(data->token->str);
+	vars->is_reddir = check_if_redir(data->token);
+	if (vars->n_command == 1 && vars->is_builtin != 0)
+	{
+		vars->args = get_args(&data->token);
+		if (vars->is_reddir)
+			vars->fd = get_fd_from_reddir(data->token->next->str,
+					data->token->type);
+		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);
+		return (1);
+		//free args and *args++;
+	}
+	return (0);
+}
+
+void	children_exec(t_exec *vars, t_data *data, int i)
+{
+	if (vars->is_reddir)
+		vars->fd = get_fd_from_reddir(data->token->next->str,
+				data->token->type);
+	if (i != vars->n_command - 1)
+	{
+		close(vars->pipes[i][0]);
+		dup2(vars->pipes[i][1], STDOUT_FILENO);
+		close(vars->pipes[i][1]);
+	}
+	if (i != 0)
+	{
+		close(vars->pipes[i - 1][1]);
+		dup2(vars->pipes[i - 1][0], STDIN_FILENO);
+		close(vars->pipes[i - 1][0]);
+	}
+	while (vars->xd < vars->n_command - 1)
+	{
+		close(vars->pipes[vars->xd][0]);
+		close(vars->pipes[vars->xd][1]);
+		vars->xd++;
+		// A FIX PLUS TARD
+		// pour une raison sombre je n'arrive pas a closes les pipes dans une fonction helper, a investiguer
+	}
+	if (vars->is_builtin != 0)
+		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);
+	else if (!exec_single(data, vars->cmd, vars->args))
+		printf("execve failed\n");
+	exit(0);
+}
+
+void	start_children(t_exec *vars, t_data *data)
 {
 	int	i;
-	int	check;
-	t_exec *vars;
 
 	i = 0;
-	check = 0;
+	while (i < vars->n_command)
+	{
+		vars->pid = fork();
+		vars->cmd = data->token->str;
+		vars->is_reddir = check_if_redir(data->token);
+		vars->args = get_args(&data->token);
+		vars->is_builtin = check_if_builtin(vars->cmd);
+		vars->xd = 0;
+		if (vars->pid == 0)
+			children_exec(vars, data, i);
+		i++;
+	}
+}
 
+void	close_pipes(t_exec *vars)
+{
+	int	i;
+
+	i = 0;
+	while (i < vars->n_command - 1)
+	{
+		close(vars->pipes[i][0]);
+		close(vars->pipes[i][1]);
+		i++;
+	}
+}
+
+void	wait_all_childrens(t_exec *vars)
+{
+	while (wait(&vars->status) > 0)
+		;
+}
+
+void	restore_fds(t_exec *vars)
+{
+	close(vars->old_stdin);
+	dup2(vars->old_stdout, STDOUT_FILENO);
+	close(vars->old_stdout);
+}
+
+// NEW EXEC
+int	__exec_startup__(t_data *data)
+{
+	int	i;
+	t_exec 	*vars;
+
+	i = 0;
+	vars = malloc(sizeof(t_exec));
 	init_exec_variables(vars, data);
-	check = hande_single_builtin(vars, data);
-	// si init pipes s'execute, cela veut dire que
-	if (!check)
-		init_pipes();
-
+	vars->n_command = get_number_of_commands(data->token);
+	if (vars->n_command > 100)
+		return (printf("too many commands\n"));
+	if (handle_single_builtin(vars, data))
+		return (1);
+	init_pipes(vars);
+	start_children(vars, data);
+	close_pipes(vars);
+	wait_all_childrens(vars);
+	restore_fds(vars);
 	return (0);
 }
