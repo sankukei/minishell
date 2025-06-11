@@ -207,7 +207,7 @@ void	exec_builtin(int selector, char **args, t_data *data, int fd)
 		ft_exit(data, args);
 	return ;
 }
-
+/*
 int	OLD_EXEC(t_data *data)
 {
 	pid_t	pid;
@@ -310,6 +310,7 @@ int	OLD_EXEC(t_data *data)
 	close(old_stdout);
 	 return (0);
 }
+*/
 
 /////////
 void	init_exec_variables(t_exec *vars)
@@ -405,6 +406,7 @@ void	start_children(t_exec *vars, t_data *data)
 		if (vars->pid == 0)
 			children_exec(vars, data, i);
 		i++;
+		//free args and *args++;
 	}
 }
 
@@ -451,5 +453,6 @@ int	__exec_startup__(t_data *data)
 	close_pipes(vars);
 	wait_all_childrens(vars);
 	restore_fds(vars);
+	//free t_exec;
 	return (0);
 }
