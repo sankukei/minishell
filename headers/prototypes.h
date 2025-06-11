@@ -62,7 +62,7 @@ void	clear_double_array(char **str);
 // EXEC
 int	__exec_startup__(t_data *data);
 void    cd(char **args);
-void    pwd(char **args, int fd);
+void    pwd(int fd);
 char    *get_my_env2(t_data *data, char *str);
 void	ft_exit(t_data *data, char **args);
 void	echo(char **args, int fd);

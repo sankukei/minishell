@@ -49,7 +49,7 @@ void	cd(char **args)
 		write(1, "too many arguments\n", 19);
 }
 
-void	pwd(char **args, int fd)
+void	pwd(int fd)
 {
 	char	*path;
 

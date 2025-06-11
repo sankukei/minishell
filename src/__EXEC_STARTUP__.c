@@ -65,9 +65,6 @@ int	get_number_of_commands(t_token *token)
 
 int	check_if_redir(t_token *token)
 {
-	int	i;
-
-	i = 0;
 	while (token)
 	{
 		if (token->type == 1 || token->type == 2 || token->type == 3 || token->type == 4)
@@ -82,7 +79,7 @@ int	get_cmd_len(t_token *token)
 	int	i;
 
 	i = 0;
-	while (token && token->type == 6 || token->type == 7)
+	while ((token && token->type == 6) || token->type == 7)
 	{
 		i++;
 		token = token->next;
@@ -148,8 +145,6 @@ void	close_all_pipes(int **pipes, int n)
 
 int	check_if_builtin(char *str)
 {
-	int	len;
-
 	if (ft_strncmp(str, "echo", 5) == 0)
 		return (1);
 	else if (ft_strncmp(str, "cd", 3) == 0)
@@ -201,7 +196,7 @@ void	exec_builtin(int selector, char **args, t_data *data, int fd)
 	else if (selector == 2)
 		cd(args);
 	else if (selector == 3)
-		pwd(args, fd);
+		pwd(fd);
 	else if (selector == 4)
 		export(data, args);
 	else if (selector == 5)
@@ -317,7 +312,7 @@ int	OLD_EXEC(t_data *data)
 }
 
 /////////
-void	init_exec_variables(t_exec *vars, t_data *data)
+void	init_exec_variables(t_exec *vars)
 {
 	vars->old_stdin = dup(STDIN_FILENO);
 	vars->old_stdout = dup(STDOUT_FILENO);
@@ -442,12 +437,10 @@ void	restore_fds(t_exec *vars)
 // NEW EXEC
 int	__exec_startup__(t_data *data)
 {
-	int	i;
 	t_exec 	*vars;
 
-	i = 0;
 	vars = malloc(sizeof(t_exec));
-	init_exec_variables(vars, data);
+	init_exec_variables(vars);
 	vars->n_command = get_number_of_commands(data->token);
 	if (vars->n_command > 100)
 		return (printf("too many commands\n"));
