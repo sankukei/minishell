@@ -1,0 +1,52 @@
+#include "../headers/minishell.h"
+
+void	init_exec_variables(t_exec *vars)
+{
+	vars->old_stdin = dup(STDIN_FILENO);
+	vars->old_stdout = dup(STDOUT_FILENO);
+	vars->fd = 1;
+	vars->is_reddir = 0;
+	vars->n_command = 0;
+	vars->is_builtin = 0;
+	vars->cmd = 0;
+}
+void	init_pipes(t_exec *vars)
+{
+	int	i;
+	int	n;
+
+	i = 0;
+	n = vars->n_command;
+	vars->pipes = malloc(n * sizeof(int *));
+	n--;
+	while (n--)
+	{
+		vars->pipes[i] = malloc(sizeof(int) * 2);
+		pipe(vars->pipes[i]);
+		i++;
+	}
+}
+void	close_pipes(t_exec *vars)
+{
+	int	i;
+
+	i = 0;
+	while (i < vars->n_command - 1)
+	{
+		close(vars->pipes[i][0]);
+		close(vars->pipes[i][1]);
+		i++;
+	}
+}
+void	wait_all_childrens(t_exec *vars)
+{
+	while (wait(&vars->status) > 0)
+		;
+}
+
+void	restore_fds(t_exec *vars)
+{
+	close(vars->old_stdin);
+	dup2(vars->old_stdout, STDOUT_FILENO);
+	close(vars->old_stdout);
+}

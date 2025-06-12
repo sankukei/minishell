@@ -6,7 +6,7 @@
 /*   By: sankukei <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/11 00:13:50 by sankukei         ###   ########.fr       */
+/*   Updated: 2025/06/13 01:26:41 by sankukei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,16 @@ int     var_name_len(char *arg);
 void	unset(t_data *data, char **args);
 void	env(t_data *data);
 char	**chang_args_ls(t_data *data, char **args);
-
+int	    check_if_builtin(char *str);
+int	    check_if_redir(t_token *token);
+int	    get_fd_from_reddir(char *fd_name, int type);
+void	children_exec(t_exec *vars, t_data *data, int i);
+void	init_exec_variables(t_exec *vars);
+int	    get_number_of_commands(t_token *token);
+int	    handle_single_builtin(t_exec *vars, t_data *data);
+void	init_pipes(t_exec *vars);
+void	start_children(t_exec *vars, t_data *data);
+void	close_pipes(t_exec *vars);
+void	wait_all_childrens(t_exec *vars);
+void	restore_fds(t_exec *vars);
+void	exec_builtin(int selector, char **args, t_data *data, int fd);
