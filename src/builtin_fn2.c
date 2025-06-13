@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_fn2.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/13 02:13:46 by leothoma          #+#    #+#             */
+/*   Updated: 2025/06/13 02:19:31 by leothoma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../headers/minishell.h"
 
 void	unset(t_data *data, char **args)
@@ -58,20 +70,17 @@ char	**chang_args_ls(t_data *data, char **args)
 	count = 0;
 	while (args[count])
 		count++;
-
 	new_args = malloc(sizeof(char *) * (count + 2));
 	if (!new_args)
 		return (NULL);
-
 	new_args[0] = ft_strdup("ls");
-	new_args[1] = ft_strdup("--color=auto"); // parce que args= {ls,--color=auto, -l etc..}
-
+	new_args[1] = ft_strdup("--color=auto");
 	i = 1;
 	while (i < count)
 	{
-		new_args[i + 1] = ft_strdup(args[i]);  // ajoute les flags de ls apres 
+		new_args[i + 1] = ft_strdup(args[i]);
 		i++;
 	}
 	new_args[i + 1] = NULL;
-	return (new_args); //sjp si faudrai free a voir
+	return (new_args);
 }

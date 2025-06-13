@@ -12,7 +12,6 @@
 
 #include "../headers/minishell.h"
 
-
 void	minishell_launcher(t_data *data)
 {
 	char	*input;
@@ -30,10 +29,7 @@ void	minishell_launcher(t_data *data)
 				prepare_next_input(data);
 				continue ;
 			}
-			// if (0 == strcmp(data->token->str, "exit"))
-			// 	exit_program(data);
 			__exec_startup__(data);
-			//printf("%s\n", data->input);
 			prepare_next_input(data);
 		}
 	}

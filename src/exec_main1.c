@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_main1.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/13 02:13:30 by leothoma          #+#    #+#             */
+/*   Updated: 2025/06/13 03:06:52 by leothoma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../headers/minishell.h"
 
 char	**get_args(t_token **token)
@@ -22,10 +34,11 @@ char	**get_args(t_token **token)
 	*token = tmp;
 	while (token && (*token) && ((*token)->type != 5))
 	{
-		if ((*token)->type == 1 || (*token)->type == 2 || (*token)->type == 3 || (*token)->type == 4)
+		if ((*token)->type == 1 || (*token)->type == 2
+			|| (*token)->type == 3 || (*token)->type == 4)
 		{
-			is_reddir = 1;	
-			break;
+			is_reddir = 1;
+			break ;
 		}
 		res[i] = ft_strdup((*token)->str);
 		if (!res[i])
@@ -35,8 +48,6 @@ char	**get_args(t_token **token)
 		(*token) = (*token)->next;
 		i++;
 	}
-	// un peu de la magie noir, mais ca alligne le pointeur au prochain cmd pour pouvoir call get_args en boucle et en restant sur le debut du prochain pipe a chaque call
-	// tldr -> sombre
 	if (*token && (*token)->next && is_reddir == 0)
 		(*token) = (*token)->next;
 	res[i] = NULL;
@@ -69,7 +80,7 @@ int	exec_single(t_data *data, char *cmd, char **args)
 			}
 			execve(test1, args, data->env);
 			free(test1);
-			break;
+			break ;
 		}
 		free(test1);
 		i++;
@@ -91,10 +102,10 @@ int	handle_single_builtin(t_exec *vars, t_data *data)
 					data->token->type);
 		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);
 		return (1);
-		//free args and *args++;
 	}
 	return (0);
 }
+
 void	start_children(t_exec *vars, t_data *data)
 {
 	int	i;
@@ -111,7 +122,6 @@ void	start_children(t_exec *vars, t_data *data)
 		if (vars->pid == 0)
 			children_exec(vars, data, i);
 		i++;
-		//free args and *args++;
 	}
 }
 
@@ -137,8 +147,6 @@ void	children_exec(t_exec *vars, t_data *data, int i)
 		close(vars->pipes[vars->xd][0]);
 		close(vars->pipes[vars->xd][1]);
 		vars->xd++;
-		// A FIX PLUS TARD
-		// pour une raison sombre je n'arrive pas a closes les pipes dans une fonction helper, a investiguer
 	}
 	if (vars->is_builtin != 0)
 		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);

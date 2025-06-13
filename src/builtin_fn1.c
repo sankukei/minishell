@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_fn1.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/13 02:14:13 by leothoma          #+#    #+#             */
+/*   Updated: 2025/06/13 02:17:16 by leothoma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../headers/minishell.h"
 
 char	*get_my_env2(t_data *data, char *str)
@@ -57,6 +69,7 @@ void	pwd(int fd)
 	write(fd, path, ft_strlen(path));
 	write(fd, "\n", 1);
 }
+
 void	echo(char **args, int fd)
 {
 	int		backslash;
@@ -87,20 +100,19 @@ void	echo(char **args, int fd)
 	if (!backslash)
 		write(fd, "\n", 1);
 }
+
 void	ft_exit(t_data *data, char **args)
 {
 	if (args[1])
 	{
 		printf("%s\n", "exit");
 		exit_program(data);
-		exit(ft_atoi(args[1]));		
+		exit(ft_atoi(args[1]));
 	}
 	else
 	{
 		printf("%s\n", "exit");
 		exit_program(data);
-		exit(data->last_exit_status);	
+		exit(data->last_exit_status);
 	}
-	// si il n'y a pas d 'args[1] tu exit avec le dernier $? qui tu as TODO
-	// Apres avoir gerer les signaux faire en sort que si on est dans un pipe ca printf pas exit
 }

@@ -35,20 +35,17 @@ void	clear_double_array(char **str)
 	free(str);
 }
 
-
 void	prepare_next_input(t_data *data)
 {
 	if (data->input)
 		free(data->input);
 	if (&data->front_token)
 		clear_struct(&data->front_token);
-	//clear_struct(&data->token);
 }
 
 void	exit_program(t_data *data)
 {
 	free(data->input);
-	//clear_struct(&data->token);
 	clear_struct(&data->front_token);
 	clear_double_array(data->env);
 	free(data);

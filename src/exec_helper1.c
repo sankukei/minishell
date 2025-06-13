@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_helper1.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/13 02:13:53 by leothoma          #+#    #+#             */
+/*   Updated: 2025/06/13 02:20:24 by leothoma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../headers/minishell.h"
 
 int	get_number_of_commands(t_token *token)
@@ -14,11 +26,13 @@ int	get_number_of_commands(t_token *token)
 	i++;
 	return (i);
 }
+
 int	check_if_redir(t_token *token)
 {
 	while (token)
 	{
-		if (token->type == 1 || token->type == 2 || token->type == 3 || token->type == 4)
+		if (token->type == 1 || token->type == 2
+			|| token->type == 3 || token->type == 4)
 			return (1);
 		token = token->next;
 	}
@@ -37,6 +51,7 @@ int	get_cmd_len(t_token *token)
 	}
 	return (i);
 }
+
 void	close_all_pipes(int **pipes, int n)
 {
 	int	i;

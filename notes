@@ -23,3 +23,7 @@ HEREDOC: A faire en peercoding psk je vais toucher au parsing
 TRES TRES TRES IMPORTANT -> A faire dans le parsing, une fonction qui verifie lintegrite de la liste de token, si tout est bien a sa place et que ya pas de dinguerie, je lai deja fait a voir si on le reprends mais je part du principe que je recois une string valide sans dingz, si ya de la dingz dans la string ca EXPLOSE et je vais pas me casser les couilles a gerer toutes les explosion alors quil faut juste mettre un stop a une string degeulasse
 
 (ulimi -n 6 && ./minishell) -> limite le nombre de fd
+
+  //ft_exit
+	// si il n'y a pas d 'args[1] tu exit avec le dernier $? qui tu as TODO
+	// Apres avoir gerer les signaux faire en sort que si on est dans un pipe ca printf pas exit

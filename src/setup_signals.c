@@ -23,7 +23,8 @@ void	handle_sigint(int signum)
 
 void	setup_signals(void)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
+
 	sa.sa_handler = handle_sigint;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;

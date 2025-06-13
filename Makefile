@@ -15,10 +15,13 @@ SRC_DIR = ./src
 OBJ_DIR = ./obj
 SRC = main.c \
       __EXEC_BOOT__.c \
-      parsing_user_input.c \
+      parsing_user_input1.c \
+      parsing_user_input2.c \
+      parsing_user_input3.c \
+      parsing_user_input4.c \
+      parsing_user_input5.c \
       search_list_utils.c \
       string_utils.c \
-      process_token_info.c \
       lexer.c \
       clear_utils.c \
       setup_signals.c \

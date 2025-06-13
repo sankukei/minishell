@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prototypes.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sankukei <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/13 01:26:41 by sankukei         ###   ########.fr       */
+/*   Updated: 2025/06/13 03:13:31 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,23 @@ int	        check_quote_error(t_data *data);
 void		var_env_handler(t_data *data);
 char		*detect_var_env(char *input);
 char        *get_my_env(t_data *data, char *str);
+void	    tokenisation(t_data *data);
+void	    type_tokens(t_data *data);
+int	        check_token_syntax(t_token *head);
+void	    extern_quote_handler(t_data *data);
+void	    affiche_token_test(t_token *token);
+void	    quote_check(t_data *data, int i);
+int	        count_var_len(char *input);
+int	        var_is_in_env(t_data *data, char *var, int len);
+void	    replace_var_env(t_data *data, char *var, int i, int len);
+int	        is_operator(char c);
+int	        is_space(char c);
+char	    *ft_itoa_stack(int n);
+void	    classify_cmd_and_args(t_token *token);
+
+
+
+
 
 
 // parsing tokinsation

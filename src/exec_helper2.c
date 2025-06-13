@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_helper2.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/13 02:13:57 by leothoma          #+#    #+#             */
+/*   Updated: 2025/06/13 02:20:42 by leothoma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../headers/minishell.h"
 
 void	init_exec_variables(t_exec *vars)
@@ -10,6 +22,7 @@ void	init_exec_variables(t_exec *vars)
 	vars->is_builtin = 0;
 	vars->cmd = 0;
 }
+
 void	init_pipes(t_exec *vars)
 {
 	int	i;
@@ -26,6 +39,7 @@ void	init_pipes(t_exec *vars)
 		i++;
 	}
 }
+
 void	close_pipes(t_exec *vars)
 {
 	int	i;
@@ -38,6 +52,7 @@ void	close_pipes(t_exec *vars)
 		i++;
 	}
 }
+
 void	wait_all_childrens(t_exec *vars)
 {
 	while (wait(&vars->status) > 0)
