@@ -20,7 +20,8 @@ SRC = main.c \
       parsing_user_input3.c \
       parsing_user_input4.c \
       parsing_user_input5.c \
-      search_list_utils.c \
+      search_list_utils1.c \
+	  search_list_utils2.c \
       string_utils.c \
       lexer.c \
       clear_utils.c \
@@ -35,6 +36,8 @@ SRC = main.c \
 	  exec_main2.c \
 	  exec_helper1.c \
 	  exec_helper2.c \
+	  get_args_utils.c \
+	  echo_utils.c \
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a

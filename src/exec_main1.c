@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:30 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/13 03:06:52 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/14 05:24:09 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,27 @@
 
 char	**get_args(t_token **token)
 {
-	int		i;
 	int		is_reddir;
+	int		count;
+	int		filled;
 	char	**res;
 	t_token	*tmp;
 
-	i = 0;
-	tmp = *token;
 	is_reddir = 0;
-	while (token && (*token) && ((*token)->type == 6 || (*token)->type == 7))
-	{
-		i++;
-		(*token) = (*token)->next;
-	}
-	res = malloc((i + 1) * sizeof(char *));
+	tmp = *token;
+	count = skip_first_tokens(token);
+	res = alloc_args_array(count + 16);
 	if (!res)
-		return (0);
-	i = 0;
+		return (NULL);
 	*token = tmp;
-	while (token && (*token) && ((*token)->type != 5))
+	filled = fill_args(res, token, &is_reddir);
+	if (filled == -1)
 	{
-		if ((*token)->type == 1 || (*token)->type == 2
-			|| (*token)->type == 3 || (*token)->type == 4)
-		{
-			is_reddir = 1;
-			break ;
-		}
-		res[i] = ft_strdup((*token)->str);
-		if (!res[i])
-		{
-				//call free_arr();
-		}
-		(*token) = (*token)->next;
-		i++;
+		free_arr(res);
+		return (NULL);
 	}
-	if (*token && (*token)->next && is_reddir == 0)
-		(*token) = (*token)->next;
-	res[i] = NULL;
+	if (*token && (*token)->next && !is_reddir)
+		*token = (*token)->next;
 	return (res);
 }
 

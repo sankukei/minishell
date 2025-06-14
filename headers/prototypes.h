@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/13 03:13:31 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/14 05:39:53 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,12 @@ char	    *ft_itoa_stack(int n);
 void	    classify_cmd_and_args(t_token *token);
 
 
-
-
-
-
 // parsing tokinsation
 void		init_token_rules(t_data *data);
 void		init_token_types(t_data *data, char **tokens);
 void		check_token_types(t_data *data, char *str);
 void		split_tokens(t_data *data);
+void	add_token_refacto(t_token **list, char *str);
 
 // struct_utils
 t_token		*find_last_token(t_token *token);
@@ -61,11 +58,9 @@ void		print_list(t_data **data, char const *option);
 void	handle_sigint(int signum);
 void	setup_signals(void);
 
-
 // string_utils
 int     ft_iscapitalise(char c);
 char	*ft_join(int size, char **strs, char *sep);
-
 
 // lexer
 void	lexer(t_data *data, char *str);
@@ -77,30 +72,36 @@ void	exit_program(t_data *data);
 void	clear_double_array(char **str);
 
 // EXEC
-int	__exec_startup__(t_data *data);
 void    cd(char **args);
 void    pwd(int fd);
-char    *get_my_env2(t_data *data, char *str);
 void	ft_exit(t_data *data, char **args);
 void	echo(char **args, int fd);
-int     handle_export_error(t_data *data, char **args);
 void    export(t_data *data, char **args);
-int     count_env_size(char **env);
-int     is_same_var(char *env_entry, char *arg);
-int     var_name_len(char *arg);
 void	unset(t_data *data, char **args);
 void	env(t_data *data);
-char	**chang_args_ls(t_data *data, char **args);
-int	    check_if_builtin(char *str);
-int	    check_if_redir(t_token *token);
-int	    get_fd_from_reddir(char *fd_name, int type);
 void	children_exec(t_exec *vars, t_data *data, int i);
 void	init_exec_variables(t_exec *vars);
-int	    get_number_of_commands(t_token *token);
-int	    handle_single_builtin(t_exec *vars, t_data *data);
 void	init_pipes(t_exec *vars);
 void	start_children(t_exec *vars, t_data *data);
 void	close_pipes(t_exec *vars);
 void	wait_all_childrens(t_exec *vars);
 void	restore_fds(t_exec *vars);
 void	exec_builtin(int selector, char **args, t_data *data, int fd);
+void	free_arr(char **arr);
+int	    __exec_startup__(t_data *data);
+int	    fill_args(char **res, t_token **token, int *is_reddir);
+int     handle_export_error(t_data *data, char **args);
+int     count_env_size(char **env);
+int     is_same_var(char *env_entry, char *arg);
+int     var_name_len(char *arg);
+int	    check_if_builtin(char *str);
+int	    check_if_redir(t_token *token);
+int	    get_fd_from_reddir(char *fd_name, int type);
+int	    get_number_of_commands(t_token *token);
+int	    handle_single_builtin(t_exec *vars, t_data *data);
+int 	skip_first_tokens(t_token **token);
+int	    check_flag(char *arg);
+char    *get_my_env2(t_data *data, char *str);
+char	*join_args(char **args);
+char	**alloc_args_array(int count);
+char	**chang_args_ls(t_data *data, char **args);

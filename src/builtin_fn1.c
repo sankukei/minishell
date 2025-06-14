@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:14:13 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/13 02:17:16 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/14 05:38:28 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,30 +73,23 @@ void	pwd(int fd)
 void	echo(char **args, int fd)
 {
 	int		backslash;
-	int		i;
 	char	*str;
 
-	i = 0;
 	backslash = 0;
-	if (args[1])
-	{
-		args++;
-		if (ft_strncmp(*args, "-n", ft_strlen(*args)) == 0)
-		{
-			backslash = 1;
-			args++;
-		}
-	}
-	else
+	if (!args[1])
 	{
 		write(fd, "\n", 1);
 		return ;
 	}
-	i = 0;
-	while (args[i])
-		i++;
-	str = ft_join(i, args, " ");
-	write(1, str, ft_strlen(str));
+	args++;
+	if (check_flag(*args))
+	{
+		backslash = 1;
+		args++;
+	}
+	str = join_args(args);
+	if (str)
+		write(fd, str, ft_strlen(str));
 	if (!backslash)
 		write(fd, "\n", 1);
 }

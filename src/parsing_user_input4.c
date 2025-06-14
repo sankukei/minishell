@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 03:01:20 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/13 03:13:56 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/14 05:33:16 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,7 @@ int	check_token_syntax(t_token *head)
 	{
 		if (curr->type == PIPE)
 		{
-			if (!curr->next)
-				return (printf("Syntax error: unexpected token '|'\n"), 1);
-			if (curr->next->type == PIPE)
+			if (!curr->next || curr->next->type == PIPE)
 				return (printf("Syntax error: unexpected token '|'\n"), 1);
 		}
 		else if (curr->type == INPUT || curr->type == TRUNC
