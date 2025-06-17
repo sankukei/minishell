@@ -90,11 +90,6 @@ int	handle_single_builtin(t_exec *vars, t_data *data)
 	return (0);
 }
 
-void	free_exec(t_exec *vars)
-{
-	;
-}
-
 void	start_children(t_exec *vars, t_data *data)
 {
 	int	i;
@@ -114,37 +109,6 @@ void	start_children(t_exec *vars, t_data *data)
 	}
 }
 
-
-int		setup_output_pipes(t_exec *vars, int i)
-{
-	if (i != vars->n_command)
-	{
-		close(vars->pipes[i][0]);
-		if (dup2(vars->pipes[i - 1][0], STDOUT_FILENO) == -1)
-		{
-			write(1, "dup2 failed\n", 13);
-			return (0);
-		}
-		close(vars->pipes[i][1]);
-	}
-	return (1);
-}
-
-int		setup_input_pipes(t_exec *vars, int i)
-{
-	if (i != 0)
-	{
-		close(vars->pipes[i - 1][1]);
-		if (dup2(vars->pipes[i - 1][0], STDIN_FILENO) == -1)
-		{
-			write(1, "dup2 failed\n", 13);
-			return (0);
-		}
-		close(vars->pipes[i - 1][0]);
-	}
-	return (1);
-}
-
 void	children_exec(t_exec *vars, t_data *data, int i)
 {
 	if (vars->is_reddir)
@@ -155,13 +119,7 @@ void	children_exec(t_exec *vars, t_data *data, int i)
 		free_exec(vars);
 		exit(1);
 	}
-	i = 0;
-	while (i < vars->n_command - 1)
-	{
-		close(vars->pipes[i][0]);
-		close(vars->pipes[i][1]);
-		i++;
-	}
+	printf("coucou\n");
 	close_pipes(vars);
 	if (vars->is_builtin != 0)
 		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);

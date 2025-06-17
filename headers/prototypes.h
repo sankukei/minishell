@@ -86,7 +86,10 @@ void		wait_all_childrens(t_exec *vars);
 void		restore_fds(t_exec *vars);
 void		exec_builtin(int selector, char **args, t_data *data, int fd);
 void		free_arr(char **arr);
+void		free_exec(t_exec *vars);
 int			__exec_startup__(t_data *data);
+int			setup_output_pipes(t_exec *vars, int i);
+int			setup_input_pipes(t_exec *vars, int i);
 int			fill_args(char **res, t_token **token, int *is_reddir);
 int			handle_export_error(t_data *data, char **args);
 int			count_env_size(char **env);
@@ -103,3 +106,4 @@ char		*get_my_env2(t_data *data, char *str);
 char		*join_args(char **args);
 char		**alloc_args_array(int count);
 char		**chang_args_ls(t_data *data, char **args);
+
