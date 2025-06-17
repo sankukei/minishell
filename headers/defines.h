@@ -12,7 +12,7 @@
 
 #define HEREDOC 1 // <<
 #define APPEND 2 // >>
-#define	INPUT 3 // >
+#define INPUT 3 // >
 #define TRUNC 4 // >
 #define PIPE 5 // |
 #define CMD 6

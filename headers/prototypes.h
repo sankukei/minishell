@@ -17,34 +17,32 @@ void		minishell_launcher(t_data *data);
 void		init(t_data *data, char **envp);
 
 // start parsing
-int		parsing(t_data	*data);
-
+int			parsing(t_data	*data);
 // parsing input
-int	        check_quote_error(t_data *data);
+int			check_quote_error(t_data *data);
 void		var_env_handler(t_data *data);
 char		*detect_var_env(char *input);
-char        *get_my_env(t_data *data, char *str);
-void	    tokenisation(t_data *data);
-void	    type_tokens(t_data *data);
-int	        check_token_syntax(t_token *head);
-void	    extern_quote_handler(t_data *data);
-void	    affiche_token_test(t_token *token);
-void	    quote_check(t_data *data, int i);
-int	        count_var_len(char *input);
-int	        var_is_in_env(t_data *data, char *var, int len);
-void	    replace_var_env(t_data *data, char *var, int i, int len);
-int	        is_operator(char c);
-int	        is_space(char c);
-char	    *ft_itoa_stack(int n);
-void	    classify_cmd_and_args(t_token *token);
-
+char		*get_my_env(t_data *data, char *str);
+void		tokenisation(t_data *data);
+void		type_tokens(t_data *data);
+int			check_token_syntax(t_token *head);
+void		extern_quote_handler(t_data *data);
+void		affiche_token_test(t_token *token);
+void		quote_check(t_data *data, int i);
+int			count_var_len(char *input);
+int			var_is_in_env(t_data *data, char *var, int len);
+void		replace_var_env(t_data *data, char *var, int i, int len);
+int			is_operator(char c);
+int			is_space(char c);
+char		*ft_itoa_stack(int n);
+void		classify_cmd_and_args(t_token *token);
 
 // parsing tokinsation
 void		init_token_rules(t_data *data);
 void		init_token_types(t_data *data, char **tokens);
 void		check_token_types(t_data *data, char *str);
 void		split_tokens(t_data *data);
-void	add_token_refacto(t_token **list, char *str);
+void		add_token_refacto(t_token **list, char *str);
 
 // struct_utils
 t_token		*find_last_token(t_token *token);
@@ -55,53 +53,53 @@ void		add_token_refacto(t_token **list, char *str);
 void		print_list(t_data **data, char const *option);
 
 // setup_signals
-void	handle_sigint(int signum);
-void	setup_signals(void);
+void		handle_sigint(int signum);
+void		setup_signals(void);
 
 // string_utils
-int     ft_iscapitalise(char c);
-char	*ft_join(int size, char **strs, char *sep);
+int			ft_iscapitalise(char c);
+char		*ft_join(int size, char **strs, char *sep);
 
 // lexer
-void	lexer(t_data *data, char *str);
+void		lexer(t_data *data, char *str);
 
 // clear_utils
-void	prepare_next_input(t_data *data);
-void	clear_struct(t_token **tokens);
-void	exit_program(t_data *data);
-void	clear_double_array(char **str);
+void		prepare_next_input(t_data *data);
+void		clear_struct(t_token **tokens);
+void		exit_program(t_data *data);
+void		clear_double_array(char **str);
 
 // EXEC
-void    cd(char **args);
-void    pwd(int fd);
-void	ft_exit(t_data *data, char **args);
-void	echo(char **args, int fd);
-void    export(t_data *data, char **args);
-void	unset(t_data *data, char **args);
-void	env(t_data *data);
-void	children_exec(t_exec *vars, t_data *data, int i);
-void	init_exec_variables(t_exec *vars);
-void	init_pipes(t_exec *vars);
-void	start_children(t_exec *vars, t_data *data);
-void	close_pipes(t_exec *vars);
-void	wait_all_childrens(t_exec *vars);
-void	restore_fds(t_exec *vars);
-void	exec_builtin(int selector, char **args, t_data *data, int fd);
-void	free_arr(char **arr);
-int	    __exec_startup__(t_data *data);
-int	    fill_args(char **res, t_token **token, int *is_reddir);
-int     handle_export_error(t_data *data, char **args);
-int     count_env_size(char **env);
-int     is_same_var(char *env_entry, char *arg);
-int     var_name_len(char *arg);
-int	    check_if_builtin(char *str);
-int	    check_if_redir(t_token *token);
-int	    get_fd_from_reddir(char *fd_name, int type);
-int	    get_number_of_commands(t_token *token);
-int	    handle_single_builtin(t_exec *vars, t_data *data);
-int 	skip_first_tokens(t_token **token);
-int	    check_flag(char *arg);
-char    *get_my_env2(t_data *data, char *str);
-char	*join_args(char **args);
-char	**alloc_args_array(int count);
-char	**chang_args_ls(t_data *data, char **args);
+void		cd(char **args);
+void		pwd(int fd);
+void		ft_exit(t_data *data, char **args);
+void		echo(char **args, int fd);
+void		export(t_data *data, char **args);
+void		unset(t_data *data, char **args);
+void		env(t_data *data);
+void		children_exec(t_exec *vars, t_data *data, int i);
+void		init_exec_variables(t_exec *vars);
+void		init_pipes(t_exec *vars);
+void		start_children(t_exec *vars, t_data *data);
+void		close_pipes(t_exec *vars);
+void		wait_all_childrens(t_exec *vars);
+void		restore_fds(t_exec *vars);
+void		exec_builtin(int selector, char **args, t_data *data, int fd);
+void		free_arr(char **arr);
+int			__exec_startup__(t_data *data);
+int			fill_args(char **res, t_token **token, int *is_reddir);
+int			handle_export_error(t_data *data, char **args);
+int			count_env_size(char **env);
+int			is_same_var(char *env_entry, char *arg);
+int			var_name_len(char *arg);
+int			check_if_builtin(char *str);
+int			check_if_redir(t_token *token);
+int			get_fd_from_reddir(char *fd_name, int type);
+int			get_number_of_commands(t_token *token);
+int			handle_single_builtin(t_exec *vars, t_data *data);
+int			skip_first_tokens(t_token **token);
+int			check_flag(char *arg);
+char		*get_my_env2(t_data *data, char *str);
+char		*join_args(char **args);
+char		**alloc_args_array(int count);
+char		**chang_args_ls(t_data *data, char **args);

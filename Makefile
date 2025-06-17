@@ -23,7 +23,6 @@ SRC = main.c \
       search_list_utils1.c \
 	  search_list_utils2.c \
       string_utils.c \
-      lexer.c \
       clear_utils.c \
       setup_signals.c \
       __EXEC_STARTUP__.c \

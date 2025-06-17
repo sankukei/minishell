@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:30 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/14 05:24:09 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/16 19:45:07 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,11 @@ int	handle_single_builtin(t_exec *vars, t_data *data)
 	return (0);
 }
 
+void	free_exec(t_exec *vars)
+{
+	;
+}
+
 void	start_children(t_exec *vars, t_data *data)
 {
 	int	i;
@@ -109,32 +114,62 @@ void	start_children(t_exec *vars, t_data *data)
 	}
 }
 
+
+int		setup_output_pipes(t_exec *vars, int i)
+{
+	if (i != vars->n_command)
+	{
+		close(vars->pipes[i][0]);
+		if (dup2(vars->pipes[i - 1][0], STDOUT_FILENO) == -1)
+		{
+			write(1, "dup2 failed\n", 13);
+			return (0);
+		}
+		close(vars->pipes[i][1]);
+	}
+	return (1);
+}
+
+int		setup_input_pipes(t_exec *vars, int i)
+{
+	if (i != 0)
+	{
+		close(vars->pipes[i - 1][1]);
+		if (dup2(vars->pipes[i - 1][0], STDIN_FILENO) == -1)
+		{
+			write(1, "dup2 failed\n", 13);
+			return (0);
+		}
+		close(vars->pipes[i - 1][0]);
+	}
+	return (1);
+}
+
 void	children_exec(t_exec *vars, t_data *data, int i)
 {
 	if (vars->is_reddir)
 		vars->fd = get_fd_from_reddir(data->token->next->str,
 				data->token->type);
-	if (i != vars->n_command - 1)
+	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
+	{
+		free_exec(vars);
+		exit(1);
+	}
+	i = 0;
+	while (i < vars->n_command - 1)
 	{
 		close(vars->pipes[i][0]);
-		dup2(vars->pipes[i][1], STDOUT_FILENO);
 		close(vars->pipes[i][1]);
+		i++;
 	}
-	if (i != 0)
-	{
-		close(vars->pipes[i - 1][1]);
-		dup2(vars->pipes[i - 1][0], STDIN_FILENO);
-		close(vars->pipes[i - 1][0]);
-	}
-	while (vars->xd < vars->n_command - 1)
-	{
-		close(vars->pipes[vars->xd][0]);
-		close(vars->pipes[vars->xd][1]);
-		vars->xd++;
-	}
+	close_pipes(vars);
 	if (vars->is_builtin != 0)
 		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);
 	else if (!exec_single(data, vars->cmd, vars->args))
+	{
 		printf("execve failed\n");
+		free_exec(vars);
+		exit(1);
+	}
 	exit(0);
 }

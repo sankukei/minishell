@@ -19,8 +19,9 @@ int	check_flag(char *arg)
 
 char	*join_args(char **args)
 {
-	int		count = 0;
+	int	count;
 
+	count = 0;
 	while (args[count])
 		count++;
 	return (ft_join(count, args, " "));
