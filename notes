@@ -28,4 +28,5 @@ gerer le cas ou on donne un  executable bia le chemin
 
 ->>>>>>>>>>>>>>>>>>>>>
 si il y a un heredoc, je skip toutes les commandes jusquau heredoc et je commence lexec jusque la
+(pas exactement, les commandes doivent avant doivent quand meme etre run, si par exemple "ls > yo | cat << EOF", dans ce cas ls est bien execute apres la resolution du heredoc, et son output est bien redirige dans le fd 'yo', mais le heredoc prevalois malgres tout)
 .__________________

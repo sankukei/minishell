@@ -96,7 +96,7 @@ void	align_pointer(t_token **token)
 		*token = (*token)->next;
 }
 
-int	get_heredoc_input(t_token *token)
+int	write_heredoc_into_fd(t_token *token)
 {
 	char	*input;
 	int	heredoc_fd;
@@ -120,9 +120,7 @@ int	get_heredoc_input(t_token *token)
 
 void	exec_heredoc(int fd)
 {
-//	ssize_t read(int fd, void *buf, size_t count);
-
-	read()
+	//ssize_t read(int fd, void *buf, size_t count);
 }
 
 void	check_for_heredoc(t_token *token)
@@ -133,7 +131,7 @@ void	check_for_heredoc(t_token *token)
 	while (token && token->next)
 	{
 		if (token->next->type == 1)
-			fd = get_heredoc_input(token);
+			fd = write_heredoc_into_fd(token);
 		token = token->next;
 	}
 	if (fd)
