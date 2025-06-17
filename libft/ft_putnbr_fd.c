@@ -36,12 +36,3 @@ void	ft_putnbr_fd(int n, int fd)
 	write(fd, &c, 1);
 }
 
-/*int	main(void)
-{
-	int	fd;
-
-	fd = open("lala", O_WRONLY | O_TRUNC | O_CREAT);
-	ft_putnbr_fd(9999, fd);
-	close(fd);
-	return (0);
-}*/

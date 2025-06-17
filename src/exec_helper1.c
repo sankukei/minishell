@@ -33,7 +33,7 @@ int	check_if_redir(t_token *token)
 	{
 		if (token->type == 1 || token->type == 2
 			|| token->type == 3 || token->type == 4)
-			return (1);
+			return (token->type);
 		token = token->next;
 	}
 	return (0);

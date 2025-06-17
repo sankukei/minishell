@@ -90,6 +90,84 @@ int	handle_single_builtin(t_exec *vars, t_data *data)
 	return (0);
 }
 
+void	align_pointer(t_token **token)
+{
+	while (token && *token && ((*token)->type == 6 || (*token)->type == 7))
+		*token = (*token)->next;
+}
+
+int	get_heredoc_input(t_token *token)
+{
+	char	*input;
+	int	heredoc_fd;
+
+	//TODO: changer les permission pour eviter les prankex en corrections
+	heredoc_fd = open(".heredoc_buffer", O_CREAT | O_WRONLY | O_APPEND, 0644);
+	input = 0;
+	while (1)
+	{
+		input = readline("heredoc> ");
+		if (ft_strncmp(input, token->next->next->str, ft_strlen(token->next->next->str) + 1) == 0)
+			break ;
+		if (ft_strlen(input))
+		{
+			write(heredoc_fd, input, ft_strlen(input));
+			write(heredoc_fd, "\n", 1);
+		}
+	}
+	return (heredoc_fd);
+}
+
+void	exec_heredoc(int fd)
+{
+//	ssize_t read(int fd, void *buf, size_t count);
+
+	read()
+}
+
+void	check_for_heredoc(t_token *token)
+{
+	int	fd;
+
+	fd = 0;
+	while (token && token->next)
+	{
+		if (token->next->type == 1)
+			fd = get_heredoc_input(token);
+		token = token->next;
+	}
+	if (fd)
+		exec_heredoc(fd);
+}
+
+char	**heredoc(t_token *token)
+{
+	char	*input;
+	char	**res;
+	int	i;
+
+	res = malloc(10000);
+	i = 0;
+	input = 0;
+	input = readline("heredoc> ");
+
+	while (1)
+	{
+		if (input)
+			break;
+		if (ft_strlen(input))
+			res[i] = input;
+		i++;
+		if (ft_strncmp(input, token->next->next->str, ft_strlen(token->next->next->str)) == 0)
+		{
+			break ;
+		}
+	}
+	res[i] = 0;
+	align_pointer(&token);
+	printf("heredoc job done\n");
+	return (res);
+}
 void	start_children(t_exec *vars, t_data *data)
 {
 	int	i;
@@ -119,7 +197,6 @@ void	children_exec(t_exec *vars, t_data *data, int i)
 		free_exec(vars);
 		exit(1);
 	}
-	printf("coucou\n");
 	close_pipes(vars);
 	if (vars->is_builtin != 0)
 		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);

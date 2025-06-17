@@ -107,3 +107,12 @@ char		*join_args(char **args);
 char		**alloc_args_array(int count);
 char		**chang_args_ls(t_data *data, char **args);
 
+//gnl
+char	*get_next_line(int fd);
+char	*ft_purge(char *str);
+int		ft_strlen(char *str);
+char	*ft_strjoin(char *s1, char *s2);
+int		ft_check_buffer(char *str);
+char	*ft_fils(char *str, char *r);
+void	*ft_calloc(size_t nmemb, size_t size);
+void	ft_norminette(char *ptr1, int ausecour);

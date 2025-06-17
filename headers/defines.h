@@ -17,3 +17,4 @@
 #define PIPE 5 // |
 #define CMD 6
 #define ARG 7
+#define BUFFER_SIZE 50

@@ -20,6 +20,7 @@ void	init_exec_variables(t_exec *vars)
 	vars->is_reddir = 0;
 	vars->n_command = 0;
 	vars->is_builtin = 0;
+	vars->is_heredoc = 0;
 	vars->cmd = 0;
 }
 
