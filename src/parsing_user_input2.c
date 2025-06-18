@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_user_input2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 03:01:14 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/13 03:02:37 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/18 12:17:32 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ char	*get_my_env(t_data *data, char *str)
 	return (free(str), NULL);
 }
 
+/*a voir si a enlever
 void	var_env_handler(t_data *data)
 {
 	char	*input;
@@ -66,6 +67,41 @@ void	var_env_handler(t_data *data)
 		i++;
 	}
 }
+*/
+
+static void	handle_env_variable(t_data *data, char **input, int i)
+{
+	char	*var;
+	int		len;
+
+	var = detect_var_env(&(*input)[i]);
+	len = count_var_len(&(*input)[i]);
+	if (len == 0)
+		return (free(var));
+	if (var_is_in_env(data, var, len))
+	{
+		var = get_my_env(data, var);
+		replace_var_env(data, var, i, len);
+		free(*input);
+		*input = data->input;
+	}
+}
+
+void	var_env_handler(t_data *data)
+{
+	char	*input;
+	int		i;
+
+	input = data->input;
+	i = 0;
+	while (input[i])
+	{
+		quote_check(data, i);
+		if (input[i] == '$' && data->single_quote != true)
+			handle_env_variable(data, &input, i);
+		i++;
+	}
+}
 
 int	check_quote_error(t_data *data)
 {
@@ -90,12 +126,9 @@ int	check_quote_error(t_data *data)
 	return (0);
 }
 
-int	is_space(char c)
+void	copy_var_name(char *dest, char *src)
 {
-	return (c == ' ' || (c >= 9 && c <= 13));
-}
-
-int	is_operator(char c)
-{
-	return (c == '<' || c == '>' || c == '|');
+	while (*src && *src != ' ' && (ft_isalnum(*src) || *src == '_'))
+		*dest++ = *src++;
+	*dest = '\0';
 }
