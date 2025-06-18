@@ -118,11 +118,6 @@ int	write_heredoc_into_fd(t_token *token)
 	return (heredoc_fd);
 }
 
-void	exec_heredoc(int fd)
-{
-	//ssize_t read(int fd, void *buf, size_t count);
-}
-
 void	check_for_heredoc(t_token *token, t_exec *vars)
 {
 	int	fd;
@@ -138,7 +133,6 @@ void	check_for_heredoc(t_token *token, t_exec *vars)
 	{
 		vars->heredoc_fd = fd;
 		vars->is_heredoc = 1;
-		exec_heredoc(fd);
 	}
 }
 
