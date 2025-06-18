@@ -102,7 +102,9 @@ int	write_heredoc_into_fd(t_token *token)
 	int	heredoc_fd;
 
 	//TODO: changer les permission pour eviter les prankex en corrections
-	heredoc_fd = open(".heredoc_buffer", O_CREAT | O_WRONLY | O_APPEND, 0644);
+	heredoc_fd = open(".heredoc_buffer", O_CREAT | O_RDWR | O_TRUNC, 0644);
+	printf("a) fd -> %d\n", heredoc_fd);
+	// close(heredoc_fd);
 	input = 0;
 	while (1)
 	{
@@ -115,6 +117,8 @@ int	write_heredoc_into_fd(t_token *token)
 			write(heredoc_fd, "\n", 1);
 		}
 	}
+	printf("b) fd -> %d\n", heredoc_fd);
+
 	return (heredoc_fd);
 }
 
