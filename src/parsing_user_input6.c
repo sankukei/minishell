@@ -42,35 +42,35 @@ char	*extract_token(char *str, int *i)
 	return (ft_substr(str, start, *i - start));
 }
 
-// void	tokenisation(t_data *data)
-// {
-// 	int		i;
-// 	char	*token;
-// 	t_token	*list;
+void	tokenisation(t_data *data)
+{
+	int		i;
+	char	*token;
+	t_token	*list;
 
-// 	list = NULL;
-// 	i = 0;
-// 	while (data->input[i])
-// 	{
-// 		while (is_space(data->input[i]))
-// 			i++;
-// 		if (is_operator(data->input[i]))
-// 		{
-// 			if ((data->input[i] == '<' || data->input[i] == '>')
-// 				&& data->input[i] == data->input[i + 1])
-// 				token = ft_substr(data->input, i, 2), i += 2;
-// 			else
-// 				token = ft_substr(data->input, i++, 1);
-// 		}
-// 		else
-// 			token = extract_token(data->input, &i);
-// 		if (token && *token)
-// 			add_token_refacto(&list, token);
-// 		else
-// 			free(token);
-// 	}
-// 	data->token = list;
-// }
+	list = NULL;
+	i = 0;
+	while (data->input[i])
+	{
+		while (is_space(data->input[i]))
+			i++;
+		if (is_operator(data->input[i]))
+		{
+			if ((data->input[i] == '<' || data->input[i] == '>')
+				&& data->input[i] == data->input[i + 1])
+				token = ft_substr(data->input, i, 2), i += 2;
+			else
+				token = ft_substr(data->input, i++, 1);
+		}
+		else
+			token = extract_token(data->input, &i);
+		if (token && *token)
+			add_token_refacto(&list, token);
+		else
+			free(token);
+	}
+	data->token = list;
+}
 
 char	*get_operator_token(char *input, int *i)
 {

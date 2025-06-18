@@ -13,35 +13,36 @@
 #include "../headers/minishell.h"
 #include <limits.h>
 
-/*char	*detect_var_env(char *input)
-{
-	int		len;
-	char	*dest;
-	char	*ptr;
+// me pas enlever pour l instant
+// char	*detect_var_env(char *input)
+// {
+// 	int		len;
+// 	char	*dest;
+// 	char	*ptr;
 
-	input++;
-	ptr = input;
-	len = 0;
-	if (*input == '?')
-	{
-		dest = malloc(sizeof(char) * 2);
-		dest[0] = '?';
-		dest[1] = '\0';
-		return (dest);
-	}
-	while (*input != ' ' && *input != '\0'
-		&& (ft_isalnum(*input) == 1 || *input == '_'))
-	{
-		len++;
-		input++;
-	}
-	dest = malloc(sizeof(char) * len + 1);
-	while (*ptr != ' ' && *ptr != '\0'
-		&& (ft_isalnum(*ptr) == 1 || *ptr == '_'))
-		*dest++ = *ptr++;
-	*dest = '\0';
-	return (dest - len);
-}*/
+// 	input++;
+// 	ptr = input;
+// 	len = 0;
+// 	if (*input == '?')
+// 	{
+// 		dest = malloc(sizeof(char) * 2);
+// 		dest[0] = '?';
+// 		dest[1] = '\0';
+// 		return (dest);
+// 	}
+// 	while (*input != ' ' && *input != '\0'
+// 		&& (ft_isalnum(*input) == 1 || *input == '_'))
+// 	{
+// 		len++;
+// 		input++;
+// 	}
+// 	dest = malloc(sizeof(char) * len + 1);
+// 	while (*ptr != ' ' && *ptr != '\0'
+// 		&& (ft_isalnum(*ptr) == 1 || *ptr == '_'))
+// 		*dest++ = *ptr++;
+// 	*dest = '\0';
+// 	return (dest - len);
+// }
 
 static int	var_len(char *input)
 {

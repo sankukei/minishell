@@ -20,6 +20,7 @@ SRC = main.c \
       parsing_user_input3.c \
       parsing_user_input4.c \
       parsing_user_input5.c \
+      parsing_user_input6.c \
       search_list_utils1.c \
 	  search_list_utils2.c \
       string_utils.c \
