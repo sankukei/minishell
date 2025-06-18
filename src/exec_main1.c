@@ -123,7 +123,7 @@ void	exec_heredoc(int fd)
 	//ssize_t read(int fd, void *buf, size_t count);
 }
 
-void	check_for_heredoc(t_token *token)
+void	check_for_heredoc(t_token *token, t_exec *vars)
 {
 	int	fd;
 
@@ -135,7 +135,11 @@ void	check_for_heredoc(t_token *token)
 		token = token->next;
 	}
 	if (fd)
+	{
+		vars->heredoc_fd = fd;
+		vars->is_heredoc = 1;
 		exec_heredoc(fd);
+	}
 }
 
 char	**heredoc(t_token *token)

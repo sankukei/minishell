@@ -39,18 +39,7 @@ int	check_if_redir(t_token *token)
 	return (0);
 }
 
-int	get_cmd_len(t_token *token)
-{
-	int	i;
 
-	i = 0;
-	while ((token && token->type == 6) || token->type == 7)
-	{
-		i++;
-		token = token->next;
-	}
-	return (i);
-}
 
 void	close_all_pipes(int **pipes, int n)
 {

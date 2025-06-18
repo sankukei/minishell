@@ -18,7 +18,7 @@ int	__exec_startup__(t_data *data)
 
 	vars = malloc(sizeof(t_exec));
 	init_exec_variables(vars);
-	check_for_heredoc(data->token);
+	check_for_heredoc(data->token, vars);
 	vars->n_command = get_number_of_commands(data->token);
 	if (vars->n_command > 100)
 		return (printf("too many commands\n"));

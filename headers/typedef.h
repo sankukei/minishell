@@ -62,6 +62,7 @@ typedef struct s_exec
 	int		n_command;
 	int		**pipes;
 	int		status;
+	int		heredoc_fd;
 	char	*cmd;
 	char	**args;
 }	t_exec;
