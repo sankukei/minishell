@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 03:01:14 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/18 11:03:49 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/18 12:17:32 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,35 +36,38 @@ char	*get_my_env(t_data *data, char *str)
 	}
 	return (free(str), NULL);
 }
-// void	var_env_handler(t_data *data)
-// {
-// 	char	*input;
-// 	char	*var;
-// 	int		i;
-// 	int		len;
 
-// 	input = data->input;
-// 	i = 0;
-// 	while (input[i])
-// 	{
-// 		quote_check(data, i);
-// 		if (input[i] == '$' && data->single_quote != true)
-// 		{
-// 			var = detect_var_env(&input[i]);
-// 			len = count_var_len(&input[i]);
-// 			if (len == 0)
-// 				free(var);
-// 			if (len && var_is_in_env(data, var, len))
-// 			{
-// 				var = get_my_env(data, var);
-// 				replace_var_env(data, var, i, len);
-// 				free(input);
-// 				input = data->input;
-// 			}
-// 		}
-// 		i++;
-// 	}
-// }
+/*a voir si a enlever
+void	var_env_handler(t_data *data)
+{
+	char	*input;
+	char	*var;
+	int		i;
+	int		len;
+
+	input = data->input;
+	i = 0;
+	while (input[i])
+	{
+		quote_check(data, i);
+		if (input[i] == '$' && data->single_quote != true)
+		{
+			var = detect_var_env(&input[i]);
+			len = count_var_len(&input[i]);
+			if (len == 0)
+				free(var);
+			if (len && var_is_in_env(data, var, len))
+			{
+				var = get_my_env(data, var);
+				replace_var_env(data, var, i, len);
+				free(input);
+				input = data->input;
+			}
+		}
+		i++;
+	}
+}
+*/
 
 static void	handle_env_variable(t_data *data, char **input, int i)
 {
@@ -100,8 +103,6 @@ void	var_env_handler(t_data *data)
 	}
 }
 
-
-
 int	check_quote_error(t_data *data)
 {
 	char		*input;
@@ -125,12 +126,9 @@ int	check_quote_error(t_data *data)
 	return (0);
 }
 
-int	is_space(char c)
+void	copy_var_name(char *dest, char *src)
 {
-	return (c == ' ' || (c >= 9 && c <= 13));
-}
-
-int	is_operator(char c)
-{
-	return (c == '<' || c == '>' || c == '|');
+	while (*src && *src != ' ' && (ft_isalnum(*src) || *src == '_'))
+		*dest++ = *src++;
+	*dest = '\0';
 }
