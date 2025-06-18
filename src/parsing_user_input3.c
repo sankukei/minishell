@@ -12,29 +12,6 @@
 
 #include "../headers/minishell.h"
 
-// void	tokenisation(t_data *data)
-// {
-// 	int		i;
-// 	char	*token;
-// 	t_token	*list;
-
-// 	list = NULL;
-// 	i = 0;
-// 	while (data->input[i])
-// 	{
-// 		while (is_space(data->input[i]))
-// 			i++;
-// 		if (is_operator(data->input[i]))
-// 			token = get_operator_token(data->input, &i);
-// 		else
-// 			token = extract_token(data->input, &i);
-// 		if (token && *token)
-// 			add_token_refacto(&list, token);
-// 		else
-// 			free(token);
-// 	}
-// 	data->token = list;
-// }
 
 char	*remove_quote(char *str)
 {
