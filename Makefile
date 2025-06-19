@@ -55,7 +55,7 @@ $(NAME): $(OBJS) $(LIBFT)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@echo "$(YELLOW)Compiling $<...$(RESET)"
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@ || (echo "$(RED)Compilation failed!$(RESET)"; cat ./ascii/prankex; exit 1)
 	@echo "$(GREEN)$< compiled successfully! ✅$(RESET)"
 
 $(OBJ_DIR):

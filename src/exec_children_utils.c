@@ -14,7 +14,7 @@
 
 void	free_exec(t_exec *vars)
 {
-	int	a;
+	int	a
 
 	a = 0;
 }
