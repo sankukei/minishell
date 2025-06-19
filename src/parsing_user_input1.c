@@ -3,15 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_user_input1.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/13 03:03:33 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/18 12:15:06 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 #include <limits.h>
+
+// me pas enlever pour l instant
+// char	*detect_var_env(char *input)
+// {
+// 	int		len;
+// 	char	*dest;
+// 	char	*ptr;
+
+// 	input++;
+// 	ptr = input;
+// 	len = 0;
+// 	if (*input == '?')
+// 	{
+// 		dest = malloc(sizeof(char) * 2);
+// 		dest[0] = '?';
+// 		dest[1] = '\0';
+// 		return (dest);
+// 	}
+// 	while (*input != ' ' && *input != '\0'
+// 		&& (ft_isalnum(*input) == 1 || *input == '_'))
+// 	{
+// 		len++;
+// 		input++;
+// 	}
+// 	dest = malloc(sizeof(char) * len + 1);
+// 	while (*ptr != ' ' && *ptr != '\0'
+// 		&& (ft_isalnum(*ptr) == 1 || *ptr == '_'))
+// 		*dest++ = *ptr++;
+// 	*dest = '\0';
+// 	return (dest - len);
+// }
+
+static int	var_len(char *input)
+{
+	int	len;
+
+	len = 0;
+	while (*input && *input != ' '
+		&& (ft_isalnum(*input) || *input == '_'))
+	{
+		len++;
+		input++;
+	}
+	return (len);
+}
 
 char	*detect_var_env(char *input)
 {
@@ -21,26 +66,21 @@ char	*detect_var_env(char *input)
 
 	input++;
 	ptr = input;
-	len = 0;
 	if (*input == '?')
 	{
-		dest = malloc(sizeof(char) * 2);
+		dest = malloc(2);
+		if (!dest)
+			return (NULL);
 		dest[0] = '?';
 		dest[1] = '\0';
 		return (dest);
 	}
-	while (*input != ' ' && *input != '\0'
-		&& (ft_isalnum(*input) == 1 || *input == '_'))
-	{
-		len++;
-		input++;
-	}
-	dest = malloc(sizeof(char) * len + 1);
-	while (*ptr != ' ' && *ptr != '\0'
-		&& (ft_isalnum(*ptr) == 1 || *ptr == '_'))
-		*dest++ = *ptr++;
-	*dest = '\0';
-	return (dest - len);
+	len = var_len(ptr);
+	dest = malloc(len + 1);
+	if (!dest)
+		return (NULL);
+	copy_var_name(dest, ptr);
+	return (dest);
 }
 
 int	count_var_len(char *input)
