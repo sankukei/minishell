@@ -37,7 +37,6 @@ char	*get_my_env(t_data *data, char *str)
 	return (free(str), NULL);
 }
 
-
 // void	var_env_handler(t_data *data)
 // {
 // 	char	*input;

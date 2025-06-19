@@ -72,48 +72,47 @@ char	*extract_token(char *str, int *i)
 // 	data->token = list;
 // }
 
-static char	*extract_operator(char *input, int *i)
-{
-	char	*token;
+// static char	*extract_operator(char *input, int *i)
+// {
+// 	char	*token;
 
-	if ((input[*i] == '<' || input[*i] == '>')
-		&& input[*i] == input[*i + 1])
-	{
-		token = ft_substr(input, *i, 2);
-		*i += 2;
-	}
-	else
-	{
-		token = ft_substr(input, *i, 1);
-		(*i)++;
-	}
-	return (token);
-}
+// 	if ((input[*i] == '<' || input[*i] == '>')
+// 		&& input[*i] == input[*i + 1])
+// 	{
+// 		token = ft_substr(input, *i, 2);
+// 		*i += 2;
+// 	}
+// 	else
+// 	{
+// 		token = ft_substr(input, *i, 1);
+// 		(*i)++;
+// 	}
+// 	return (token);
+// }
 
-void	tokenisation(t_data *data)
-{
-	int		i;
-	char	*token;
-	t_token	*list;
+// void	tokenisation(t_data *data)
+// {
+// 	int		i;
+// 	char	*token;
+// 	t_token	*list;
 
-	list = NULL;
-	i = 0;
-	while (data->input[i])
-	{
-		while (is_space(data->input[i]))
-			i++;
-		if (is_operator(data->input[i]))
-			token = extract_operator(data->input, &i);
-		else
-			token = extract_token(data->input, &i);
-		if (token && *token)
-			add_token_refacto(&list, token);
-		else
-			free(token);
-	}
-	data->token = list;
-}
-
+// 	list = NULL;
+// 	i = 0;
+// 	while (data->input[i])
+// 	{
+// 		while (is_space(data->input[i]))
+// 			i++;
+// 		if (is_operator(data->input[i]))
+// 			token = extract_operator(data->input, &i);
+// 		else
+// 			token = extract_token(data->input, &i);
+// 		if (token && *token)
+// 			add_token_refacto(&list, token);
+// 		else
+// 			free(token);
+// 	}
+// 	data->token = list;
+// }
 
 char	*get_operator_token(char *input, int *i)
 {

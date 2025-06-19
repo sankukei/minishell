@@ -37,6 +37,9 @@ int			is_space(char c);
 char		*ft_itoa_stack(int n);
 void		classify_cmd_and_args(t_token *token);
 
+char	    *extract_token(char *str, int *i);
+int         skip_quote(char *str, int i);
+
 // parsing tokinsation
 void		init_token_rules(t_data *data);
 void		init_token_types(t_data *data, char **tokens);

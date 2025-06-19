@@ -12,42 +12,103 @@
 
 #include "../headers/minishell.h"
 
+int	count_env_size(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env && env[i])
+		i++;
+	return (i);
+}
+
+// void	unset(t_data *data, char **args)
+// {
+// 	char	**new_env;
+// 	int		i;
+// 	int		j;
+// 	int		k;
+// 	int		skip;
+
+// 	i = 0;
+// 	k = count_env_size(data->env);
+// 	new_env = malloc(sizeof(char *) * (k + 1));
+// 	if (!new_env)
+// 		return ;
+// 	j = 0;
+// 	while (data->env[i])
+// 	{
+// 		skip = 0;
+// 		k = 1;
+// 		while (args[k])
+// 		{
+// 			if (is_same_var(data->env[i], args[k++]))
+// 			{
+// 				skip = 1;
+// 				break ;
+// 			}
+// 		}
+// 		if (!skip)
+// 			new_env[j++] = data->env[i];
+// 		else
+// 			free(data->env[i]);
+// 		i++;
+// 	}
+// 	new_env[j] = NULL;
+// 	free(data->env);
+// 	data->env = new_env;
+// }
+
+static int	should_skip(char *env_var, char **args)
+{
+	int	i;
+
+	i = 1;
+	while (args[i])
+	{
+		if (is_same_var(env_var, args[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static void	copy_filtered_env(char **new_env, char **old_env, char **args, int *j)
+{
+	int	i;
+
+	i = 0;
+	while (old_env[i])
+	{
+		if (should_skip(old_env[i], args))
+			free(old_env[i]);
+		else
+			new_env[(*j)++] = old_env[i];
+		i++;
+	}
+}
+
 void	unset(t_data *data, char **args)
 {
 	char	**new_env;
-	int		i;
+	int		size;
 	int		j;
-	int		k;
-	int		skip;
 
-	i = 0;
-	k = count_env_size(data->env);
-	new_env = malloc(sizeof(char *) * (k + 1));
+	/*
+	 	faire une fonction pour verifier les erreurs
+		notament pour "=" qui efface toutes lenv ??
+	*/
+	size = count_env_size(data->env);
+	new_env = malloc(sizeof(char *) * (size + 1));
 	if (!new_env)
 		return ;
 	j = 0;
-	while (data->env[i])
-	{
-		skip = 0;
-		k = 1;
-		while (args[k])
-		{
-			if (is_same_var(data->env[i], args[k++]))
-			{
-				skip = 1;
-				break ;
-			}
-		}
-		if (!skip)
-			new_env[j++] = data->env[i];
-		else
-			free(data->env[i]);
-		i++;
-	}
+	copy_filtered_env(new_env, data->env, args, &j);
 	new_env[j] = NULL;
 	free(data->env);
 	data->env = new_env;
 }
+
 
 void	env(t_data *data)
 {

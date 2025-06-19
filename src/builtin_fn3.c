@@ -33,20 +33,21 @@ int	is_same_var(char *env_entry, char *arg)
 		return (0);
 	if (ft_strncmp(env_entry, arg, len) != 0)
 		return (0);
-	if (env_entry[len] != '=')
-		return (0);
+	//if (env_entry[len] != '=')
+	//	return (0);
 	return (1);
+	// a theorie craft si on doit com ou pas
 }
 
-int	count_env_size(char **env)
-{
-	int	i;
+// int	count_env_size(char **env)
+// {
+// 	int	i;
 
-	i = 0;
-	while (env && env[i])
-		i++;
-	return (i);
-}
+// 	i = 0;
+// 	while (env && env[i])
+// 		i++;
+// 	return (i);
+// }
 
 int	handle_export_error(t_data *data, char **args)
 {
@@ -75,38 +76,81 @@ int	handle_export_error(t_data *data, char **args)
 	return (0);
 }
 
+// void	export(t_data *data, char **args)
+// {
+// 	char	**new_env;
+// 	int		i;
+// 	int		j;
+// 	int		exist;
+
+// 	if (handle_export_error(data, args))
+// 		return ;
+// 	exist = 0;
+// 	i = count_env_size(data->env);
+// 	new_env = malloc(sizeof(char *) * (i + 2));
+// 	if (!new_env)
+// 		return ;
+// 	j = 0;
+// 	while (j < i)
+// 	{
+// 		if (is_same_var(data->env[j], args[1]))
+// 		{
+// 			free(data->env[j]);
+// 			new_env[j] = ft_strdup(args[1]);
+// 			exist = 1;
+// 		}
+// 		else
+// 			new_env[j] = data->env[j];
+// 		j++;
+// 	}
+// 	if (!exist)
+// 		new_env[j++] = ft_strdup(args[1]);
+// 	new_env[j] = NULL;
+// 	if (!exist)
+// 		free(data->env);
+// 	data->env = new_env;
+// }
+
+static void	copy_env_except_replaced(char **new_env, char **old_env,
+		char *new_var, int *exist)
+{
+	int	i;
+
+	i = 0;
+	while (old_env[i])
+	{
+		if (is_same_var(old_env[i], new_var))
+		{
+			free(old_env[i]);
+			new_env[i] = ft_strdup(new_var);
+			*exist = 1;
+		}
+		else
+			new_env[i] = old_env[i];
+		i++;
+	}
+}
+
 void	export(t_data *data, char **args)
 {
 	char	**new_env;
-	int		i;
+	int		size;
 	int		j;
 	int		exist;
 
 	if (handle_export_error(data, args))
 		return ;
-	exist = 0;
-	i = count_env_size(data->env);
-	new_env = malloc(sizeof(char *) * (i + 2));
+	size = count_env_size(data->env);
+	new_env = malloc(sizeof(char *) * (size + 2));
 	if (!new_env)
 		return ;
-	j = 0;
-	while (j < i)
-	{
-		if (is_same_var(data->env[j], args[1]))
-		{
-			free(data->env[j]);
-			new_env[j] = ft_strdup(args[1]);
-			exist = 1;
-		}
-		else
-			new_env[j] = data->env[j];
-		j++;
-	}
+	exist = 0;
+	copy_env_except_replaced(new_env, data->env, args[1], &exist);
+	j = size;
 	if (!exist)
 		new_env[j++] = ft_strdup(args[1]);
 	new_env[j] = NULL;
 	if (!exist)
 		free(data->env);
 	data->env = new_env;
-	return ;
 }
