@@ -109,4 +109,3 @@ char		*get_my_env2(t_data *data, char *str);
 char		*join_args(char **args);
 char		**alloc_args_array(int count);
 char		**chang_args_ls(t_data *data, char **args);
-

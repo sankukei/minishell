@@ -55,10 +55,9 @@ int	fill_args(char **res, t_token **token, int *is_reddir)
 	int	i;
 
 	i = 0;
-	while (*token && (*token)->type != 5)
+	while (*token && (*token)->type != 5 && (*token)->type != 1)
 	{
-		if ((*token)->type == 1 || (*token)->type == 2
-			|| (*token)->type == 3 || (*token)->type == 4)
+		if ((*token)->type == 2 || (*token)->type == 3 || (*token)->type == 4)
 		{
 			*is_reddir = 1;
 			break ;

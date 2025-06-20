@@ -1,4 +1,4 @@
-  49   │  * types => {
+  4
   50   │  *  1 = INPUT (<);
   51   │  *  2 = HEREDOC (<<);
   52   │  *  3 = TRUNC (>);
@@ -18,12 +18,15 @@ le bash feed un input a wc, de 0 vu que la commande n'a pas fonctionne. A voir a
 
 TRES IMPORTANT: Je check a aucun moment si dup/chdir/close/execve fail, i lfaut proteger les fonctions et preparer une fonctiuon qui remet a neuf la data dans le cas ou ca arrive
 
-HEREDOC: A faire en peercoding psk je vais toucher au parsing
-
-TRES TRES TRES IMPORTANT -> A faire dans le parsing, une fonction qui verifie lintegrite de la liste de token, si tout est bien a sa place et que ya pas de dinguerie, je lai deja fait a voir si on le reprends mais je part du principe que je recois une string valide sans dingz, si ya de la dingz dans la string ca EXPLOSE et je vais pas me casser les couilles a gerer toutes les explosion alors quil faut juste mettre un stop a une string degeulasse
-
 (ulimi -n 6 && ./minishell) -> limite le nombre de fd
 
   //ft_exit
 	// si il n'y a pas d 'args[1] tu exit avec le dernier $? qui tu as TODO
 	// Apres avoir gerer les signaux faire en sort que si on est dans un pipe ca printf pas exit
+
+gerer le cas ou on donne un  executable bia le chemin
+
+->>>>>>>>>>>>>>>>>>>>>
+si il y a un heredoc, je skip toutes les commandes jusquau heredoc et je commence lexec jusque la
+(pas exactement, les commandes doivent avant doivent quand meme etre run, si par exemple "ls > yo | cat << EOF", dans ce cas ls est bien execute apres la resolution du heredoc, et son output est bien redirige dans le fd 'yo', mais le heredoc prevalois malgres tout)
+.__________________
