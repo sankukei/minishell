@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:30 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/16 19:45:07 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/20 22:26:34 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ char	**get_args(t_token **token)
 	}
 	if (*token && (*token)->next && !is_reddir)
 		*token = (*token)->next;
+	int	i =0;
+	while(res[i])
+		printf("get_args -> %s\n", res[i++]);
 	return (res);
 }
 
@@ -46,6 +49,7 @@ int	exec_single(t_data *data, char *cmd, char **args)
 	char	**str;
 	int		i;
 
+	dprintf(STDERR_FILENO, "COUCOU\n");
 	path = ft_split(get_my_env2(data, "PATH"), ':');
 	if (!path)
 		return (0);
@@ -59,9 +63,15 @@ int	exec_single(t_data *data, char *cmd, char **args)
 		{
 			if (ft_strncmp(cmd, "ls", 3) == 0)
 			{
+				printf("YO\n");
 				str = chang_args_ls(data, args);
 				execve(test1, str, data->env);
 			}
+			printf("%s\n", test1);
+			printf("%s\n", args[0]);
+			if (args[1])
+				printf("%s\n", args[1]);
+			printf("%data->env s\n", data->env[0]);
 			execve(test1, args, data->env);
 			free(test1);
 			break ;
@@ -103,8 +113,6 @@ int	write_heredoc_into_fd(t_token *token)
 
 	//TODO: changer les permission pour eviter les prankex en corrections
 	heredoc_fd = open(".heredoc_buffer", O_CREAT | O_RDWR | O_TRUNC, 0644);
-	printf("a) fd -> %d\n", heredoc_fd);
-	// close(heredoc_fd);
 	input = 0;
 	while (1)
 	{
@@ -116,9 +124,10 @@ int	write_heredoc_into_fd(t_token *token)
 			write(heredoc_fd, input, ft_strlen(input));
 			write(heredoc_fd, "\n", 1);
 		}
+		free(input);
 	}
+	free(input);
 	printf("b) fd -> %d\n", heredoc_fd);
-
 	return (heredoc_fd);
 }
 
@@ -190,13 +199,15 @@ void	start_children(t_exec *vars, t_data *data)
 void	children_exec(t_exec *vars, t_data *data, int i)
 {
 	if (vars->is_reddir)
-		vars->fd = get_fd_from_reddir(data->token->next->str,
-				data->token->type);
+		vars->fd = get_fd_from_reddir(data->token->next->str, data->token->type);
 	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
 	{
-		free_exec(vars);
+		write(2, "ZOUZOU\n", 8);
+		// free_exec(vars);
 		exit(1);
 	}
+	write(2, "ZUZU\n", 6);
+
 	close_pipes(vars);
 	if (vars->is_builtin != 0)
 		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);
@@ -206,5 +217,6 @@ void	children_exec(t_exec *vars, t_data *data, int i)
 		free_exec(vars);
 		exit(1);
 	}
+	
 	exit(0);
 }
