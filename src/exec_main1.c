@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:30 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/16 19:45:07 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/21 00:23:16 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,6 @@ int	write_heredoc_into_fd(t_token *token)
 
 	//TODO: changer les permission pour eviter les prankex en corrections
 	heredoc_fd = open(".heredoc_buffer", O_CREAT | O_RDWR | O_TRUNC, 0644);
-	printf("a) fd -> %d\n", heredoc_fd);
-	// close(heredoc_fd);
 	input = 0;
 	while (1)
 	{
@@ -116,9 +114,9 @@ int	write_heredoc_into_fd(t_token *token)
 			write(heredoc_fd, input, ft_strlen(input));
 			write(heredoc_fd, "\n", 1);
 		}
+		free(input);
 	}
-	printf("b) fd -> %d\n", heredoc_fd);
-
+	free(input);
 	return (heredoc_fd);
 }
 
@@ -190,8 +188,7 @@ void	start_children(t_exec *vars, t_data *data)
 void	children_exec(t_exec *vars, t_data *data, int i)
 {
 	if (vars->is_reddir)
-		vars->fd = get_fd_from_reddir(data->token->next->str,
-				data->token->type);
+		vars->fd = get_fd_from_reddir(data->token->next->str, data->token->type);
 	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
 	{
 		free_exec(vars);
@@ -206,5 +203,6 @@ void	children_exec(t_exec *vars, t_data *data, int i)
 		free_exec(vars);
 		exit(1);
 	}
+	
 	exit(0);
 }

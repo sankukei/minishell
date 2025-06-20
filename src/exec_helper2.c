@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:57 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/16 19:42:16 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/20 22:33:30 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ void	init_pipes(t_exec *vars)
 
 	i = 0;
 	n = vars->n_command;
+	if (n == 1 || n == 0)
+	{
+		vars->pipes = 0;
+		return ;
+	}
 	vars->pipes = malloc(n * sizeof(int *));
 	n--;
 	while (n--)
@@ -62,6 +67,8 @@ void	wait_all_childrens(t_exec *vars)
 
 void	restore_fds(t_exec *vars)
 {
+	if (vars->is_heredoc)
+		close(vars->heredoc_fd);
 	close(vars->old_stdin);
 	dup2(vars->old_stdout, STDOUT_FILENO);
 	close(vars->old_stdout);
