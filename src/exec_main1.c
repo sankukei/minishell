@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:30 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/20 22:26:34 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/21 00:23:16 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,6 @@ char	**get_args(t_token **token)
 	}
 	if (*token && (*token)->next && !is_reddir)
 		*token = (*token)->next;
-	int	i =0;
-	while(res[i])
-		printf("get_args -> %s\n", res[i++]);
 	return (res);
 }
 
@@ -49,7 +46,6 @@ int	exec_single(t_data *data, char *cmd, char **args)
 	char	**str;
 	int		i;
 
-	dprintf(STDERR_FILENO, "COUCOU\n");
 	path = ft_split(get_my_env2(data, "PATH"), ':');
 	if (!path)
 		return (0);
@@ -63,15 +59,9 @@ int	exec_single(t_data *data, char *cmd, char **args)
 		{
 			if (ft_strncmp(cmd, "ls", 3) == 0)
 			{
-				printf("YO\n");
 				str = chang_args_ls(data, args);
 				execve(test1, str, data->env);
 			}
-			printf("%s\n", test1);
-			printf("%s\n", args[0]);
-			if (args[1])
-				printf("%s\n", args[1]);
-			printf("%data->env s\n", data->env[0]);
 			execve(test1, args, data->env);
 			free(test1);
 			break ;
@@ -127,7 +117,6 @@ int	write_heredoc_into_fd(t_token *token)
 		free(input);
 	}
 	free(input);
-	printf("b) fd -> %d\n", heredoc_fd);
 	return (heredoc_fd);
 }
 
@@ -202,12 +191,9 @@ void	children_exec(t_exec *vars, t_data *data, int i)
 		vars->fd = get_fd_from_reddir(data->token->next->str, data->token->type);
 	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
 	{
-		write(2, "ZOUZOU\n", 8);
-		// free_exec(vars);
+		free_exec(vars);
 		exit(1);
 	}
-	write(2, "ZUZU\n", 6);
-
 	close_pipes(vars);
 	if (vars->is_builtin != 0)
 		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);

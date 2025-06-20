@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 11:47:46 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/20 22:31:06 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/21 00:24:28 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void	free_exec(t_exec *vars)
 
 int	setup_output_pipes(t_exec *vars, int i)
 {
-	write(2, "setup_output_pipes\n", 20);
-
 	if (i != vars->n_command - 1)
 	{
 		close(vars->pipes[i][0]);
@@ -38,15 +36,11 @@ int	setup_output_pipes(t_exec *vars, int i)
 
 int	setup_input_pipes(t_exec *vars, int i)
 {
-	write(2, "setup_input_pipes\n", 19);
 	if (vars->is_heredoc)
 	{
 		//close(vars->pipes[i - 1][1]);
-		printf("%d\n", vars->is_heredoc);
 		close(vars->heredoc_fd);
 		int fdd = open(".heredoc_buffer", O_RDONLY);
-		printf("c) fd -> %d\n", fdd);
-		fflush(stdout);
 		if (fdd < 0)
 		{
 			write(2, "open failed\n", 13);
@@ -63,8 +57,6 @@ int	setup_input_pipes(t_exec *vars, int i)
 		vars->is_heredoc = 0;
 		if (vars->pipes)
 			close(vars->pipes[i - 1][0]);
-				write(2, "NTM\n", 4);
-
 	}
 	else if (i != 0)
 	{
@@ -76,6 +68,5 @@ int	setup_input_pipes(t_exec *vars, int i)
 		}
 		close(vars->pipes[i - 1][0]);
 	}
-	write(2 , "ZAZA\n", 6);
 	return (1);
 }
