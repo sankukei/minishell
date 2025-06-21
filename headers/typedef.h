@@ -65,6 +65,8 @@ typedef struct s_exec
 	int		heredoc_fd;
 	int		heredoc_index;
 	int		current_pipe_index;
+	int		reddir_fd_type;
 	char	*cmd;
+	char	*reddir_fd_name;
 	char	**args;
 }	t_exec;

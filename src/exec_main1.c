@@ -33,8 +33,16 @@ char	**get_args(t_token **token, t_exec *vars)
 		free_arr(res);
 		return (NULL);
 	}
-	if (*token && (*token)->next && !is_reddir)
+	while((*token) && (*token)->next && (*token)->type != 6)
+	{
+		if ((*token)-> type == APPEND || (*token)->type == TRUNC || (*token)->type == INPUT)
+		{
+			vars->reddir_fd_name = (*token)->next->str;
+			vars->reddir_fd_type = (*token)->type;
+		}
+		//printf("token dans get argss -> %s	\n", (*token)->str);
 		*token = (*token)->next;
+	}
 	return (res);
 }
 
@@ -82,8 +90,8 @@ int	handle_single_builtin(t_exec *vars, t_data *data)
 	{
 		vars->args = get_args(&data->token, vars);
 		if (vars->is_reddir)
-			vars->fd = get_fd_from_reddir(data->token->next->str,
-					data->token->type);
+			vars->fd = get_fd_from_reddir(vars->reddir_fd_name,
+					vars->reddir_fd_type);
 		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);
 		return (1);
 	}
@@ -185,9 +193,9 @@ void	start_children(t_exec *vars, t_data *data)
 		vars->cmd = data->token->str;
 		vars->args = get_args(&data->token, vars);
 
-		// printf("vars->cmd = %s, current_pipe_index = %d, heredoc_index = %d\n", vars->cmd, vars->current_pipe_index, vars->heredoc_index);
-		// printf("vars->is_reddir = %d\n", vars->is_reddir);
-		// printf("vars->is_heredoc= %d\n", vars->is_heredoc);
+		 printf("vars->cmd = %s, current_pipe_index = %d, heredoc_index = %d\n", vars->cmd, vars->current_pipe_index, vars->heredoc_index);
+		 printf("vars->is_reddir = %d\n", vars->is_reddir);
+		 printf("vars->is_heredoc= %d\n", vars->is_heredoc);
 
 		vars->is_builtin = check_if_builtin(vars->cmd);
 		vars->xd = 0;
@@ -201,7 +209,7 @@ void	start_children(t_exec *vars, t_data *data)
 void	children_exec(t_exec *vars, t_data *data, int i)
 {
 	if (vars->is_reddir)
-		vars->fd = get_fd_from_reddir(data->token->next->str, data->token->type);
+		vars->fd = get_fd_from_reddir(vars->reddir_fd_name, vars->reddir_fd_type);
 	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
 	{
 		free_exec(vars);
@@ -216,6 +224,5 @@ void	children_exec(t_exec *vars, t_data *data, int i)
 		free_exec(vars);
 		exit(1);
 	}
-	
 	exit(0);
 }

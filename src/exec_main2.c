@@ -16,6 +16,7 @@ int	get_fd_from_reddir(char *fd_name, int type)
 {
 	int	fd;
 
+	printf("CHECK REDDIR %s, %d\n", fd_name, type);
 	if (type == 4)
 	{
 		fd = open(fd_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);

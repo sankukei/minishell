@@ -50,20 +50,21 @@ char	**alloc_args_array(int count)
 	return (res);
 }
 
-int	fill_args_for_heredoc(char **res, t_token **token)
+int	fill_args_for_heredoc(char **res, t_token **token, int *is_reddir)
 {
 	int	i;
 
 	i = 0;
 	while (*token && (*token)->type != PIPE)
 	{
-		// res[i] = ft_strdup((*token)->str);
-		// if (!res[i])
-		// 	return (-1);
+		if ((*token)->type == APPEND || (*token)->type == INPUT || (*token)->type == TRUNC)
+		{
+			*is_reddir = 1;
+			break ;
+		}
 		*token = (*token)->next;
 		i++;
 	}
-	// res[i] = NULL;
 	return (i);
 }
 
@@ -72,7 +73,7 @@ int	fill_args(char **res, t_token **token, int *is_reddir, t_exec *vars)
 	int	i;
 
 	if (vars->is_heredoc)
-		return (fill_args_for_heredoc(res, token));
+		return (fill_args_for_heredoc(res, token, is_reddir));
 	i = 0;
 	while (*token && (*token)->type != PIPE && (*token)->type != HEREDOC)
 	{
