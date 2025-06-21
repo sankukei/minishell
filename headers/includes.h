@@ -21,3 +21,4 @@
 #include "libft/libft.h"
 #include <sys/wait.h>
 #include <fcntl.h>
+#include <stdbool.h>    // a voir

@@ -104,6 +104,7 @@ int	write_heredoc_into_fd(t_token *token)
 	//TODO: changer les permission pour eviter les prankex en corrections
 	heredoc_fd = open(".heredoc_buffer", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	input = 0;
+	*get_shell_mode() = MODE_HEREDOC;
 	while (1)
 	{
 		input = readline("heredoc> ");
@@ -171,6 +172,7 @@ void	start_children(t_exec *vars, t_data *data)
 	int	i;
 
 	i = 0;
+	*get_shell_mode() = MODE_CHILD;
 	while (i < vars->n_command)
 	{
 		vars->pid = fork();

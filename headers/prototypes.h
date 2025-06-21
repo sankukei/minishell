@@ -58,6 +58,7 @@ void		print_list(t_data **data, char const *option);
 // setup_signals
 void		handle_sigint(int signum);
 void		setup_signals(void);
+t_mode      *get_shell_mode(void);
 
 // string_utils
 int			ft_iscapitalise(char c);

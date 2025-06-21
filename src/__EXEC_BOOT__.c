@@ -19,6 +19,7 @@ void	minishell_launcher(t_data *data)
 	setup_signals();
 	while (1)
 	{
+		*get_shell_mode() = MODE_MAIN;
 		input = readline("minishell> ");
 		if (ft_strlen(input))
 		{

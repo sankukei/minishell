@@ -24,6 +24,14 @@ typedef enum s_type
 	ARG,
 }	t_type;
 
+typedef enum s_mode
+{
+    MODE_MAIN,
+    MODE_HEREDOC,
+    MODE_CHILD,
+    MODE_IGNORE
+}	t_mode;
+
 typedef enum s_boolen
 {
 	false,

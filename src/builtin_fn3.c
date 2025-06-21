@@ -36,7 +36,7 @@ int	is_same_var(char *env_entry, char *arg)
 	//if (env_entry[len] != '=')
 	//	return (0);
 	return (1);
-	// a theorie craft si on doit com ou pas
+	// a theorie craft si on doit com ou pas (je pense qu'on peut l enlever)
 }
 
 // int	count_env_size(char **env)
