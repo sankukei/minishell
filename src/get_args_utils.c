@@ -32,7 +32,7 @@ int	skip_first_tokens(t_token **token)
 	int	count;
 
 	count = 0;
-	while (token && *token && ((*token)->type == 6 || (*token)->type == 7))
+	while (token && *token && ((*token)->type == 1 || (*token)->type == 6 || (*token)->type == 7))
 	{
 		count++;
 		*token = (*token)->next;
@@ -50,14 +50,33 @@ char	**alloc_args_array(int count)
 	return (res);
 }
 
-int	fill_args(char **res, t_token **token, int *is_reddir)
+int	fill_args_for_heredoc(char **res, t_token **token)
 {
 	int	i;
 
 	i = 0;
-	while (*token && (*token)->type != 5 && (*token)->type != 1)
+	while (*token && (*token)->type != PIPE)
 	{
-		if ((*token)->type == 2 || (*token)->type == 3 || (*token)->type == 4)
+		res[i] = ft_strdup((*token)->str);
+		if (!res[i])
+			return (-1);
+		*token = (*token)->next;
+		i++;
+	}
+	res[i] = NULL;
+	return (i);
+}
+
+int	fill_args(char **res, t_token **token, int *is_reddir, int is_heredoc)
+{
+	int	i;
+
+	if (is_heredoc)
+		return (fill_args_for_heredoc(res, token));
+	i = 0;
+	while (*token && (*token)->type != PIPE && (*token)->type != HEREDOC)
+	{
+		if ((*token)->type == APPEND || (*token)->type == INPUT || (*token)->type == TRUNC)
 		{
 			*is_reddir = 1;
 			break ;
@@ -71,3 +90,5 @@ int	fill_args(char **res, t_token **token, int *is_reddir)
 	res[i] = NULL;
 	return (i);
 }
+
+

@@ -6,13 +6,13 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:30 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/21 00:23:16 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/21 01:17:17 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-char	**get_args(t_token **token)
+char	**get_args(t_token **token, t_exec *vars)
 {
 	int		is_reddir;
 	int		count;
@@ -27,7 +27,7 @@ char	**get_args(t_token **token)
 	if (!res)
 		return (NULL);
 	*token = tmp;
-	filled = fill_args(res, token, &is_reddir);
+	filled = fill_args(res, token, &is_reddir, vars->is_heredoc);
 	if (filled == -1)
 	{
 		free_arr(res);
@@ -80,7 +80,7 @@ int	handle_single_builtin(t_exec *vars, t_data *data)
 	vars->is_reddir = check_if_redir(data->token);
 	if (vars->n_command == 1 && vars->is_builtin != 0)
 	{
-		vars->args = get_args(&data->token);
+		vars->args = get_args(&data->token, vars);
 		if (vars->is_reddir)
 			vars->fd = get_fd_from_reddir(data->token->next->str,
 					data->token->type);
@@ -174,9 +174,9 @@ void	start_children(t_exec *vars, t_data *data)
 	while (i < vars->n_command)
 	{
 		vars->pid = fork();
-		vars->cmd = data->token->str;
 		vars->is_reddir = check_if_redir(data->token);
-		vars->args = get_args(&data->token);
+		vars->cmd = data->token->str;
+		vars->args = get_args(&data->token, vars);
 		vars->is_builtin = check_if_builtin(vars->cmd);
 		vars->xd = 0;
 		if (vars->pid == 0)
