@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:30 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/21 01:17:17 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/21 09:32:52 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**get_args(t_token **token, t_exec *vars)
 	if (!res)
 		return (NULL);
 	*token = tmp;
-	filled = fill_args(res, token, &is_reddir, vars->is_heredoc);
+	filled = fill_args(res, token, &is_reddir, vars);
 	if (filled == -1)
 	{
 		free_arr(res);
@@ -123,12 +123,19 @@ int	write_heredoc_into_fd(t_token *token)
 void	check_for_heredoc(t_token *token, t_exec *vars)
 {
 	int	fd;
+	int	i;
 
 	fd = 0;
+	i = 0;
 	while (token && token->next)
 	{
 		if (token->next->type == 1)
+		{
 			fd = write_heredoc_into_fd(token);
+			vars->heredoc_index = i;
+		}
+		if (token->type == 6)
+			i++;
 		token = token->next;
 	}
 	if (fd)
@@ -177,11 +184,17 @@ void	start_children(t_exec *vars, t_data *data)
 		vars->is_reddir = check_if_redir(data->token);
 		vars->cmd = data->token->str;
 		vars->args = get_args(&data->token, vars);
+
+		// printf("vars->cmd = %s, current_pipe_index = %d, heredoc_index = %d\n", vars->cmd, vars->current_pipe_index, vars->heredoc_index);
+		// printf("vars->is_reddir = %d\n", vars->is_reddir);
+		// printf("vars->is_heredoc= %d\n", vars->is_heredoc);
+
 		vars->is_builtin = check_if_builtin(vars->cmd);
 		vars->xd = 0;
 		if (vars->pid == 0)
 			children_exec(vars, data, i);
 		i++;
+		vars->current_pipe_index = i;
 	}
 }
 

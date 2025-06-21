@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/14 05:39:53 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/21 08:57:33 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void		free_exec(t_exec *vars);
 int			__exec_startup__(t_data *data);
 int			setup_output_pipes(t_exec *vars, int i);
 int			setup_input_pipes(t_exec *vars, int i);
-int			fill_args(char **res, t_token **token, int *is_reddir, int is_heredoc);
+int			fill_args(char **res, t_token **token, int *is_reddir, t_exec *vars);
 int			handle_export_error(t_data *data, char **args);
 int			count_env_size(char **env);
 int			is_same_var(char *env_entry, char *arg);

@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 05:19:29 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/14 05:34:38 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/21 09:31:46 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,21 +57,21 @@ int	fill_args_for_heredoc(char **res, t_token **token)
 	i = 0;
 	while (*token && (*token)->type != PIPE)
 	{
-		res[i] = ft_strdup((*token)->str);
-		if (!res[i])
-			return (-1);
+		// res[i] = ft_strdup((*token)->str);
+		// if (!res[i])
+		// 	return (-1);
 		*token = (*token)->next;
 		i++;
 	}
-	res[i] = NULL;
+	// res[i] = NULL;
 	return (i);
 }
 
-int	fill_args(char **res, t_token **token, int *is_reddir, int is_heredoc)
+int	fill_args(char **res, t_token **token, int *is_reddir, t_exec *vars)
 {
 	int	i;
 
-	if (is_heredoc)
+	if (vars->is_heredoc)
 		return (fill_args_for_heredoc(res, token));
 	i = 0;
 	while (*token && (*token)->type != PIPE && (*token)->type != HEREDOC)

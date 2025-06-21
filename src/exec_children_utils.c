@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 11:47:46 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/21 01:09:42 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/21 09:10:57 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	setup_output_pipes(t_exec *vars, int i)
 
 int	setup_input_pipes(t_exec *vars, int i)
 {
-	if (vars->is_heredoc)
+	if (vars->is_heredoc && vars->current_pipe_index == vars->heredoc_index)
 	{
 		close(vars->heredoc_fd);
 		if (vars->pipes)

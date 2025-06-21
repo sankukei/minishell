@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:57 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/20 22:33:30 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/21 09:19:24 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	init_exec_variables(t_exec *vars)
 	vars->is_builtin = 0;
 	vars->is_heredoc = 0;
 	vars->cmd = 0;
+	vars->heredoc_index = 0;
+	vars->current_pipe_index = 0;
 }
 
 void	init_pipes(t_exec *vars)

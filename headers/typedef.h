@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:03:53 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/16 15:19:53 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/21 08:52:30 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ typedef struct s_exec
 	int		**pipes;
 	int		status;
 	int		heredoc_fd;
+	int		heredoc_index;
+	int		current_pipe_index;
 	char	*cmd;
 	char	**args;
 }	t_exec;
