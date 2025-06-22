@@ -12,11 +12,10 @@
 
 #include "../headers/minishell.h"
 
-int	get_fd_from_reddir(char *fd_name, int type)
+int	get_fd_from_reddir(char *fd_name, int type, t_exec *vars)
 {
 	int	fd;
 
-	printf("CHECK REDDIR %s, %d\n", fd_name, type);
 	if (type == 4)
 	{
 		fd = open(fd_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -29,14 +28,16 @@ int	get_fd_from_reddir(char *fd_name, int type)
 		fd = open(fd_name, O_RDONLY);
 		if (fd < 0)
 			exit(1);
-		dup2(fd, 0);
+		else
+			dup2(fd, 0);
 	}
 	else if (type == 2)
 	{
 		fd = open(fd_name, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (fd < 0)
 			exit(1);
-		dup2(fd, 1);
+		else
+			dup2(fd, 1);
 	}
 	return (fd);
 }

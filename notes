@@ -37,5 +37,8 @@ avant -> get_args ne met pas a jour la liste de token a jour proprement avec un 
 maintenant -> ca marche en sortie de heredoc, mais plus en entree ?????
 
 cat << EOF > yo | ls, cas de merde a gerer (tres sombre)
+(ca marche presque, je souspconne un fd non ouvert, a verifier avec valgrind + gdb)
 
 laisser passer dans le parsing << EOF
+
+< minishell cat > f > f | < Makefile cat > e

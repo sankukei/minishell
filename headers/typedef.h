@@ -30,6 +30,33 @@ typedef enum s_boolen
 	true,
 }	t_boolen;
 
+typedef	struct s_values
+{
+	int	n_cmds;
+	int	n_infiles;
+	int	n_outfiles;
+	int	n_heredocs;
+}	t_values;
+
+typedef struct s_redir
+{
+	int	type;
+	char	*target;
+	int	fd;
+	struct s_redir *next;
+}	t_redir;
+
+typedef struct s_cmd
+{
+	char	**cmd;
+	char	**infile;
+	char	**outfile;
+	char	**heredoc;
+	char	**path;
+	t_redir *redirs;
+	struct	s_cmd *next;
+}	t_cmd;
+
 typedef struct s_token
 {
 	char			*str;
@@ -44,6 +71,7 @@ typedef struct s_data
 	t_boolen	double_quote;
 	t_token		*token;
 	t_token		*front_token;
+	t_cmd		*cmd;
 	char		**env;
 	int			test;
 	int			last_exit_status;
@@ -70,3 +98,4 @@ typedef struct s_exec
 	char	*reddir_fd_name;
 	char	**args;
 }	t_exec;
+

@@ -33,6 +33,7 @@ char	**get_args(t_token **token, t_exec *vars)
 		free_arr(res);
 		return (NULL);
 	}
+
 	while((*token) && (*token)->next && (*token)->type != 6)
 	{
 		if ((*token)-> type == APPEND || (*token)->type == TRUNC || (*token)->type == INPUT)
@@ -40,7 +41,6 @@ char	**get_args(t_token **token, t_exec *vars)
 			vars->reddir_fd_name = (*token)->next->str;
 			vars->reddir_fd_type = (*token)->type;
 		}
-		//printf("token dans get argss -> %s	\n", (*token)->str);
 		*token = (*token)->next;
 	}
 	return (res);
@@ -91,7 +91,7 @@ int	handle_single_builtin(t_exec *vars, t_data *data)
 		vars->args = get_args(&data->token, vars);
 		if (vars->is_reddir)
 			vars->fd = get_fd_from_reddir(vars->reddir_fd_name,
-					vars->reddir_fd_type);
+					vars->reddir_fd_type, vars);
 		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);
 		return (1);
 	}
@@ -119,6 +119,7 @@ int	write_heredoc_into_fd(t_token *token)
 			break ;
 		if (ft_strlen(input))
 		{
+			printf("allo ??\n");
 			write(heredoc_fd, input, ft_strlen(input));
 			write(heredoc_fd, "\n", 1);
 		}
@@ -141,16 +142,17 @@ void	check_for_heredoc(t_token *token, t_exec *vars)
 		{
 			fd = write_heredoc_into_fd(token);
 			vars->heredoc_index = i;
+			vars->heredoc_fd = fd;
+			vars->is_heredoc = 1;
 		}
 		if (token->type == 6)
 			i++;
 		token = token->next;
 	}
-	if (fd)
-	{
-		vars->heredoc_fd = fd;
-		vars->is_heredoc = 1;
-	}
+	// if (fd)
+	// {
+
+	// }
 }
 
 char	**heredoc(t_token *token)
@@ -189,6 +191,7 @@ void	start_children(t_exec *vars, t_data *data)
 	while (i < vars->n_command)
 	{
 		vars->pid = fork();
+		printf("N_COMMANDS -> %d, i = %d\n", vars->n_command, i);
 		vars->is_reddir = check_if_redir(data->token);
 		vars->cmd = data->token->str;
 		vars->args = get_args(&data->token, vars);
@@ -209,13 +212,13 @@ void	start_children(t_exec *vars, t_data *data)
 void	children_exec(t_exec *vars, t_data *data, int i)
 {
 	if (vars->is_reddir)
-		vars->fd = get_fd_from_reddir(vars->reddir_fd_name, vars->reddir_fd_type);
-	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
+		vars->fd = get_fd_from_reddir(vars->reddir_fd_name, vars->reddir_fd_type, vars);
+	else if(!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
 	{
 		free_exec(vars);
 		exit(1);
 	}
-	close_pipes(vars);
+	// close_pipes(vars);
 	if (vars->is_builtin != 0)
 		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);
 	else if (!exec_single(data, vars->cmd, vars->args))

@@ -29,13 +29,13 @@ int	get_number_of_commands(t_token *token)
 
 int	check_if_redir(t_token *token)
 {
-	while (token)
+	while (token && token->type != PIPE)
 	{
 		if (token->type == 2
 			|| token->type == 3 || token->type == 4)
 			return (token->type);
 		token = token->next;
-	}
+	}	
 	return (0);
 }
 

@@ -14,14 +14,18 @@
 
 int	main(int ac, char **av, char **envp)
 {
-	t_data	*data;
+	t_data		*data;
+	t_cmd		*cmds;
 
 	data = (t_data *)malloc(sizeof(t_data));
+	cmds = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!data)
+		return (1);
+	if (!cmds)
 		return (1);
 	(void)ac;
 	(void)av;
 	init(data, envp);
-	minishell_launcher(data);
+	minishell_launcher(data, cmds);
 	return (0);
 }

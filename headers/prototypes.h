@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 // main
-void		minishell_launcher(t_data *data);
+void		minishell_launcher(t_data *data, t_cmd *cmd);
 
 // init
 void		init(t_data *data, char **envp);
@@ -97,7 +97,7 @@ int			is_same_var(char *env_entry, char *arg);
 int			var_name_len(char *arg);
 int			check_if_builtin(char *str);
 int			check_if_redir(t_token *token);
-int			get_fd_from_reddir(char *fd_name, int type);
+int			get_fd_from_reddir(char *fd_name, int type, t_exec *vars);
 int			get_number_of_commands(t_token *token);
 int			handle_single_builtin(t_exec *vars, t_data *data);
 int			skip_first_tokens(t_token **token);
@@ -106,3 +106,4 @@ char		*get_my_env2(t_data *data, char *str);
 char		*join_args(char **args);
 char		**alloc_args_array(int count);
 char		**chang_args_ls(t_data *data, char **args);
+void		parser(t_data *data, t_cmd *cmd_list);

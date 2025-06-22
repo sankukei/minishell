@@ -12,7 +12,7 @@
 
 #include "../headers/minishell.h"
 
-void	minishell_launcher(t_data *data)
+void	minishell_launcher(t_data *data, t_cmd *cmd)
 {
 	char	*input;
 
@@ -29,6 +29,7 @@ void	minishell_launcher(t_data *data)
 				prepare_next_input(data);
 				continue ;
 			}
+			parser(data, cmd);
 			__exec_startup__(data);
 			prepare_next_input(data);
 		}

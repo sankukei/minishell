@@ -31,3 +31,9 @@ int	__exec_startup__(t_data *data)
 	restore_fds(vars);
 	return (0);
 }
+
+/*int	new_exec_startup(t_data *data){
+
+	vars = malloc(sizeof(t_exec));
+	init_exec_variables(vars);
+}*/

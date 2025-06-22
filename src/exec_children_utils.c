@@ -61,6 +61,8 @@ int	setup_input_pipes(t_exec *vars, int i)
 	}
 	else if (i != 0)
 	{
+		if (vars->is_heredoc)
+			close(vars->heredoc_fd);
 		close(vars->pipes[i - 1][1]);
 		if (dup2(vars->pipes[i - 1][0], STDIN_FILENO) == -1)
 		{

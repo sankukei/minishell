@@ -45,6 +45,7 @@ char	**alloc_args_array(int count)
 	char	**res;
 
 	res = malloc((count + 1) * sizeof(char *));
+	memset(res, 0, count + 1);
 	if (!res)
 		return (NULL);
 	return (res);

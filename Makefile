@@ -39,6 +39,7 @@ SRC = main.c \
 	  get_args_utils.c \
 	  echo_utils.c \
 	  exec_children_utils.c \
+	  parser.c \
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a

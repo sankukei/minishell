@@ -55,6 +55,7 @@ char	*ft_join(int size, char **strs, char *sep)
 	flen = len(size, strs) + lsep;
 	i = 0;
 	res = malloc(flen * sizeof(char));
+	memset(res, 0, flen);
 	if (!res)
 		return (res = NULL);
 	while (i < size)
