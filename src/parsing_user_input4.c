@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 03:01:20 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/23 19:32:20 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/23 19:38:01 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	classify_cmd_and_args(t_token *token)
 	while (token)
 	{
 		if (prev_type == INPUT)
-				token->type = 8;
+				token->type = FD;
 		if (token->type == -1)
 		{
 			if (expect_cmd)
@@ -67,7 +67,7 @@ void	classify_cmd_and_args(t_token *token)
 				expect_cmd = false;
 			}
 			else if ((prev_type >= HEREDOC && prev_type <= TRUNC))
-				token->type = 8;
+				token->type = FD;
 			else
 				token->type = ARG;
 		}
