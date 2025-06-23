@@ -28,14 +28,6 @@ char	**fill_cmds(t_token *token)
 	return (res);
 }
 
-void	init_values(t_values *vals)
-{
-	vals->n_cmds = 0;
-	vals->n_infiles = 0;
-	vals->n_outfiles = 0;
-	vals->n_heredocs = 0;
-}
-
 void	extract_based_on_types(char *token_name, int token_type)
 {
 //	if (token_type == HEREDOC)
@@ -65,12 +57,26 @@ void	parser(t_data *data, t_cmd *cmd_list)
 {
 	t_values	*vals;
 	
-	init_values(vals);
 	//split_tokens_into_pipelines(data);
 	extract_redirs(data->token);
-	extract_values(data->token, cmd_list);
+//	extract_cmds(data->token, cmd_list);
+
 	cmd_list->cmd = fill_cmds(data->token);
 }
+
+/* parser -> *data & des commandes pipeline
+ *	traite chaque cmd et les assemble pour donner facilement a l'exec
+ *
+ *	return value: char** (cmd+arg)
+ *		      une struc qui reprensente toutes les redirection si il y en a
+ *		      les path (a voir)
+ *		      TOUT ca dans une structure qui contient tout ces types
+ *
+ *
+ *
+ *
+ *
+ * */
 
 /*
 int	fill_args(char **res, t_token **token, int *is_reddir, t_exec *vars)

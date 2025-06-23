@@ -49,9 +49,6 @@ typedef struct s_redir
 typedef struct s_cmd
 {
 	char	**cmd;
-	char	**infile;
-	char	**outfile;
-	char	**heredoc;
 	char	**path;
 	t_redir *redirs;
 	struct	s_cmd *next;
