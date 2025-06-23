@@ -141,9 +141,12 @@ void	extract_cmds(t_token *token, t_cmd *cmd_list)
 	}
 }
 
-void	avance_pointer(t_token **token)
+void	advance_pointer(t_token **token)
 {
-	while ((*token) && (*token))
+	while ((*token) && (*token)->type != PIPE)
+		(*token) = (*token)->next;
+	if ((*token)->next)
+		(*token) = (*token)->next;
 }
 
 void	parser(t_data *data, t_cmd *cmd_list)
