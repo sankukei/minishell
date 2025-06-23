@@ -16,6 +16,7 @@ int	main(int ac, char **av, char **envp)
 {
 	t_data		*data;
 	t_cmd		*cmds;
+	//t_redir		*redir_list;
 
 	data = (t_data *)malloc(sizeof(t_data));
 	cmds = (t_cmd *)malloc(sizeof(t_cmd));

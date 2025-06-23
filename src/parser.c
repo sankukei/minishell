@@ -45,23 +45,114 @@ void	extract_values(t_token *token, t_cmd *cmd_list)
 	}
 }
 
-void	extract_redirs(t_token *token)
+int	check_for_redirs(int type)
 {
+	if (type == 2 || type == 3 || type == 4)
+		return (1);
+	return (0);
+}
+
+int	check_for_cmds(int type)
+{
+	if (type == 6 || type == 7)
+		 return (1);
+	return (0);
+}
+
+void	add_redir_list(t_token *token, t_redir **redir_list)
+{
+	t_redir	*new;
+	t_redir *tmp;
+
+	new = malloc(sizeof(t_redir));
+	if (!new)
+		return ;
+	new->target = token->next->str;
+	new->type = token->type;
+	if (!*redir_list)
+		*redir_list = new;
+	else
+	{
+		tmp = *redir_list;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+}
+
+
+void	save_redir_info(t_token *token, t_cmd *cmd_list)
+{
+	add_redir_list(token, &cmd_list->redirs);
+}
+
+int	get_n_command(t_token *token)
+{
+	int	i;
+
+	i = 0;
 	while (token)
 	{
-		;
+		if (token->type == 6 || token->type == 7)
+			i++;
+		token = token->next;
 	}
+	return (i);
+}
+
+void	save_cmds_info(t_token *token, t_cmd *cmd_list)
+{
+	int	n_command;
+	int	i;
+
+	i = 0;
+	n_command = get_n_command(token);
+	cmd_list->cmd = malloc(sizeof(char *) * n_command + 1);
+	while (token)
+	{
+		if (token->type == 6 || token->type == 7)
+		{
+			cmd_list->cmd[i] = ft_strdup(token->str);	
+			i++;
+		}
+		token = token->next;
+	}
+	cmd_list->cmd[i] = 0;
+}
+
+
+void	extract_redirs(t_token *token, t_cmd *cmd_list)
+{
+	while (token && token->type != PIPE)
+	{
+		if (check_for_redirs(token->type))
+			save_redir_info(token, cmd_list);
+		token = token->next;	
+	}
+}
+
+void	extract_cmds(t_token *token, t_cmd *cmd_list)
+{
+	while (token && token->type != PIPE)
+	{
+		if (check_for_cmds(token->type))
+			save_cmds_info(token, cmd_list);
+		token = token->next;	
+	}
+}
+
+void	avance_pointer(t_token **token)
+{
+	while ((*token) && (*token))
 }
 
 void	parser(t_data *data, t_cmd *cmd_list)
 {
-	t_values	*vals;
-	
-	//split_tokens_into_pipelines(data);
-	extract_redirs(data->token);
-//	extract_cmds(data->token, cmd_list);
+	t_values	*vals;	
 
-	cmd_list->cmd = fill_cmds(data->token);
+	extract_redirs(data->token, cmd_list);
+	extract_cmds(data->token, cmd_list);
+	advance_pointer(&data->token);
 }
 
 /* parser -> *data & des commandes pipeline
