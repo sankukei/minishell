@@ -34,7 +34,7 @@ int	__exec_startup__(t_data *data)
 
 int	check_if_redir(t_cmd *commands)
 {
-	return (commands->redirs);
+//	return (commands->redirs);
 	// while (token && token->type != PIPE)
 	// {
 	// 	if (token->type == 2
@@ -42,7 +42,7 @@ int	check_if_redir(t_cmd *commands)
 	// 		return (token->type);
 	// 	token = token->next;
 	// }	
-	// return (0);
+	return (0);
 }
 
 void	handle_redir(t_redir *redir)
@@ -75,7 +75,7 @@ int	detect_fd_flag(char *fd_name, int type)
 	return (fd);
 }
 
-int	handle_single_builtin(t_exec *vars, t_cmd *commands)
+int	handle_single_builtin_new(t_exec *vars, t_cmd *commands)
 {	
 	if (!(check_if_builtin(commands->cmd[0] && commands->redirs)))
 		return (1);
@@ -83,7 +83,7 @@ int	handle_single_builtin(t_exec *vars, t_cmd *commands)
 	return (0);
 }
 
-int	__exec_startup__(t_data *data)
+int	__exec_startup_new__(t_data *data)
 {
 	t_exec	*vars;
 	t_cmd	*commands;
