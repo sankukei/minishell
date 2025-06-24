@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:04:03 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/04 23:51:32 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/23 23:17:18 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	minishell_launcher(t_data *data, t_cmd *cmd)
 			}
 			parser(data, cmd);
 			__exec_startup__(data);
-			prepare_next_input(data);
+			//prepare_next_input(data);
 		}
 	}
 }

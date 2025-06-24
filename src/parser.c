@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:40:00 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/22 17:40:01 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/23 23:17:02 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	extract_values(t_token *token, t_cmd *cmd_list)
 
 int	check_for_redirs(int type)
 {
-	if (type == 2 || type == 3 || type == 4)
+	if (type == 1 || type == 2 || type == 3 || type == 4)
 		return (1);
 	return (0);
 }
@@ -69,6 +69,7 @@ void	add_redir_list(t_token *token, t_redir **redir_list)
 		return ;
 	new->target = token->next->str;
 	new->type = token->type;
+	new->next = NULL;
 	if (!*redir_list)
 		*redir_list = new;
 	else
@@ -108,11 +109,11 @@ void	save_cmds_info(t_token *token, t_cmd *cmd_list)
 	i = 0;
 	n_command = get_n_command(token);
 	cmd_list->cmd = malloc(sizeof(char *) * n_command + 1);
-	while (token)
+	while (token && token->type != PIPE)
 	{
 		if (token->type == 6 || token->type == 7)
 		{
-			cmd_list->cmd[i] = ft_strdup(token->str);	
+			cmd_list->cmd[i] = ft_strdup(token->str);
 			i++;
 		}
 		token = token->next;
@@ -152,10 +153,21 @@ void	advance_pointer(t_token **token)
 void	parser(t_data *data, t_cmd *cmd_list)
 {
 	t_values	*vals;	
-
+	// save_redir_info(data->token, cmd_list);
 	extract_redirs(data->token, cmd_list);
-	extract_cmds(data->token, cmd_list);
-	advance_pointer(&data->token);
+	save_cmds_info(data->token, cmd_list);
+	// extract_cmds(data->token, cmd_list);
+	//advance_pointer(&data->token);
+		// int	i = 0;
+
+		// while (cmd_list->redirs)
+		// {
+		// 	printf("%s\n", cmd_list->redirs->target);
+		// 	cmd_list->redirs = cmd_list->redirs->next;
+		// }
+
+
+
 }
 
 /* parser -> *data & des commandes pipeline
