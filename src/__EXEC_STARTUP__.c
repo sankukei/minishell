@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/24 03:18:39 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/24 03:38:21 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,16 @@ int	check_if_redir(t_cmd *commands)
 
 void	handle_redir(t_redir *redir)
 {
-	
+	int	fd;
 	while (redir)
 	{
-		detect_fd_flag()
+		fd = detect_fd_flag(redir->target, redir->type);
+		if (redir->next && redir->type == 4 && redir->type == 2)
+			close(fd);
 		redir = redir->next;
 	}
 }
-int	detect_fd_flag(char *fd_name, int type, t_exec *vars)
+int	detect_fd_flag(char *fd_name, int type)
 {
 	int	fd;
 
@@ -62,24 +64,13 @@ int	detect_fd_flag(char *fd_name, int type, t_exec *vars)
 	{
 		fd = open(fd_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
-			exit(1);
-		dup2(fd, 1);
-	}
-	else if (type == 3)
-	{
-		fd = open(fd_name, O_RDONLY);
-		if (fd < 0)
-			exit(1);
-		else
-			dup2(fd, 0);
+			return (0);
 	}
 	else if (type == 2)
 	{
 		fd = open(fd_name, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (fd < 0)
-			exit(1);
-		else
-			dup2(fd, 1);
+			return (0);
 	}
 	return (fd);
 }
