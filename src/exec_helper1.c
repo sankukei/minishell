@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_helper1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:53 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/13 02:20:24 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/24 03:02:13 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,7 @@ int	get_number_of_commands(t_token *token)
 	return (i);
 }
 
-int	check_if_redir(t_token *token)
-{
-	while (token && token->type != PIPE)
-	{
-		if (token->type == 2
-			|| token->type == 3 || token->type == 4)
-			return (token->type);
-		token = token->next;
-	}	
-	return (0);
-}
+
 
 void	close_all_pipes(int **pipes, int n)
 {
