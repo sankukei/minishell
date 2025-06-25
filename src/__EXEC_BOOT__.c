@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   __EXEC_BOOT__.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:04:03 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/23 23:17:18 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/25 00:13:06 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	minishell_launcher(t_data *data, t_cmd *cmd)
 				continue ;
 			}
 			parser(data, cmd);
-			__exec_startup__(data);
+			__exec_startup__(data, cmd);
 			//prepare_next_input(data);
 		}
 	}

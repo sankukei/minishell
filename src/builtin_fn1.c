@@ -65,6 +65,7 @@ void	pwd(int fd)
 {
 	char	*path;
 
+	printf("fd %d\n", fd);
 	path = getcwd(NULL, 0);
 	write(fd, path, ft_strlen(path));
 	write(fd, "\n", 1);

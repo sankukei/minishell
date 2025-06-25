@@ -44,6 +44,7 @@ int	get_fd_from_reddir(char *fd_name, int type, t_exec *vars)
 
 void	exec_builtin(int selector, char **args, t_data *data, int fd)
 {
+	printf("%d\n", selector);
 	if (selector == 1)
 		echo(args, fd);
 	else if (selector == 2)

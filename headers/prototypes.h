@@ -87,7 +87,7 @@ void		restore_fds(t_exec *vars);
 void		exec_builtin(int selector, char **args, t_data *data, int fd);
 void		free_arr(char **arr);
 void		free_exec(t_exec *vars);
-int			__exec_startup__(t_data *data);
+int			__exec_startup__(t_data *data, t_cmd *cmds);
 int			setup_output_pipes(t_exec *vars, int i);
 int			setup_input_pipes(t_exec *vars, int i);
 int			fill_args(char **res, t_token **token, int *is_reddir, t_exec *vars);
