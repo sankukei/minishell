@@ -50,14 +50,14 @@ char	*ft_join(int size, char **strs, char *sep)
 	int		lsep;
 
 	if (size == 0)
-		return (res = "");
+		return (0);
 	lsep = (ft_strlen(sep) * size - 1);
 	flen = len(size, strs) + lsep;
 	i = 0;
-	res = malloc(flen * sizeof(char));
-	memset(res, 0, flen);
+	res = malloc((flen * sizeof(char)) + 1);
+	memset(res, 0, flen + 1);
 	if (!res)
-		return (res = NULL);
+		return (0);
 	while (i < size)
 	{
 		if (ft_strlen(strs[i]) != 0)
@@ -66,5 +66,6 @@ char	*ft_join(int size, char **strs, char *sep)
 			ft_strcat(res, sep);
 		i++;
 	}
+	res[flen + 1] = 0;
 	return (res);
 }
