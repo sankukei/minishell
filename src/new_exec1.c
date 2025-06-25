@@ -58,9 +58,7 @@ int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
 
 	fd = 1;
 	if (!(check_if_builtin(commands->cmd[0]) && commands && commands->cmd))
-		return (1);
-	printf("yoo\n");
-	fflush(stdout);
+		return (0);
 	handle_redir(commands->redirs);
 	if (commands->redirs)
 		fd = commands->redirs->fd;
@@ -68,14 +66,25 @@ int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
 	return (1);
 }
 
-void	children_exec_new(t_exec *vars)
+void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 {
-	
-	printf("dans children_exec\n");
-	exit(1);
+	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
+	{
+		free_exec(vars);
+		exit(1);
+	}
+	if (check_if_builtin(cmds->cmd[0]))
+		exec_builtin(check_if_builtin(cmds->cmd[0]), cmds->cmd, data, cmds->redirs->fd);
+	else if (!(exec_single(data, cmds->cmd[0]), cmds->cmd))
+	{
+		printf("execve failed\n");
+		free_exec(vars);
+		exit(1);
+	}
+	exit(0);
 }
 
-void	start_children_new(t_exec *vars)
+void	start_children_new(t_exec *vars, t_data *data, t_cmd *cmds)
 {
 	int	i;
 
@@ -84,13 +93,15 @@ void	start_children_new(t_exec *vars)
 	{
 		vars->pid = fork();
 		if (vars->pid == 0)
-			children_exec_new(vars);
+			children_exec_new(vars, data, i, cmds);
 		i++;
 	}
 }
 
 int	__exec_startup__(t_data *data, t_cmd *cmds)
 {
+	//il faut preparer le nouvel input et free tout ce merdier entre chaque call
+	//fix le fd dans single_builtin, mettre cmds->redir->fd a la place	
 	t_exec	*vars;
 	t_cmd	*commands;
 
@@ -102,7 +113,7 @@ int	__exec_startup__(t_data *data, t_cmd *cmds)
 		if (handle_single_builtin_new(vars, commands, data))
 			return (1);
 	init_pipes(vars);
-	start_children_new(vars);
+	start_children_new(vars, data, cmds);
 	close_pipes(vars);
 	wait_all_childrens(vars);
 	restore_fds(vars);

@@ -36,33 +36,8 @@ int	setup_output_pipes(t_exec *vars, int i)
 
 int	setup_input_pipes(t_exec *vars, int i)
 {
-	if (vars->is_heredoc && vars->current_pipe_index == vars->heredoc_index)
+	if (i != 0)
 	{
-		close(vars->heredoc_fd);
-		if (vars->pipes)
-			close(vars->pipes[i - 1][1]);
-		int fdd = open(".heredoc_buffer", O_RDONLY);
-		if (fdd < 0)
-		{
-			write(2, "open failed\n", 13);
-			perror("open .heredoc_buffer");
-		}
-		if (dup2(fdd, STDIN_FILENO) == - 1)
-		{
-			write(2, "dup2 failed\n", 13);
-			close(fdd);
-			return (0);
-		}
-		//rediriger le stdin de la commande qui contient le heredoc par le fd dans lequel on write la data du heredoc
-		close(fdd);
-		vars->is_heredoc = 0;
-		// if (vars->pipes)
-		// 	close(vars->pipes[i - 1][0]);
-	}
-	else if (i != 0)
-	{
-		if (vars->is_heredoc)
-			close(vars->heredoc_fd);
 		close(vars->pipes[i - 1][1]);
 		if (dup2(vars->pipes[i - 1][0], STDIN_FILENO) == -1)
 		{
