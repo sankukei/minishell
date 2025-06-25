@@ -5,16 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/14 02:04:03 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/25 00:13:06 by leothoma         ###   ########.fr       */
+/*   Created: 2025/06/25 00:13:06 by leothoma          #+#    #+#             */
+/*   Updated: 2025/06/25 22:48:33 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-void	minishell_launcher(t_data *data, t_cmd *cmd)
+void	minishell_launcher(t_data *data)
 {
 	char	*input;
+	t_cmd		*cmds;
 
 	setup_signals();
 	while (1)
@@ -24,14 +25,16 @@ void	minishell_launcher(t_data *data, t_cmd *cmd)
 		{
 			data->input = input;
 			add_history(input);
+			cmds = (t_cmd *)malloc(sizeof(t_cmd));
 			if (parsing(data))
 			{
-				prepare_next_input(data);
+				prepare_next_input(data, &cmds);
 				continue ;
 			}
-			parser(data, cmd);
-			__exec_startup__(data, cmd);
-			//prepare_next_input(data);
+			parser(data, cmds);
+			data->cmd = cmds;
+			__exec_startup__(data, cmds);
+			prepare_next_input(data, &data->cmd);
 		}
 	}
 }

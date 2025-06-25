@@ -156,6 +156,7 @@ void	parser(t_data *data, t_cmd *cmd_list)
 	// save_redir_info(data->token, cmd_list);
 	extract_redirs(data->token, cmd_list);
 	save_cmds_info(data->token, cmd_list);
+	advance_pointer(&data->token);
 	// extract_cmds(data->token, cmd_list);
 	//advance_pointer(&data->token);
 		// int	i = 0;

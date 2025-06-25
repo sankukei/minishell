@@ -106,7 +106,7 @@ int	__exec_startup__(t_data *data, t_cmd *cmds)
 	t_cmd	*commands;
 
 	vars = malloc(sizeof(t_exec));
-	commands = cmds;
+	commands = data->cmd;
 	//check_for_heredoc(commands);
 	vars->n_command = get_number_of_commands(data->token);
 	if (vars->n_command == 1)

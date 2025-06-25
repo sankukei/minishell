@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 // main
-void		minishell_launcher(t_data *data, t_cmd *cmd);
+void		minishell_launcher(t_data *data);
 
 // init
 void		init(t_data *data, char **envp);
@@ -64,7 +64,7 @@ char		*ft_join(int size, char **strs, char *sep);
 void		lexer(t_data *data, char *str);
 
 // clear_utils
-void		prepare_next_input(t_data *data);
+void		prepare_next_input(t_data *data, t_cmd **cmd);
 void		clear_struct(t_token **tokens);
 void		exit_program(t_data *data);
 void		clear_double_array(char **str);
