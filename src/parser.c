@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:40:00 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/23 23:17:02 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/26 01:24:39 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,27 @@ void	add_redir_list(t_token *token, t_redir **redir_list)
 		tmp->next = new;
 	}
 }
+void	add_cmd_list(t_token *token, t_redir **redir_list)
+{
+	t_redir	*new;
+	t_redir *tmp;
 
+	new = malloc(sizeof(t_cmd));
+	if (!new)
+		return ;
+	new->target = token->next->str;
+	new->type = token->type;
+	new->next = NULL;
+	if (!*redir_list)
+		*redir_list = new;
+	else
+	{
+		tmp = *redir_list;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+}
 
 void	save_redir_info(t_token *token, t_cmd *cmd_list)
 {

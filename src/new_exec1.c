@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_1.c                                           :+:      :+:    :+:   */
+/*   new_exec1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:49:26 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/24 14:49:27 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/26 01:25:12 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int	__exec_startup__(t_data *data, t_cmd *cmds)
 {
 	//il faut preparer le nouvel input et free tout ce merdier entre chaque call
 	//fix le fd dans single_builtin, mettre cmds->redir->fd a la place	
+	// creer la liste de cmd si le parser trouve une pipe
 	t_exec	*vars;
 	t_cmd	*commands;
 
