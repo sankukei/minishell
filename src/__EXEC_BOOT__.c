@@ -28,11 +28,12 @@ void	minishell_launcher(t_data *data)
 			add_history(input);
 			if (parsing(data))
 			{
-	//			prepare_next_input(data, &cmds);
+				prepare_next_input(data, &cmds);
 				continue ;
 			}
-			parser(data, cmds);
+			parser(data, &cmds);
 			data->cmd = cmds;
+			printf("%x\n", cmds->redirs);
 			__exec_startup__(data, cmds);
 			prepare_next_input(data, &data->cmd);
 		}

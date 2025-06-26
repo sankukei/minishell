@@ -174,30 +174,14 @@ void	advance_pointer(t_token **token)
 		(*token) = (*token)->next;
 }
 
-void	parser(t_data *data, t_cmd *cmd_list)
+void	parser(t_data *data, t_cmd **cmd_list)
 {
 	t_values	*vals;	
 
 	while (data->token)
 	{
-		add_cmd_list(data->token, &cmd_list);
+		add_cmd_list(data->token, cmd_list);
 		advance_pointer(&data->token);
-	}
-	int	i;
-	i = 0;
-	while (cmd_list->cmd[i])
-	{
-		printf("%s\n", cmd_list->cmd[i++]);
-		fflush(stdout);
-		write(1, "zouzou\n",  7);
-	}
-	while (cmd_list->redirs)
-	{
-		printf("%s\n", cmd_list->redirs->target);
-		printf("%d\n", cmd_list->redirs->type);
-		fflush(stdout);
-		write(1, "zizi\n",  5);
-		cmd_list->redirs = cmd_list->redirs->next;
 	}
 }
 

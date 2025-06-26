@@ -41,10 +41,13 @@ void	handle_redir(t_redir *redir)
 {
 	int	fd;
 
+	fd = 1;
 	if (!redir)
 		return ;
 	while (redir)
 	{
+		printf("reddir detected\n");
+		fflush(stdout);
 		fd = detect_fd_flag(redir->target, redir->type);
 		if (redir->next && redir->type == 4 && redir->type == 2)
 			close(fd);
@@ -69,13 +72,19 @@ int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
 
 void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 {
+	int	fd;
+
+	fd = 1;
+	handle_redir(cmds->redirs);
+	if (cmds->redirs)
+		fd = cmds->redirs->fd;
 	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
 	{
 		free_exec(vars);
 		exit(1);
 	}
 	if (check_if_builtin(cmds->cmd[0]))
-		exec_builtin(check_if_builtin(cmds->cmd[0]), cmds->cmd, data, cmds->redirs->fd);
+		exec_builtin(check_if_builtin(cmds->cmd[0]), cmds->cmd, data, fd);
 	else if (!(exec_single(data, cmds->cmd[0], cmds->cmd)))
 	{
 		printf("execve failed\n");
