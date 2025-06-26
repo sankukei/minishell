@@ -28,13 +28,13 @@ void	minishell_launcher(t_data *data)
 			cmds = (t_cmd *)malloc(sizeof(t_cmd));
 			if (parsing(data))
 			{
-				prepare_next_input(data, &cmds);
+	//			prepare_next_input(data, &cmds);
 				continue ;
 			}
 			parser(data, cmds);
 			data->cmd = cmds;
 			__exec_startup__(data, cmds);
-			prepare_next_input(data, &data->cmd);
+	//		prepare_next_input(data, &data->cmd);
 		}
 	}
 }

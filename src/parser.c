@@ -28,23 +28,6 @@ char	**fill_cmds(t_token *token)
 	return (res);
 }
 
-void	extract_based_on_types(char *token_name, int token_type)
-{
-//	if (token_type == HEREDOC)
-//		ft_strdup(cmd_list->heredoc, );
-//	else if (token_type == APPEND)
-
-}
-
-void	extract_values(t_token *token, t_cmd *cmd_list)
-{
-	while (token)
-	{
-	//	extract_based_on_types(token->str, token->type, cmd_list);
-		
-	}
-}
-
 int	check_for_redirs(int type)
 {
 	if (type == 1 || type == 2 || type == 3 || type == 4)
@@ -80,22 +63,43 @@ void	add_redir_list(t_token *token, t_redir **redir_list)
 		tmp->next = new;
 	}
 }
-void	add_cmd_list(t_token *token, t_redir **redir_list)
+
+char	**save_cmds_info(t_token *token, t_cmd *cmd_list)
 {
-	t_redir	*new;
-	t_redir *tmp;
+	int	n_command;
+	int	i;
+
+	i = 0;
+	n_command = get_number_of_commands(token);
+	cmd_list->cmd = malloc(sizeof(char *) * n_command + 1);
+	while (token && token->type != PIPE)
+	{
+		if (token->type == 6 || token->type == 7)
+		{
+			cmd_list->cmd[i] = ft_strdup(token->str);
+			i++;
+		}
+		token = token->next;
+	}
+	cmd_list->cmd[i] = 0;
+	return (cmd_list->cmd);
+}
+
+void	add_cmd_list(t_token *token, t_cmd **cmd_list)
+{
+	t_cmd	*new;
+	t_cmd	*tmp;
 
 	new = malloc(sizeof(t_cmd));
 	if (!new)
 		return ;
-	new->target = token->next->str;
-	new->type = token->type;
+	new->cmd = save_cmds_info(token, cmd_list);
 	new->next = NULL;
-	if (!*redir_list)
-		*redir_list = new;
+	if (!*cmd_list)
+		*cmd_list = new;
 	else
 	{
-		tmp = *redir_list;
+		tmp = *cmd_list;
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = new;
@@ -121,27 +125,6 @@ int	get_n_command(t_token *token)
 	return (i);
 }
 
-void	save_cmds_info(t_token *token, t_cmd *cmd_list)
-{
-	int	n_command;
-	int	i;
-
-	i = 0;
-	n_command = get_n_command(token);
-	cmd_list->cmd = malloc(sizeof(char *) * n_command + 1);
-	while (token && token->type != PIPE)
-	{
-		if (token->type == 6 || token->type == 7)
-		{
-			cmd_list->cmd[i] = ft_strdup(token->str);
-			i++;
-		}
-		token = token->next;
-	}
-	cmd_list->cmd[i] = 0;
-}
-
-
 void	extract_redirs(t_token *token, t_cmd *cmd_list)
 {
 	while (token && token->type != PIPE)
@@ -157,7 +140,7 @@ void	extract_cmds(t_token *token, t_cmd *cmd_list)
 	while (token && token->type != PIPE)
 	{
 		if (check_for_cmds(token->type))
-			save_cmds_info(token, cmd_list);
+			add_cmd_list(token, &cmd_list);
 		token = token->next;	
 	}
 }
@@ -166,7 +149,7 @@ void	advance_pointer(t_token **token)
 {
 	while ((*token) && (*token)->type != PIPE)
 		(*token) = (*token)->next;
-	if ((*token)->next)
+	if ((*token) && (*token)->next)
 		(*token) = (*token)->next;
 }
 
@@ -175,7 +158,7 @@ void	parser(t_data *data, t_cmd *cmd_list)
 	t_values	*vals;	
 	// save_redir_info(data->token, cmd_list);
 	extract_redirs(data->token, cmd_list);
-	save_cmds_info(data->token, cmd_list);
+	add_cmd_list(data->token, cmd_list);
 	advance_pointer(&data->token);
 	// extract_cmds(data->token, cmd_list);
 	//advance_pointer(&data->token);
