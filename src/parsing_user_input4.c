@@ -65,7 +65,7 @@ void	classify_cmd_and_args(t_token *token)
 				expect_cmd = false;
 			}
 			else if (prev_type >= HEREDOC && prev_type <= TRUNC)
-				token->type = ARG;
+				token->type = 8;
 			else
 				token->type = ARG;
 		}

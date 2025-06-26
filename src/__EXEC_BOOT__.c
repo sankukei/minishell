@@ -33,11 +33,6 @@ void	minishell_launcher(t_data *data)
 			}
 			parser(data, cmds);
 			data->cmd = cmds;
-			int i = 0;
-			while (data->cmd->cmd[i])
-			{
-				printf("%s\n", data->cmd->cmd[i++]);
-			}
 			__exec_startup__(data, cmds);
 			prepare_next_input(data, &data->cmd);
 		}

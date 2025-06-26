@@ -149,10 +149,6 @@ void	check_for_heredoc(t_token *token, t_exec *vars)
 			i++;
 		token = token->next;
 	}
-	// if (fd)
-	// {
-
-	// }
 }
 
 char	**heredoc(t_token *token)

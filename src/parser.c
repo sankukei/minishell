@@ -28,10 +28,14 @@ char	**fill_cmds(t_token *token)
 	return (res);
 }
 
-int	check_for_redirs(int type)
+int	check_for_redirs(t_token *token)
 {
-	if (type == 1 || type == 2 || type == 3 || type == 4)
-		return (1);
+	while (token && token->type != PIPE)
+	{
+		if (token->type == 1 || token->type == 2 || token->type == 3 || token->type == 4)
+			return (1);
+		token = token->next;
+	}
 	return (0);
 }
 
@@ -78,6 +82,16 @@ void	add_redir_list(t_token *token, t_redir **redir_list)
 	}
 }
 
+void	get_reddirs(t_token *token, t_redir **redir_list)
+{
+	while (token && token->type != PIPE)
+	{
+		if (token->type == 1 || token->type == 2 || token->type == 3 || token->type == 4)
+			add_redir_list(token, redir_list);
+		token = token->next;
+	}
+}
+
 char	**save_cmds_info(t_token *token, t_cmd *cmd_list)
 {
 	int	n_count;
@@ -86,8 +100,6 @@ char	**save_cmds_info(t_token *token, t_cmd *cmd_list)
 	i = 0;
 	n_count = get_malloc_size_for_cmds(token);
 	cmd_list->cmd = malloc(sizeof(char *) * n_count + 1);
-	printf("%d\n", n_count);
-	fflush(stdout);
 	while (token && token->type != PIPE)
 	{
 		if (token->type == 6 || token->type == 7)
@@ -101,11 +113,6 @@ char	**save_cmds_info(t_token *token, t_cmd *cmd_list)
 	return (cmd_list->cmd);
 }
 
-void	save_redir_info(t_token *token, t_cmd **cmd_list)
-{
-	add_redir_list(token, (*cmd_list)->redirs);
-}
-
 void	add_cmd_list(t_token *token, t_cmd **cmd_list)
 {
 	t_cmd	*new;
@@ -115,8 +122,8 @@ void	add_cmd_list(t_token *token, t_cmd **cmd_list)
 	if (!new)
 		return ;
 	new->cmd = save_cmds_info(token, *cmd_list);
-	add_redir_list(token, &cmd_list->redirs);
-	//new->redirs = add_redir_list(token, cmd_list);
+	if (check_for_redirs(token))
+		get_reddirs(token, &(*cmd_list)->redirs);
 	new->next = NULL;
 	if (!*cmd_list)
 		*cmd_list = new;
@@ -147,9 +154,9 @@ void	extract_redirs(t_token *token, t_cmd *cmd_list)
 {
 	while (token && token->type != PIPE)
 	{
-		if (check_for_redirs(token->type))
-			save_redir_info(token, cmd_list);
-		token = token->next;	
+	//	if (check_for_redirs(token->type))
+	//		save_redir_info(token, cmd_list);
+	//	token = token->next;	
 	}
 }
 
@@ -173,8 +180,24 @@ void	parser(t_data *data, t_cmd *cmd_list)
 
 	while (data->token)
 	{
-		extract_cmds(data->token, cmd_list);
+		add_cmd_list(data->token, &cmd_list);
 		advance_pointer(&data->token);
+	}
+	int	i;
+	i = 0;
+	while (cmd_list->cmd[i])
+	{
+		printf("%s\n", cmd_list->cmd[i++]);
+		fflush(stdout);
+		write(1, "zouzou\n",  7);
+	}
+	while (cmd_list->redirs)
+	{
+		printf("%s\n", cmd_list->redirs->target);
+		printf("%d\n", cmd_list->redirs->type);
+		fflush(stdout);
+		write(1, "zizi\n",  5);
+		cmd_list->redirs = cmd_list->redirs->next;
 	}
 }
 

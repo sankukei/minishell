@@ -21,6 +21,7 @@ int	detect_fd_flag(char *fd_name, int type)
 {
 	int	fd;
 
+	fd = 1;
 	if (type == 4)
 	{
 		fd = open(fd_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -75,7 +76,7 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 	}
 	if (check_if_builtin(cmds->cmd[0]))
 		exec_builtin(check_if_builtin(cmds->cmd[0]), cmds->cmd, data, cmds->redirs->fd);
-	else if (!(exec_single(data, cmds->cmd[0]), cmds->cmd))
+	else if (!(exec_single(data, cmds->cmd[0], cmds->cmd)))
 	{
 		printf("execve failed\n");
 		free_exec(vars);
@@ -108,9 +109,6 @@ int	__exec_startup__(t_data *data, t_cmd *cmds)
 
 	vars = malloc(sizeof(t_exec));
 	commands = data->cmd;
-	int	i = 0;
-	while (commands->cmd[i])
-		printf("%s\n", commands->cmd[i++]);
 	//check_for_heredoc(commands);
 	vars->n_command = get_number_of_commands(data->token);
 	if (vars->n_command == 1)
