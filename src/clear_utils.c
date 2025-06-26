@@ -83,8 +83,8 @@ void	prepare_next_input(t_data *data, t_cmd **cmds)
 		free(data->input);
 	if (&data->front_token)
 		clear_struct(&data->front_token);
-	if (cmds)
-		clear_cmds(cmds);
+	//if (cmds)
+	//	clear_cmds(cmds);
 }
 
 void	exit_program(t_data *data)

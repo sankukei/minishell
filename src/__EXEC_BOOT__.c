@@ -17,6 +17,7 @@ void	minishell_launcher(t_data *data)
 	char	*input;
 	t_cmd		*cmds;
 
+	cmds = (t_cmd *)malloc(sizeof(t_cmd));
 	setup_signals();
 	while (1)
 	{
@@ -25,7 +26,6 @@ void	minishell_launcher(t_data *data)
 		{
 			data->input = input;
 			add_history(input);
-			cmds = (t_cmd *)malloc(sizeof(t_cmd));
 			if (parsing(data))
 			{
 	//			prepare_next_input(data, &cmds);
@@ -33,8 +33,13 @@ void	minishell_launcher(t_data *data)
 			}
 			parser(data, cmds);
 			data->cmd = cmds;
+			int i = 0;
+			while (data->cmd->cmd[i])
+			{
+				printf("%s\n", data->cmd->cmd[i++]);
+			}
 			__exec_startup__(data, cmds);
-	//		prepare_next_input(data, &data->cmd);
+			prepare_next_input(data, &data->cmd);
 		}
 	}
 }
