@@ -17,7 +17,7 @@ void	exec_single_builtin_new(void)
 	
 }
 
-int	detect_fd_flag(char *fd_name, int type)
+int	open_fds(char *fd_name, int type)
 {
 	int	fd;
 
@@ -25,35 +25,51 @@ int	detect_fd_flag(char *fd_name, int type)
 	if (type == 4)
 	{
 		fd = open(fd_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		printf("FD IN OPEN FDS -> %d\n");
 		if (fd < 0)
 			return (0);
 	}
 	else if (type == 2)
 	{
 		fd = open(fd_name, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		printf("FD IN OPEN FDS -> %d\n");
 		if (fd < 0)
 			return (0);
 	}
 	return (fd);
 }
 
-void	handle_redir(t_redir *redir)
+int	handle_redir(t_redir *redir)
 {
 	int	fd;
 
 	fd = 1;
 	if (!redir)
-		return ;
+		return (1);
 	while (redir)
 	{
 		printf("reddir detected\n");
-		fflush(stdout);
-		fd = detect_fd_flag(redir->target, redir->type);
+		fd = open_fds(redir->target, redir->type);
+		printf("FD RETURNED BY OPEN_FDS -> %d\n", fd);
+		redir->fd = fd;
 		if (redir->next && redir->type == 4 && redir->type == 2)
 			close(fd);
+		printf("%d\n", redir->fd);
 		redir = redir->next;
 	}
-	//redir->fd = fd;
+	return (fd);
+}
+
+void	handle_dups(int fd, int type)
+{
+	if (type == 3)
+		dup2(fd, STDIN_FILENO);
+	else if (type == 4)
+		dup2(fd, STDOUT_FILENO);
+	else if (type == 2)
+		dup2(fd, STDOUT_FILENO);
+	// else if (type == 1)
+	//MISSING HEREDOC
 }
 
 int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
@@ -63,9 +79,8 @@ int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
 	fd = 1;
 	if (!(check_if_builtin(commands->cmd[0]) && commands && commands->cmd))
 		return (0);
-	handle_redir(commands->redirs);
-	if (commands->redirs)
-		fd = commands->redirs->fd;
+	fd = handle_redir(commands->redirs);
+	// fd = commands->redirs->fd;
 	exec_builtin(check_if_builtin(commands->cmd[0]), commands->cmd, data, fd); // il faut passer data a cette fonction -_-
 	return (1);
 }
@@ -74,10 +89,12 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 {
 	int	fd;
 
-	fd = 1;
-	handle_redir(cmds->redirs);
 	if (cmds->redirs)
-		fd = cmds->redirs->fd;
+	{
+		fd = handle_redir(cmds->redirs);
+		handle_dups(fd, cmds->redirs->type);
+		// dup2(fd, STDOUT_FILENO);
+	}
 	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
 	{
 		free_exec(vars);
