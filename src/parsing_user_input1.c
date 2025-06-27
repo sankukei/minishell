@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/23 15:54:50 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/27 07:20:20 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ char	*detect_var_env(char *input)
 	dest = malloc(len + 1);
 	if (!dest)
 		return (NULL);
+	bzero(dest, len+1);
 	copy_var_name(dest, ptr);
 	return (dest);
 }
@@ -111,7 +112,8 @@ void	replace_var_env(t_data *data, char *var, int i, int len)
 	{
 		exit(1);
 	}
-	memset(dest, '\0', len_new_input);
+	bzero(dest, sizeof(char) * len_new_input + 1);
+//	memset(dest, '\0', len_new_input);
 	dest[len_new_input] = '\0';
 	ft_strlcpy(dest, data->input, i + 1);
 	ft_strlcpy(dest + i, var, ft_strlen(var) + 1);
@@ -128,9 +130,9 @@ int	parsing(t_data	*data)
 	tokenisation(data);
 	data->front_token = data->token;
 	type_tokens(data);
-	// if (check_token_syntax(data->token))
+	//if (check_token_syntax(data->token))
 	// 	return (1);
 	extern_quote_handler(data);
-	affiche_token_test(data->token);
+	//affiche_token_test(data->token);
 	return (0);
 }

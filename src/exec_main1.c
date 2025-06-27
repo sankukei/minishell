@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:30 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/24 02:54:07 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/27 06:50:39 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ char	**heredoc(t_token *token)
 	char	**res;
 	int	i;
 
-	res = malloc(10000);
+	res = malloc(10000); // SAIS DLA MERDE
 	i = 0;
 	input = 0;
 	input = readline("heredoc> ");

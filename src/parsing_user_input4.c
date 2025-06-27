@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 03:01:20 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/23 19:38:01 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/27 05:05:20 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ void	type_tokens(t_data *data)
 	classify_cmd_and_args(data->token);
 }
 
-int	check_token_syntax(t_token *head)
-{
+int	check_token_syntax(t_token *head)	// fonction tres sombre a refaire
+{										// laisse pas passer des trucs tres sombre
 	t_token	*curr;
 
 	if (!head)
@@ -103,9 +103,9 @@ int	check_token_syntax(t_token *head)
 		else if (curr->type == INPUT || curr->type == TRUNC
 			|| curr->type == HEREDOC || curr->type == APPEND)
 		{
-			if (!curr->next || curr->next->type != ARG)
-				return (printf("Syntax error near unexpected token '%s'\n",
-						curr->str), 1);
+			// if (!curr->next || curr->next->type != ARG)
+			// 	return (printf("Syntax error near unexpected token '%s'\n",
+			// 			curr->str), 1);
 		}
 		curr = curr->next;
 	}

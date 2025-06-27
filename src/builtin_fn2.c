@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_fn2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:46 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/13 02:19:31 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/27 06:48:18 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	unset(t_data *data, char **args)
 	new_env = malloc(sizeof(char *) * (k + 1));
 	if (!new_env)
 		return ;
+	bzero(new_env, sizeof(char *) * (k + 1));
 	j = 0;
 	while (data->env[i])
 	{
@@ -73,6 +74,7 @@ char	**chang_args_ls(t_data *data, char **args)
 	new_args = malloc(sizeof(char *) * (count + 2));
 	if (!new_args)
 		return (NULL);
+	bzero(new_args, sizeof(char *) * (count + 2));
 	new_args[0] = ft_strdup("ls");
 	new_args[1] = ft_strdup("--color=auto");
 	i = 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 02:25:03 by leothoma          #+#    #+#             */
-/*   Updated: 2025/05/21 02:25:04 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/27 06:57:32 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ char	*ft_join(int size, char **strs, char *sep)
 	flen = len(size, strs) + lsep;
 	i = 0;
 	res = malloc((flen * sizeof(char)) + 1);
-	memset(res, 0, flen + 1);
 	if (!res)
 		return (0);
+	bzero(res, (flen * sizeof(char)) + 1);
 	while (i < size)
 	{
 		if (ft_strlen(strs[i]) != 0)

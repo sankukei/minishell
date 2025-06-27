@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prototypes.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/21 08:57:33 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/27 06:57:55 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void		unset(t_data *data, char **args);
 void		env(t_data *data);
 void		children_exec(t_exec *vars, t_data *data, int i);
 void		init_exec_variables(t_exec *vars);
-void		init_pipes(t_exec *vars);
+int		init_pipes(t_exec *vars);
 void		start_children(t_exec *vars, t_data *data);
 void		close_pipes(t_exec *vars);
 void		wait_all_childrens(t_exec *vars);

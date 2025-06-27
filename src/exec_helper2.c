@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_helper2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:57 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/21 09:19:24 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/27 06:58:10 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	init_exec_variables(t_exec *vars)
 	vars->current_pipe_index = 0;
 }
 
-void	init_pipes(t_exec *vars)
+// PAS OUBLIE DE REGARD LE RETURN
+int	init_pipes(t_exec *vars)
 {
 	int	i;
 	int	n;
@@ -36,16 +37,23 @@ void	init_pipes(t_exec *vars)
 	if (n == 1 || n == 0)
 	{
 		vars->pipes = 0;
-		return ;
+		return 1;
 	}
 	vars->pipes = malloc(n * sizeof(int *));
+	if (vars->pipes)
+		return (1);
+	bzero(vars->pipes, n * sizeof(int *));
 	n--;
 	while (n--)
 	{
 		vars->pipes[i] = malloc(sizeof(int) * 2);
+		if (vars->pipes[i])
+			return (1);
+		bzero(vars->pipes[i], sizeof(int) * 2);
 		pipe(vars->pipes[i]);
 		i++;
 	}
+	return 0;
 }
 
 void	close_pipes(t_exec *vars)

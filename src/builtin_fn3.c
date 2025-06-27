@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_fn3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:14:27 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/13 02:19:00 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/27 06:48:35 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	export(t_data *data, char **args)
 	new_env = malloc(sizeof(char *) * (i + 2));
 	if (!new_env)
 		return ;
+	bzero(new_env, sizeof(char *) * (i + 2));
 	j = 0;
 	while (j < i)
 	{

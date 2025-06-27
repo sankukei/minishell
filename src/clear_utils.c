@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 03:18:00 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/27 02:42:01 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/27 07:18:57 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,25 @@ void	clear_array(char **str)
 	int	i;
 
 	i = 0;
-	while (str[i])
-		free(str[i++]);
-	free(str);
+	if (str)
+	{
+		while (str[i])
+			free(str[i++]);
+		free(str);
+	}
 }
 
 void	clear_redir_struct(t_redir **redirs)
 {
-	t_redir	*temp;
-
-	while (redirs && *redirs)
+	t_redir *tmp;
+	
+	while (*redirs)
 	{
-		if ((*redirs)->next)
-			temp = (*redirs)->next;
+		printf("xd\n");
+		tmp = (*redirs)->next;
 		free((*redirs)->target);
 		free(*redirs);
-		if ((*redirs)->next)
-			*redirs = temp;
+		*redirs = tmp;
 	}
 }
 
@@ -64,16 +66,17 @@ void	clear_cmds(t_cmd **cmds)
 {
 	t_cmd	*temp;
 
-	while (cmds && *cmds)
+	temp = *cmds;
+	while (temp)
 	{
-		temp = (*cmds)->next;
-		clear_array((*cmds)->cmd);
+		clear_array(temp->cmd);
 		//clear_array((*cmds)->path); a mettre si on use le path 
-		if (&(*cmds)->redirs)
-			clear_redir_struct(&(*cmds)->redirs);
-		free(*cmds);
-		if (&(*cmds)->next)
-			*cmds = temp;
+		// if (temp->redirs)
+		clear_redir_struct(&temp->redirs);
+		// free(*cmds);
+		// if (&(*cmds)->next)
+		// 	*cmds = temp;
+		temp = temp->next;
 	}
 }
 
@@ -81,10 +84,13 @@ void	prepare_next_input(t_data *data, t_cmd **cmds)
 {
 	if (data->input)
 		free(data->input);
-	if (&data->front_token)
-		clear_struct(&data->front_token);
-	//if (cmds)
-	//	clear_cmds(cmds);
+//	printf("[%s]\n", data->front_token->str);
+//	printf("[%s]\n", data->front_token->next->str);
+//	printf("[%s]\n", data->front_token->next->next->str);
+//	if (&data->front_token)
+//		clear_struct(&data->front_token);
+	if (cmds)
+		clear_cmds(cmds);
 }
 
 void	exit_program(t_data *data)

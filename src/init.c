@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 22:58:02 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/13 02:24:15 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/27 06:51:59 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	get_len_of_double_char(char **str)
 	return (i);
 }
 
+// CHECK LE RETURN SI YA MALLOC QUI FAIL
 char	**dup_envp(char **envp)
 {
 	char	**dest;
@@ -32,6 +33,9 @@ char	**dup_envp(char **envp)
 	i = 0;
 	len = get_len_of_double_char(envp);
 	dest = malloc(sizeof(char *) * (len + 1));
+	if (!dest)
+		return (1);
+	bzero(dest, sizeof(char *) * (len + 1));
 	while (envp[i])
 	{
 		tmp = ft_strdup(envp[i]);

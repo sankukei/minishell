@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:40:00 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/26 01:24:39 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/27 07:11:31 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,22 @@ void	add_redir_list(t_token *token, t_redir **redir_list)
 {
 	t_redir	*new;
 	t_redir *tmp;
-
-	new = malloc(sizeof(t_redir));
+	
+	new = calloc(1, sizeof(t_redir)); 
+	//new = malloc(sizeof(t_redir));
 	if (!new)
 		return ;
 	new->target = token->next->str;
 	new->type = token->type;
 	new->next = NULL;
 	if (!*redir_list)
+	{
 		*redir_list = new;
+
+	}
 	else
 	{
+		printf("ALED\n");
 		tmp = *redir_list;
 		while (tmp->next)
 			tmp = tmp->next;
@@ -92,6 +97,7 @@ void	get_reddirs(t_token *token, t_redir **redir_list)
 	}
 }
 
+// CHECK LE RETURN POUR LE MALLOC FAIL
 char	**save_cmds_info(t_token *token, t_cmd *cmd_list)
 {
 	int	n_count;
@@ -99,7 +105,10 @@ char	**save_cmds_info(t_token *token, t_cmd *cmd_list)
 
 	i = 0;
 	n_count = get_malloc_size_for_cmds(token);
-	cmd_list->cmd = malloc(sizeof(char *) * n_count + 1);
+	cmd_list->cmd = malloc(sizeof(char *) * (n_count + 2));
+	if (!cmd_list->cmd)
+		return (1);
+	bzero(cmd_list->cmd, sizeof(char *) * (n_count + 2));
 	while (token && token->type != PIPE)
 	{
 		if (token->type == 6 || token->type == 7)
@@ -121,6 +130,7 @@ void	add_cmd_list(t_token *token, t_cmd **cmd_list)
 	new = malloc(sizeof(t_cmd));
 	if (!new)
 		return ;
+	bzero(new, sizeof(t_cmd));
 	new->cmd = save_cmds_info(token, *cmd_list);
 	if (check_for_redirs(token))
 		get_reddirs(token, &(*cmd_list)->redirs);
@@ -177,7 +187,7 @@ void	advance_pointer(t_token **token)
 void	parser(t_data *data, t_cmd **cmd_list)
 {
 	t_values	*vals;	
-
+	
 	while (data->token)
 	{
 		add_cmd_list(data->token, cmd_list);

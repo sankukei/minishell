@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:49:26 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/27 04:04:18 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/27 06:53:38 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void	start_children_new(t_exec *vars, t_data *data, t_cmd *cmds)
 	}
 }
 
+// CHECK LE RETURN DU MALLOC
 int	__exec_startup__(t_data *data, t_cmd *cmds)
 {
 	//il faut preparer le nouvel input et free tout ce merdier entre chaque call
@@ -117,6 +118,9 @@ int	__exec_startup__(t_data *data, t_cmd *cmds)
 	t_cmd	*commands;
 
 	vars = malloc(sizeof(t_exec));
+	if (!vars)
+		return (1);
+	bzero(vars, sizeof(t_exec));
 	commands = data->cmd;
 	//check_for_heredoc(commands);
 	vars->n_command = get_number_of_commands(data->token);

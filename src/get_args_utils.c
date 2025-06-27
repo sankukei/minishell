@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_args_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 05:19:29 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/21 09:31:46 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/27 06:51:15 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ char	**alloc_args_array(int count)
 	char	**res;
 
 	res = malloc((count + 1) * sizeof(char *));
-	memset(res, 0, count + 1);
 	if (!res)
 		return (NULL);
+	bzero(res, (count + 1) * sizeof(char *));
 	return (res);
 }
 

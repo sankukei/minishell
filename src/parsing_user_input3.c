@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 03:01:17 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/18 12:13:08 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/27 06:54:38 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ char	*remove_quote(char *str)
 	char			*dest;
 
 	dest = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!dest)
+		return (1);
+	bzero(dest, sizeof(char) * (ft_strlen(str) + 1));
 	i = 0;
 	l = 0;
 	while (str[i])
