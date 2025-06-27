@@ -122,11 +122,13 @@ char	**save_cmds_info(t_token *token, t_cmd *cmd_list)
 	return (cmd_list->cmd);
 }
 
-void	add_cmd_list(t_token *token, t_cmd **cmd_list)
+void	add_cmd_list(t_data *data, t_token *token, t_cmd **cmd_list)
 {
 	t_cmd	*new;
 	t_cmd	*tmp;
-
+	static int i = 0;
+	i++;
+	printf("NODE = %d\n", i);
 	new = malloc(sizeof(t_cmd));
 	if (!new)
 		return ;
@@ -144,6 +146,7 @@ void	add_cmd_list(t_token *token, t_cmd **cmd_list)
 			tmp = tmp->next;
 		tmp->next = new;
 	}
+	data->n_commands += 1;
 }
 
 int	get_n_command(t_token *token)
@@ -170,12 +173,6 @@ void	extract_redirs(t_token *token, t_cmd *cmd_list)
 	}
 }
 
-void	extract_cmds(t_token *token, t_cmd *cmd_list)
-{
-	if (check_for_cmds(token->type))
-		add_cmd_list(token, &cmd_list);
-}
-
 void	advance_pointer(t_token **token)
 {
 	while ((*token) && (*token)->type != PIPE)
@@ -188,9 +185,10 @@ void	parser(t_data *data, t_cmd **cmd_list)
 {
 	t_values	*vals;	
 	
+	data->n_commands = 0;
 	while (data->token)
 	{
-		add_cmd_list(data->token, cmd_list);
+		add_cmd_list(data, data->token, cmd_list);
 		advance_pointer(&data->token);
 	}
 }

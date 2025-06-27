@@ -28,7 +28,6 @@ int	get_number_of_commands(t_token *token)
 }
 
 
-
 void	close_all_pipes(int **pipes, int n)
 {
 	int	i;

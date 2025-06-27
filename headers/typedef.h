@@ -72,6 +72,7 @@ typedef struct s_data
 	t_cmd		*cmd;
 	char		**env;
 	int			test;
+	int			n_commands;
 	int			last_exit_status;
 }	t_data;
 

@@ -108,7 +108,7 @@ void	minishell_launcher(t_data *data)
 			data->cmd = cmds;
 			//printf("%x\n", cmds->redirs);
 			__exec_startup__(data, cmds);
-			print_stats_of_all_variable(data);
+			//print_stats_of_all_variable(data);
 			prepare_next_input(data, &data->cmd);
 		}
 	}

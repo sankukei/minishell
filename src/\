@@ -39,17 +39,17 @@ int	init_pipes(t_exec *vars)
 		vars->pipes = 0;
 		return 1;
 	}
-	vars->pipes = malloc((n -1)* sizeof(int *));
-	if (!vars->pipes)
+	vars->pipes = malloc(n * sizeof(int *));
+	if (vars->pipes)
 		return (1);
-	//bzero(vars->pipes, (n - 1) * sizeof(int *));
+	//bzero(vars->pipes, n * sizeof(int *));
 	n--;
 	while (n--)
 	{
 		vars->pipes[i] = malloc(sizeof(int) * 2);
-		if (!vars->pipes[i])
+		if (vars->pipes[i])
 			return (1);
-		//bzero(vars->pipes[i], sizeof(int) * 2);
+	//	bzero(vars->pipes[i], sizeof(int) * 2);
 		pipe(vars->pipes[i]);
 		i++;
 	}
@@ -78,7 +78,7 @@ void	wait_all_childrens(t_exec *vars)
 void	restore_fds(t_exec *vars)
 {
 
-	 //close(vars->old_stdin);
+	 close(vars->old_stdin);
 	 dup2(vars->old_stdout, STDOUT_FILENO);
-	 //close(vars->old_stdout);
+	 close(vars->old_stdout);
 }

@@ -116,6 +116,7 @@ void	start_children_new(t_exec *vars, t_data *data, t_cmd *cmds)
 	int	i;
 
 	i = 0;
+	printf("n_command %d\n");
 	while (i < vars->n_command)
 	{
 		vars->pid = fork();
@@ -123,8 +124,22 @@ void	start_children_new(t_exec *vars, t_data *data, t_cmd *cmds)
 			children_exec_new(vars, data, i, cmds);
 		i++;
 	}
+	printf("i after start_children  >%d\n", i);
 }
+int	get_n_command_new(t_cmd *cmds)
+{
+	int	i;
 
+	i = 0;
+	while (cmds && cmds->cmd)
+	{
+		i++;
+		cmds = cmds->next;
+		write(1, "zaza\n", 5);
+	}
+	return (i);	
+
+}
 // CHECK LE RETURN DU MALLOC
 int	__exec_startup__(t_data *data, t_cmd *cmds)
 {
@@ -140,7 +155,8 @@ int	__exec_startup__(t_data *data, t_cmd *cmds)
 	bzero(vars, sizeof(t_exec));
 	commands = data->cmd;
 	//check_for_heredoc(commands);
-	vars->n_command = get_number_of_commands(data->token);
+	vars->n_command = data->n_commands;
+	printf("TRUE n_command %d\n", vars->n_command);
 	if (vars->n_command == 1)
 		if (handle_single_builtin_new(vars, commands, data))
 			return (1);
