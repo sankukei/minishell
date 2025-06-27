@@ -53,7 +53,7 @@ void	handle_redir(t_redir *redir)
 			close(fd);
 		redir = redir->next;
 	}
-	redir->fd = fd;
+	//redir->fd = fd;
 }
 
 int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)

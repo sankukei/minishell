@@ -69,9 +69,8 @@ void	wait_all_childrens(t_exec *vars)
 
 void	restore_fds(t_exec *vars)
 {
-	if (vars->is_heredoc)
-		close(vars->heredoc_fd);
-	close(vars->old_stdin);
-	dup2(vars->old_stdout, STDOUT_FILENO);
-	close(vars->old_stdout);
+
+	// close(vars->old_stdin);
+	// dup2(vars->old_stdout, STDOUT_FILENO);
+	// close(vars->old_stdout);
 }

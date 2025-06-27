@@ -22,6 +22,7 @@ void	minishell_launcher(t_data *data)
 	while (1)
 	{
 		input = readline("minishell> ");
+		printf("HAA\n");
 		if (ft_strlen(input))
 		{
 			data->input = input;
@@ -35,7 +36,7 @@ void	minishell_launcher(t_data *data)
 			data->cmd = cmds;
 			printf("%x\n", cmds->redirs);
 			__exec_startup__(data, cmds);
-			prepare_next_input(data, &data->cmd);
+			// prepare_next_input(data, &data->cmd);
 		}
 	}
 }
