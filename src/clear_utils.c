@@ -69,7 +69,7 @@ void	clear_cmds(t_cmd **cmds)
 	temp = *cmds;
 	while (temp)
 	{
-		clear_array(temp->cmd);
+		// clear_array(temp->cmd);
 		//clear_array((*cmds)->path); a mettre si on use le path 
 		// if (temp->redirs)
 		clear_redir_struct(&temp->redirs);
