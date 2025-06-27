@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_exec1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:49:26 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/26 01:25:12 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/27 04:04:18 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,5 +128,6 @@ int	__exec_startup__(t_data *data, t_cmd *cmds)
 	close_pipes(vars);
 	wait_all_childrens(vars);
 	restore_fds(vars);
+	free(vars);
 	return (0);
 }

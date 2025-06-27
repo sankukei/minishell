@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   __EXEC_BOOT__.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 00:13:06 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/25 22:48:33 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/27 02:37:05 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	minishell_launcher(t_data *data)
 			data->cmd = cmds;
 			printf("%x\n", cmds->redirs);
 			__exec_startup__(data, cmds);
-			// prepare_next_input(data, &data->cmd);
+			prepare_next_input(data, &data->cmd);
 		}
 	}
 }
