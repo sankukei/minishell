@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prototypes.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leothoma <leothoma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/27 06:57:55 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/27 20:54:52 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,3 +108,5 @@ char		*join_args(char **args);
 char		**alloc_args_array(int count);
 char		**chang_args_ls(t_data *data, char **args);
 void		parser(t_data *data, t_cmd **cmd_list);
+void	close_unused_pipes(t_data *data, t_exec *vars, int i);
+

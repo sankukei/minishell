@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_children_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leothoma <leothoma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 11:47:46 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/21 09:10:57 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/27 20:54:30 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,21 @@ int	setup_input_pipes(t_exec *vars, int i)
 		close(vars->pipes[i - 1][0]);
 	}
 	return (1);
+}
+
+void	close_unused_pipes(t_data *data, t_exec *vars, int i)
+{
+    int j;
+    int n = data->n_commands - 1;
+
+    if (!vars->pipes) // Ajout de ce check
+        return;
+
+    for (j = 0; j < n; j++)
+    {
+        if (j != i - 1)
+            close(vars->pipes[j][0]);
+        if (j != i)
+            close(vars->pipes[j][1]);
+    }
 }

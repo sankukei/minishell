@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_exec1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leothoma <leothoma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:49:26 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/27 06:53:38 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/27 20:54:06 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,44 +87,46 @@ int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
 
 void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 {
-	int	fd;
+    int	fd = 1;
 
-	if (cmds->redirs)
-	{
-		fd = handle_redir(cmds->redirs);
-		handle_dups(fd, cmds->redirs->type);
-		// dup2(fd, STDOUT_FILENO);
-	}
-	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
-	{
-		free_exec(vars);
-		exit(1);
-	}
-	if (check_if_builtin(cmds->cmd[0]))
-		exec_builtin(check_if_builtin(cmds->cmd[0]), cmds->cmd, data, fd);
-	else if (!(exec_single(data, cmds->cmd[0], cmds->cmd)))
-	{
-		printf("execve failed\n");
-		free_exec(vars);
-		exit(1);
-	}
-	exit(0);
+    if (cmds->redirs)
+    {
+        fd = handle_redir(cmds->redirs);
+        handle_dups(fd, cmds->redirs->type);
+    }
+    if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
+    {
+        free_exec(vars);
+        exit(1);
+    }
+    close_unused_pipes(data, vars, i);
+
+    if (check_if_builtin(cmds->cmd[0]))
+        exec_builtin(check_if_builtin(cmds->cmd[0]), cmds->cmd, data, fd);
+    else if (!(exec_single(data, cmds->cmd[0], cmds->cmd)))
+    {
+        printf("execve failed\n");
+        free_exec(vars);
+        exit(1);
+    }
+    exit(0);
 }
 
 void	start_children_new(t_exec *vars, t_data *data, t_cmd *cmds)
 {
 	int	i;
-
+	t_cmd	*commands;
+	
+	commands = cmds;	
 	i = 0;
-	printf("n_command %d\n");
-	while (i < vars->n_command)
+	while (i < vars->n_command && commands && commands->cmd)
 	{
 		vars->pid = fork();
 		if (vars->pid == 0)
-			children_exec_new(vars, data, i, cmds);
+			children_exec_new(vars, data, i, commands);
 		i++;
+		commands = commands->next;
 	}
-	printf("i after start_children  >%d\n", i);
 }
 int	get_n_command_new(t_cmd *cmds)
 {
