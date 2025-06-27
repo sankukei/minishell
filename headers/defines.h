@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:00:20 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/24 03:28:50 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/23 19:37:49 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,3 +17,5 @@
 #define PIPE 5 // |
 #define CMD 6
 #define ARG 7
+#define FD 8 
+#define BUFFER_SIZE 50
