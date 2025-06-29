@@ -62,21 +62,30 @@ void	clear_redir_struct(t_redir **redirs)
 	}
 }
 
+void	clear_cmd_node(t_cmd **cmds)
+{
+	clear_array((*cmds)->cmd);
+	free(*cmds);
+	//rajouter path si on use;
+}
+
 void	clear_cmds(t_cmd **cmds)
 {
 	t_cmd	*temp;
 
-	temp = *cmds;
+	//temp = *cmds;
 	while (temp)
 	{
-		// clear_array(temp->cmd);
-		//clear_array((*cmds)->path); a mettre si on use le path 
-		// if (temp->redirs)
-		clear_redir_struct(&temp->redirs);
-		// free(*cmds);
-		// if (&(*cmds)->next)
-		// 	*cmds = temp;
-		temp = temp->next;
+		temp = (*cmds)->next;
+		write(1, "zaza\n", 5);
+		//clear_redir_struct(&temp->redirs);
+		clear_redir_struct(&(*cmds)->redirs);
+		write(1, "zaza\n", 5);
+		clear_cmd_node(cmds);
+		write(1, "zaza\n", 5);
+		if (temp)
+			temp = temp->next;
+		write(1, "zaza\n", 5);
 	}
 }
 

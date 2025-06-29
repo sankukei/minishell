@@ -33,14 +33,21 @@ void	print_cmd(t_data *data)
 {
 	t_cmd	*cmds;
 	int	i;
+	int	j;
 
+	j = 0;
 	i = 0;
 	cmds = data->cmd;
-	printf("#### CMD (one pipe) ###\n");
-	while (cmds->cmd[i])
+	while (cmds)
 	{
-		printf("%d cmd: %s\n", i + 1, cmds->cmd[i]);
-		i++;
+		printf("PIPELINE %d ###\n", j);
+		while (cmds->cmd[i])
+		{
+			printf("%d cmd: %s\n", i + 1, cmds->cmd[i]);
+			i++;
+		}
+		cmds = cmds->next;
+		j++;
 	}
 }
 
@@ -87,28 +94,27 @@ void	minishell_launcher(t_data *data)
 {
 	char	*input;
 	t_cmd		*cmds;
-
-	cmds = (t_cmd *)malloc(sizeof(t_cmd));
-	dzero(cmds, sizeof(t_cmd));
 	setup_signals();
 	while (1)
 	{
+		cmds = (t_cmd *)malloc(sizeof(t_cmd));
+		dzero(cmds, sizeof(t_cmd));
 		input = readline("minishell> ");
 		//printf("HAA\n");
 		if (ft_strlen(input))
 		{
 			data->input = input;
+			data->cmd = cmds;
 			add_history(input);
 			if (parsing(data))
 			{
-				prepare_next_input(data, &cmds);
+				prepare_next_input(data, &data->cmd);
 				continue ;
 			}
 			parser(data, &cmds);
-			data->cmd = cmds;
 			//printf("%x\n", cmds->redirs);
 			__exec_startup__(data, cmds);
-			//print_stats_of_all_variable(data);
+			print_stats_of_all_variable(data);
 			prepare_next_input(data, &data->cmd);
 		}
 	}
