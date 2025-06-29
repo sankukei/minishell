@@ -97,10 +97,8 @@ void	minishell_launcher(t_data *data)
 	setup_signals();
 	while (1)
 	{
-		cmds = (t_cmd *)malloc(sizeof(t_cmd));
-		dzero(cmds, sizeof(t_cmd));
+		cmds = NULL;
 		input = readline("minishell> ");
-		//printf("HAA\n");
 		if (ft_strlen(input))
 		{
 			data->input = input;
@@ -112,7 +110,7 @@ void	minishell_launcher(t_data *data)
 				continue ;
 			}
 			parser(data, &cmds);
-			//printf("%x\n", cmds->redirs);
+			data->cmd = cmds;
 			__exec_startup__(data, cmds);
 			print_stats_of_all_variable(data);
 			prepare_next_input(data, &data->cmd);

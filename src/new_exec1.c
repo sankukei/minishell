@@ -107,6 +107,7 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
     {
         printf("execve failed\n");
         free_exec(vars);
+	clear_cmds(&data->cmd);
         exit(1);
     }
     exit(0);
@@ -137,7 +138,6 @@ int	get_n_command_new(t_cmd *cmds)
 	{
 		i++;
 		cmds = cmds->next;
-		write(1, "zaza\n", 5);
 	}
 	return (i);	
 

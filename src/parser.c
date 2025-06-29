@@ -102,40 +102,50 @@ char	**save_cmds_info(t_token *token, t_cmd *cmd_list)
 {
 	int	n_count;
 	int	i;
+	char	**cmd_array;
 
 	i = 0;
 	n_count = get_malloc_size_for_cmds(token);
-	cmd_list->cmd = malloc(sizeof(char *) * (n_count + 2));
-	if (!cmd_list->cmd)
-		return (1);
-	bzero(cmd_list->cmd, sizeof(char *) * (n_count + 2));
+	cmd_array = malloc(sizeof(char *) * (n_count + 1));
+	if (!cmd_array)
+		return (0);
+	ft_bzero(cmd_array, sizeof(char *) * (n_count + 1));
 	while (token && token->type != PIPE)
 	{
 		if (token->type == 6 || token->type == 7)
 		{
-			cmd_list->cmd[i] = ft_strdup(token->str);
+			cmd_array[i] = ft_strdup(token->str);
+			if (!cmd_array[i])
+				return (0); // peut etre sombre, faut probablement free ici
 			i++;
 		}
 		token = token->next;
 	}
-	cmd_list->cmd[i] = 0;
-	return (cmd_list->cmd);
+	cmd_array[i] = 0;
+	return (cmd_array);
 }
 
-void	add_cmd_list(t_data *data, t_token *token, t_cmd **cmd_list)
+int	add_cmd_list(t_data *data, t_token *token, t_cmd **cmd_list)
 {
 	t_cmd	*new;
 	t_cmd	*tmp;
+
 	static int i = 0;
 	i++;
 	printf("NODE = %d\n", i);
 	new = malloc(sizeof(t_cmd));
 	if (!new)
-		return ;
+		return (0);
 	bzero(new, sizeof(t_cmd));
 	new->cmd = save_cmds_info(token, *cmd_list);
+	if (!new->cmd)
+	{
+		free(new);
+		clear_cmds(data->cmd);
+		return (0);
+	}
 	if (check_for_redirs(token))
-		get_reddirs(token, &(*cmd_list)->redirs);
+		get_reddirs(token, &new->redirs);
 	new->next = NULL;
 	if (!*cmd_list)
 		*cmd_list = new;
@@ -147,6 +157,7 @@ void	add_cmd_list(t_data *data, t_token *token, t_cmd **cmd_list)
 		tmp->next = new;
 	}
 	data->n_commands += 1;
+	return (1);
 }
 
 int	get_n_command(t_token *token)
@@ -188,7 +199,11 @@ void	parser(t_data *data, t_cmd **cmd_list)
 	data->n_commands = 0;
 	while (data->token)
 	{
-		add_cmd_list(data, data->token, cmd_list);
+		if(!add_cmd_list(data, data->token, cmd_list))
+		{
+			clear_cmds(cmd_list);
+			return ;
+		}
 		advance_pointer(&data->token);
 	}
 }
