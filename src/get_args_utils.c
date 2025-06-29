@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 05:19:29 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/27 06:51:15 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 01:07:04 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,46 +51,46 @@ char	**alloc_args_array(int count)
 	return (res);
 }
 
-int	fill_args_for_heredoc(char **res, t_token **token, int *is_reddir)
-{
-	int	i;
+// int	fill_args_for_heredoc(char **res, t_token **token, int *is_reddir)
+// {
+// 	int	i;
 
-	i = 0;
-	while (*token && (*token)->type != PIPE)
-	{
-		if ((*token)->type == APPEND || (*token)->type == INPUT || (*token)->type == TRUNC)
-		{
-			*is_reddir = 1;
-			break ;
-		}
-		*token = (*token)->next;
-		i++;
-	}
-	return (i);
-}
+// 	i = 0;
+// 	while (*token && (*token)->type != PIPE)
+// 	{
+// 		if ((*token)->type == APPEND || (*token)->type == INPUT || (*token)->type == TRUNC)
+// 		{
+// 			*is_reddir = 1;
+// 			break ;
+// 		}
+// 		*token = (*token)->next;
+// 		i++;
+// 	}
+// 	return (i);
+// }
 
-int	fill_args(char **res, t_token **token, int *is_reddir, t_exec *vars)
-{
-	int	i;
+// int	fill_args(char **res, t_token **token, int *is_reddir, t_exec *vars)
+// {
+// 	int	i;
 
-	if (vars->is_heredoc)
-		return (fill_args_for_heredoc(res, token, is_reddir));
-	i = 0;
-	while (*token && (*token)->type != PIPE && (*token)->type != HEREDOC)
-	{
-		if ((*token)->type == APPEND || (*token)->type == INPUT || (*token)->type == TRUNC)
-		{
-			*is_reddir = 1;
-			break ;
-		}
-		res[i] = ft_strdup((*token)->str);
-		if (!res[i])
-			return (-1);
-		*token = (*token)->next;
-		i++;
-	}
-	res[i] = NULL;
-	return (i);
-}
+// 	if (vars->is_heredoc)
+// 		return (fill_args_for_heredoc(res, token, is_reddir));
+// 	i = 0;
+// 	while (*token && (*token)->type != PIPE && (*token)->type != HEREDOC)
+// 	{
+// 		if ((*token)->type == APPEND || (*token)->type == INPUT || (*token)->type == TRUNC)
+// 		{
+// 			*is_reddir = 1;
+// 			break ;
+// 		}
+// 		res[i] = ft_strdup((*token)->str);
+// 		if (!res[i])
+// 			return (-1);
+// 		*token = (*token)->next;
+// 		i++;
+// 	}
+// 	res[i] = NULL;
+// 	return (i);
+// }
 
 

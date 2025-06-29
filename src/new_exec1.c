@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_exec1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <leothoma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:49:26 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/27 20:54:06 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/30 01:15:05 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,12 @@ int	open_fds(char *fd_name, int type)
 	if (type == 4)
 	{
 		fd = open(fd_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		printf("FD IN OPEN FDS -> %d\n");
 		if (fd < 0)
 			return (0);
 	}
 	else if (type == 2)
 	{
 		fd = open(fd_name, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		printf("FD IN OPEN FDS -> %d\n");
 		if (fd < 0)
 			return (0);
 	}
@@ -76,6 +74,7 @@ int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
 {	
 	int	fd;
 
+	(void)vars;
 	fd = 1;
 	if (!(check_if_builtin(commands->cmd[0]) && commands && commands->cmd))
 		return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prototypes.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <leothoma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/27 20:54:52 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/30 01:11:23 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int			is_operator(char c);
 int			is_space(char c);
 char		*ft_itoa_stack(int n);
 void		classify_cmd_and_args(t_token *token);
+void	copy_var_name(char *dest, char *src);
 
 // parsing tokinsation
 void		init_token_rules(t_data *data);
@@ -68,6 +69,7 @@ void		prepare_next_input(t_data *data, t_cmd **cmd);
 void		clear_struct(t_token **tokens);
 void		exit_program(t_data *data);
 void		clear_double_array(char **str);
+void		clear_cmds(t_cmd **cmds);
 
 // EXEC
 void		cd(char **args);

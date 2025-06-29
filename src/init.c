@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 22:58:02 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/27 06:51:59 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 00:58:17 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	**dup_envp(char **envp)
 	len = get_len_of_double_char(envp);
 	dest = malloc(sizeof(char *) * (len + 1));
 	if (!dest)
-		return (1);
+		return (NULL);
 	bzero(dest, sizeof(char *) * (len + 1));
 	while (envp[i])
 	{

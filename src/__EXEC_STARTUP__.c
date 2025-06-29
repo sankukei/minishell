@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 20:11:55 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/24 03:38:21 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 01:05:04 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int	__exec_startup__(t_data *data)
 */
 int	check_if_redir(t_token *token)
 {
-//	return (commands->redirs);
+	(void)token; //unused parameter
+	// return (commands->redirs);
 	// while (token && token->type != PIPE)
 	// {
 	// 	if (token->type == 2

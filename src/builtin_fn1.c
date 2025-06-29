@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_fn1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:14:13 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/14 05:38:28 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/30 01:31:18 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,24 @@ void	cd(char **args)
 	int		i;
 
 	i = 0;
+	path = getcwd(NULL, 0);
+	if (!path)
+		return ;
 	args++;
 	while (args[i])
 		i++;
 	if (i == 0)
 	{
 		chdir("/home");
-		path = getcwd(NULL, 0);
 	}
 	else if (i == 1)
 	{
 		chdir(*args);
-		path = getcwd(NULL, 0);
 		printf("PWD -> %s\n", path);
 	}
 	else
 		write(1, "too many arguments\n", 19);
+	free(path);
 }
 
 void	pwd(int fd)

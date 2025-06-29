@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 17:40:00 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/27 07:11:31 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 01:12:50 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ char	**save_cmds_info(t_token *token, t_cmd *cmd_list)
 	int	i;
 	char	**cmd_array;
 
+	(void)cmd_list;
 	i = 0;
 	n_count = get_malloc_size_for_cmds(token);
 	cmd_array = malloc(sizeof(char *) * (n_count + 1));
@@ -141,7 +142,7 @@ int	add_cmd_list(t_data *data, t_token *token, t_cmd **cmd_list)
 	if (!new->cmd)
 	{
 		free(new);
-		clear_cmds(data->cmd);
+		clear_cmds(&data->cmd);
 		return (0);
 	}
 	if (check_for_redirs(token))
@@ -174,15 +175,6 @@ int	get_n_command(t_token *token)
 	return (i);
 }
 
-void	extract_redirs(t_token *token, t_cmd *cmd_list)
-{
-	while (token && token->type != PIPE)
-	{
-	//	if (check_for_redirs(token->type))
-	//		save_redir_info(token, cmd_list);
-	//	token = token->next;	
-	}
-}
 
 void	advance_pointer(t_token **token)
 {
@@ -194,8 +186,6 @@ void	advance_pointer(t_token **token)
 
 void	parser(t_data *data, t_cmd **cmd_list)
 {
-	t_values	*vals;	
-	
 	data->n_commands = 0;
 	while (data->token)
 	{

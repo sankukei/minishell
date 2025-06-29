@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:53:10 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/27 06:46:09 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 00:56:46 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	add_token(t_token **token, char *str, int type)
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
 		return (1);
-	bzero(new_token, sizeof(new_token));
+	bzero(new_token, sizeof(t_token));
 	new_token->next = NULL;
 	new_token->str = ft_strdup(str);
 	new_token->type = type;

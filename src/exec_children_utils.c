@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_children_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <leothoma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 11:47:46 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/27 20:54:30 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/06/30 01:09:36 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 void	free_exec(t_exec *vars)
 {
-	int	a;
-
-	a = 0;
+	(void)vars;
 }
 
 int	setup_output_pipes(t_exec *vars, int i)
