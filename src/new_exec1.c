@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:49:26 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/30 01:59:31 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 04:08:55 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ void	start_children_new(t_exec *vars, t_data *data, t_cmd *cmds)
 	
 	commands = cmds;	
 	i = 0;
+	*get_shell_mode() = MODE_CHILD;
 	while (i < vars->n_command && commands && commands->cmd)
 	{
 		vars->pid = fork();

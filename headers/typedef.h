@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:03:53 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/23 19:38:44 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 04:03:43 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ typedef enum s_type
 	ARG,
 	FD,
 }	t_type;
+
+typedef enum s_mode
+{
+    MODE_MAIN,
+    MODE_HEREDOC,
+    MODE_CHILD,
+    MODE_IGNORE
+}	t_mode;
 
 typedef enum s_boolen
 {
