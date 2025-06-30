@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 03:18:00 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/30 03:26:48 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 04:38:51 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	clear_redir_struct(t_redir **redirs)
 	while (*redirs)
 	{
 		tmp = (*redirs)->next;
-		free((*redirs)->target);
+		//free((*redirs)->target);
 		free(*redirs);
 		*redirs = tmp;
 	}
