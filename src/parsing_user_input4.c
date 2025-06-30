@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 03:01:20 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/27 05:05:20 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 02:33:01 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,7 @@ int	check_token_syntax(t_token *head)	// fonction tres sombre a refaire
 
 	if (!head)
 		return (1);
-	if (head->type == PIPE)
-		return (printf("Syntax error: unexpected token '|'\n"), 1);
+
 	curr = head;
 	while (curr)
 	{
@@ -99,13 +98,13 @@ int	check_token_syntax(t_token *head)	// fonction tres sombre a refaire
 		{
 			if (!curr->next || curr->next->type == PIPE)
 				return (printf("Syntax error: unexpected token '|'\n"), 1);
+			
 		}
-		else if (curr->type == INPUT || curr->type == TRUNC
-			|| curr->type == HEREDOC || curr->type == APPEND)
+		if (curr->type == TRUNC || curr->type == APPEND)
 		{
-			// if (!curr->next || curr->next->type != ARG)
-			// 	return (printf("Syntax error near unexpected token '%s'\n",
-			// 			curr->str), 1);
+			if (!curr->next || curr->next->type == TRUNC || curr->next->type == PIPE) 
+				return (printf("Syntax error: unexpected token '>'\n"), 1);
+
 		}
 		curr = curr->next;
 	}

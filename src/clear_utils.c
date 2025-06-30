@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 03:18:00 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/30 02:05:47 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 03:26:48 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	prepare_next_input(t_data *data, t_cmd **cmds)
 	}
 	if (data->front_token)
 	{
-		//clear_struct(&data->front_token);
+		clear_struct(&data->front_token);
 		data->front_token = NULL;
 	}
 //	printf("[%s]\n", data->front_token->str);

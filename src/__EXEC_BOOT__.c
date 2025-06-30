@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 00:13:06 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/27 07:05:38 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 03:29:40 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,7 @@ void	minishell_launcher(t_data *data)
 	//		print_stats_of_all_variable(data);
 			prepare_next_input(data, &data->cmd);
 		}
+		else
+			free(input);
 	}
 }
