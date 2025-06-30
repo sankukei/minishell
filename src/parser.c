@@ -75,11 +75,9 @@ void	add_redir_list(t_token *token, t_redir **redir_list)
 	if (!*redir_list)
 	{
 		*redir_list = new;
-
 	}
 	else
 	{
-		printf("ALED\n");
 		tmp = *redir_list;
 		while (tmp->next)
 			tmp = tmp->next;

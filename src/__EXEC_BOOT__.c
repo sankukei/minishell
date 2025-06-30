@@ -67,7 +67,6 @@ void	print_redir(t_data *data)
 	}
 }
 
-
 void	print_stats_of_all_variable(t_data *data)
 {
 	printf("#### DEBUG ###\n");
@@ -113,7 +112,7 @@ void	minishell_launcher(t_data *data)
 			parser(data, &cmds);
 			data->cmd = cmds;
 			__exec_startup__(data, cmds);
-	//		print_stats_of_all_variable(data);
+			print_stats_of_all_variable(data);
 			prepare_next_input(data, &data->cmd);
 		}
 		else

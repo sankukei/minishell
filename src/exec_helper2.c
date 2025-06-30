@@ -53,7 +53,7 @@ int	init_pipes(t_exec *vars)
 		pipe(vars->pipes[i]);
 		i++;
 	}
-	return 0;
+	return (0);
 }
 
 void	close_pipes(t_exec *vars)
