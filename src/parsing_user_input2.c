@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 03:01:14 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/18 12:17:32 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 07:52:41 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*get_my_env(t_data *data, char *str)
 	return (free(str), NULL);
 }
 
-
+// LES DEUX FONTIONS EN DESSOUS SONT DES V1
 // void	var_env_handler(t_data *data)
 // {
 // 	char	*input;
@@ -68,39 +68,95 @@ char	*get_my_env(t_data *data, char *str)
 // 	}
 // }
 
-static void	handle_env_variable(t_data *data, char **input, int i)
+// static void	handle_env_variable(t_data *data, char **input, int i)
+// {
+// 	char	*var;
+// 	int		len;
+
+// 	var = detect_var_env(&(*input)[i]);
+// 	len = count_var_len(&(*input)[i]);
+// 	if (len == 0)
+// 		return (free(var));
+// 	if (var_is_in_env(data, var, len))
+// 	{
+// 		var = get_my_env(data, var);
+// 		replace_var_env(data, var, i, len);
+// 		free(*input);
+// 		*input = data->input;
+// 	}
+// }
+
+// void	var_env_handler(t_data *data)
+// {
+// 	char	*input;
+// 	int		i;
+
+// 	input = data->input;
+// 	i = 0;
+// 	while (input[i])
+// 	{
+// 		printf("%c", input[i]);
+// 		quote_check(data, i);
+// 		if (input[i] == '$' && data->single_quote != true)
+// 			handle_env_variable(data, &input, i);
+// 		i++;
+// 	}
+// }
+
+
+static int	handle_env_variable(t_data *data, char **input, int i)
 {
 	char	*var;
 	int		len;
+	char	*value;
+	int		value_len;
 
 	var = detect_var_env(&(*input)[i]);
 	len = count_var_len(&(*input)[i]);
 	if (len == 0)
-		return (free(var));
+	{
+		free(var);
+		return (1);
+	}
+
 	if (var_is_in_env(data, var, len))
 	{
-		var = get_my_env(data, var);
-		replace_var_env(data, var, i, len);
+		value = get_my_env(data, var);
+		value_len = ft_strlen(value);
+
+		replace_var_env(data, value, i, len);
+
 		free(*input);
 		*input = data->input;
+
+		return (value_len);
 	}
+	return (len + 1);
 }
+
 
 void	var_env_handler(t_data *data)
 {
 	char	*input;
 	int		i;
+	int		step;
 
-	input = data->input;
 	i = 0;
+	input = data->input;
 	while (input[i])
 	{
 		quote_check(data, i);
 		if (input[i] == '$' && data->single_quote != true)
-			handle_env_variable(data, &input, i);
+		{
+			step = handle_env_variable(data, &input, i);
+			i += step;
+			continue ;
+		}
 		i++;
 	}
+	data->input = input;
 }
+
 
 int	check_quote_error(t_data *data)
 {

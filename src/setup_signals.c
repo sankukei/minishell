@@ -6,12 +6,30 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 04:16:05 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/30 04:12:28 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 06:38:08 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
+
+void	init_terminal(void)
+{
+	struct termios	term;
+
+	if (tcgetattr(STDIN_FILENO, &term) == -1)
+	{
+		perror("tcgetattr");
+		exit(EXIT_FAILURE);
+	}
+	term.c_lflag &= ~ECHOCTL;
+
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &term) == -1)
+	{
+		perror("tcsetattr");
+		exit(EXIT_FAILURE);
+	}
+}
 
 t_mode *get_shell_mode(void)
 {
@@ -43,6 +61,8 @@ void	handle_sigint(int signum)
 
 
 	}
+	else if (signum == SIGQUIT && mode == MODE_MAIN)
+        write(1, "minishell> ", 12);
 	else if (signum == SIGQUIT && mode == MODE_CHILD)
         write(1, "Quit (core dumped)\n", 19);
 }
