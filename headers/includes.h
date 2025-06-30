@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:01:54 by leothoma          #+#    #+#             */
-/*   Updated: 2025/03/26 04:11:01 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 06:21:48 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,3 +21,4 @@
 #include "libft/libft.h"
 #include <sys/wait.h>
 #include <fcntl.h>
+#include <termios.h>

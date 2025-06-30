@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 03:01:20 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/30 02:33:01 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 06:47:56 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,16 @@ int	check_token_syntax(t_token *head)	// fonction tres sombre a refaire
 				return (printf("Syntax error: unexpected token '|'\n"), 1);
 			
 		}
-		if (curr->type == TRUNC || curr->type == APPEND)
+		if (curr->type == TRUNC || curr->type == APPEND || curr->type == INPUT)
 		{
-			if (!curr->next || curr->next->type == TRUNC || curr->next->type == PIPE) 
+			if (!curr->next || curr->next->type == TRUNC || curr->next->type == PIPE || curr->next->type == INPUT) 
 				return (printf("Syntax error: unexpected token '>'\n"), 1);
 
+		}
+		if (curr->type == INPUT)
+		{
+			// if (!curr->next)
+			// 	return (printf("Syntax error: unexpected token '<'\n"), 1);
 		}
 		curr = curr->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/30 04:30:07 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 07:51:40 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,32 @@ void	replace_var_env(t_data *data, char *var, int i, int len)
 		data->input + i + len + 1, len_new_input);
 	data->input = dest;
 }
+
+//"essaie de fix un truc de ouf mais c'etais pas ca"
+// void	replace_var_env(t_data *data, char *value, int start, int var_len)
+// {
+// 	int		prefix_len;
+// 	int		value_len;
+// 	int		suffix_len;
+// 	int		new_len;
+// 	char	*new_input;
+// 	if (!data || !data->input || !value)
+// 		return ;
+// 	prefix_len = start;
+// 	value_len = ft_strlen(value);
+// 	suffix_len = ft_strlen(data->input + start + var_len + 1);
+// 	new_len = prefix_len + value_len + suffix_len;
+// 	new_input = malloc(sizeof(char) * (new_len + 1));
+// 	if (!new_input)
+// 		exit(1);
+// 	ft_memcpy(new_input, data->input, prefix_len);
+// 	ft_memcpy(new_input + prefix_len, value, value_len);
+// 	ft_memcpy(new_input + prefix_len + value_len,
+// 		data->input + start + var_len + 1, suffix_len);
+// 	new_input[new_len] = '\0';
+// 	data->input = new_input;
+// }
+
 
 int	parsing(t_data	*data)
 {

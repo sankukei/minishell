@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 00:13:06 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/30 04:04:22 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 06:11:51 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ void	minishell_launcher(t_data *data)
 		*get_shell_mode() = MODE_MAIN;
 		cmds = NULL;
 		input = readline("minishell> ");
+		if (input == NULL)
+			continue ;	// pour handle ctrl+d
 		if (ft_strlen(input))
 		{
 			data->input = input;
