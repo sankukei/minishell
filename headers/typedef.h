@@ -85,7 +85,7 @@ typedef struct s_exec
 	int		old_stdout;
 	int		is_builtin;
 	int		is_reddir;
-	int		is_heredoc;
+	int		heredoc;
 	int		n_command;
 	int		**pipes;
 	int		status;

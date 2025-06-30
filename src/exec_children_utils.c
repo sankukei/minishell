@@ -34,16 +34,27 @@ int	setup_output_pipes(t_exec *vars, int i)
 
 int	setup_input_pipes(t_exec *vars, int i)
 {
+	if (vars->heredoc)
+	{
+		int	fd = open(".heredoc_buffer", O_RDONLY);
+		if (dup2(fd, STDIN_FILENO) == -1)
+		{
+			write(1, "dup2 failed\n", 13);
+			return (0);
+		}
+	}
 	if (i != 0)
 	{
 		close(vars->pipes[i - 1][1]);
-		if (dup2(vars->pipes[i - 1][0], STDIN_FILENO) == -1)
+		if (!vars->heredoc && dup2(vars->pipes[i - 1][0], STDIN_FILENO) == -1)
 		{
 			write(1, "dup2 failed\n", 13);
 			return (0);
 		}
 		close(vars->pipes[i - 1][0]);
 	}
+	if (vars->heredoc)
+		vars->heredoc = 0;
 	return (1);
 }
 

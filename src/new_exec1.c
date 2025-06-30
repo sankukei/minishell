@@ -164,8 +164,9 @@ int	__exec_startup__(t_data *data, t_cmd *cmds)
 	if (!vars)
 		return (1);
 	bzero(vars, sizeof(t_exec));
+	vars->heredoc = 0;
 	commands = data->cmd;
-	check_for_heredoc(commands);
+	check_for_heredoc(vars, commands);
 	vars->n_command = data->n_commands;
 	printf("TRUE n_command %d\n", vars->n_command);
 	if (vars->n_command == 1)
