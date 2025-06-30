@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:14:13 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/30 01:31:18 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 02:16:19 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	pwd(int fd)
 	path = getcwd(NULL, 0);
 	write(fd, path, ft_strlen(path));
 	write(fd, "\n", 1);
+	free(path);
 }
 
 void	echo(char **args, int fd)
