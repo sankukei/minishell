@@ -67,7 +67,6 @@ void	print_redir(t_data *data)
 	}
 }
 
-
 void	print_stats_of_all_variable(t_data *data)
 {
 	printf("#### DEBUG ###\n");

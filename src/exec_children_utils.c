@@ -14,7 +14,16 @@
 
 void	free_exec(t_exec *vars)
 {
-	(void)vars;
+	int	i;
+
+	i = 0;
+	if (vars->pipes)
+	{
+		while (i < vars->n_command - 1)
+			free(vars->pipes[i++]);
+		free (vars->pipes);
+	}
+	free(vars);
 }
 
 int	setup_output_pipes(t_exec *vars, int i)
@@ -52,7 +61,7 @@ void	close_unused_pipes(t_data *data, t_exec *vars, int i)
     int j;
     int n = data->n_commands - 1;
 
-    if (!vars->pipes) // Ajout de ce check
+    if (!vars->pipes)
         return;
 
     for (j = 0; j < n; j++)

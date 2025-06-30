@@ -177,6 +177,6 @@ int	__exec_startup__(t_data *data, t_cmd *cmds)
 	close_pipes(vars);
 	wait_all_childrens(vars);
 	restore_fds(vars);
-	free(vars);
+	free_exec(vars);
 	return (0);
 }
