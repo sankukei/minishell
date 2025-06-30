@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:49:26 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/30 01:15:05 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 01:59:31 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
     {
         printf("execve failed\n");
         free_exec(vars);
-	clear_cmds(&data->cmd);
+		clear_cmds(&data->cmd);
         exit(1);
     }
     exit(0);
