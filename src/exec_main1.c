@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:30 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/30 03:26:24 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 03:51:03 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,21 @@
 // 	return (res);
 // }
 
+static int	exec_given_path(t_data *data, char *cmd, char **args)
+{
+	if (!access(cmd, X_OK))
+	{
+		if (ft_strnstr(cmd, "ls", ft_strlen(cmd)))
+		{
+			args = chang_args_ls(data, args);
+			execve("ls", args, data->env);
+		}
+		execve(cmd, args, data->env);
+		return (0);
+	}
+	return (1);
+}
+
 int	exec_single(t_data *data, char *cmd, char **args)
 {
 	char	**path;
@@ -58,6 +73,9 @@ int	exec_single(t_data *data, char *cmd, char **args)
 	if (!path)
 		return (0);
 	i = 0;
+	if (ft_strncmp(cmd, "/", 1) == 0)
+		if (!exec_given_path(data, cmd, args))
+			return (0);
 	while (path[i])
 	{
 		tmp = ft_strjoin(path[i], "/");
