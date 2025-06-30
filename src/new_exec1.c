@@ -34,6 +34,12 @@ int	open_fds(char *fd_name, int type)
 		if (fd < 0)
 			return (0);
 	}
+	else if (type == 3)
+	{
+		fd = open(fd_name, O_RDONLY, 0644);
+		if (fd < 0)
+			return (0);
+	}
 	return (fd);
 }
 
@@ -50,7 +56,7 @@ int	handle_redir(t_redir *redir)
 		fd = open_fds(redir->target, redir->type);
 		printf("FD RETURNED BY OPEN_FDS -> %d\n", fd);
 		redir->fd = fd;
-		if (redir->next && redir->type == 4 && redir->type == 2)
+		if (redir->next && redir->type == 4 && redir->type == 2 && redir->type == 3)
 			close(fd);
 		printf("%d\n", redir->fd);
 		redir = redir->next;
