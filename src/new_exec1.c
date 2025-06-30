@@ -40,6 +40,12 @@ int	open_fds(char *fd_name, int type)
 		if (fd < 0)
 			return (0);
 	}
+	else if (type == 1)
+	{
+		fd = open(".heredoc_buffer", O_RDONLY, 0644);
+		if (fd < 0)
+			return (0);
+	}
 	return (fd);
 }
 
@@ -54,11 +60,9 @@ int	handle_redir(t_redir *redir)
 	{
 		printf("reddir detected\n");
 		fd = open_fds(redir->target, redir->type);
-		printf("FD RETURNED BY OPEN_FDS -> %d\n", fd);
 		redir->fd = fd;
 		if (redir->next && redir->type == 4 && redir->type == 2 && redir->type == 3)
 			close(fd);
-		printf("%d\n", redir->fd);
 		redir = redir->next;
 	}
 	return (fd);
@@ -72,8 +76,8 @@ void	handle_dups(int fd, int type)
 		dup2(fd, STDOUT_FILENO);
 	else if (type == 2)
 		dup2(fd, STDOUT_FILENO);
-	// else if (type == 1)
-	//MISSING HEREDOC
+	//else if (type == 1)
+	//	dup2(fd, STDOUT_FILENO);
 }
 
 int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
@@ -162,7 +166,7 @@ int	__exec_startup__(t_data *data, t_cmd *cmds)
 		return (1);
 	bzero(vars, sizeof(t_exec));
 	commands = data->cmd;
-	//check_for_heredoc(commands);
+	check_for_heredoc(commands);
 	vars->n_command = data->n_commands;
 	printf("TRUE n_command %d\n", vars->n_command);
 	if (vars->n_command == 1)

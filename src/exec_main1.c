@@ -122,7 +122,7 @@ void	align_pointer(t_token **token)
 		*token = (*token)->next;
 }
 
-int	write_heredoc_into_fd(t_token *token)
+int	write_heredoc_into_fd(char *target)
 {
 	char	*input;
 	int	heredoc_fd;
@@ -133,70 +133,41 @@ int	write_heredoc_into_fd(t_token *token)
 	while (1)
 	{
 		input = readline("heredoc> ");
-		if (ft_strncmp(input, token->next->next->str, ft_strlen(token->next->next->str) + 1) == 0)
+		if (ft_strncmp(input, target, ft_strlen(target) + 1) == 0)
 			break ;
 		if (ft_strlen(input))
 		{
-			printf("allo ??\n");
 			write(heredoc_fd, input, ft_strlen(input));
 			write(heredoc_fd, "\n", 1);
 		}
 		free(input);
 	}
 	free(input);
+	close(heredoc_fd);
 	return (heredoc_fd);
 }
 
-void	check_for_heredoc(t_token *token, t_exec *vars)
+void	check_for_heredoc(t_cmd *cmds)
 {
 	int	fd;
-	int	i;
+	t_redir	*temp;
 
 	fd = 0;
-	i = 0;
-	while (token && token->next)
+	if (!cmds->redirs)
+		return ;
+	temp = cmds->redirs;
+	while (temp)
 	{
-		if (token->next->type == 1)
+		printf("adasdasdasdasdasdsadasdasd %s\n", temp->target);
+		if (cmds->redirs->type == 1)
 		{
-			fd = write_heredoc_into_fd(token);
-			vars->heredoc_index = i;
-			vars->heredoc_fd = fd;
-			vars->is_heredoc = 1;
+			printf("HEREDOC FOUND\n");
+			fd = write_heredoc_into_fd(temp->target);
 		}
-		if (token->type == 6)
-			i++;
-		token = token->next;
+		temp = temp->next;
 	}
 }
 
-char	**heredoc(t_token *token)
-{
-	char	*input;
-	char	**res;
-	int	i;
-
-	res = malloc(10000); // SAIS DLA MERDE
-	i = 0;
-	input = 0;
-	input = readline("heredoc> ");
-
-	while (1)
-	{
-		if (input)
-			break;
-		if (ft_strlen(input))
-			res[i] = input;
-		i++;
-		if (ft_strncmp(input, token->next->next->str, ft_strlen(token->next->next->str)) == 0)
-		{
-			break ;
-		}
-	}
-	res[i] = 0;
-	align_pointer(&token);
-	printf("heredoc job done\n");
-	return (res);
-}
 // void	start_children(t_exec *vars, t_data *data)
 // {
 // 	int	i;
