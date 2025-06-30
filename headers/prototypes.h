@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/30 01:11:23 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/06/30 04:04:45 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void		print_list(t_data **data, char const *option);
 // setup_signals
 void		handle_sigint(int signum);
 void		setup_signals(void);
+t_mode		*get_shell_mode(void);
 
 // string_utils
 int			ft_iscapitalise(char c);
