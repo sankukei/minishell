@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:49:26 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/30 04:57:27 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/02 04:09:13 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
     }
     if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
     {
+		clear_cmds(&data->cmd);
         free_exec(vars);
         exit(1);
     }
@@ -117,7 +118,7 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
         printf("execve failed\n");
         free_exec(vars);
 		clear_cmds(&data->cmd);
-        exit(1);
+        exit(127);
     }
     exit(0);
 }
@@ -176,7 +177,7 @@ int	__exec_startup__(t_data *data, t_cmd *cmds)
 	init_pipes(vars);
 	start_children_new(vars, data, cmds);
 	close_pipes(vars);
-	wait_all_childrens(vars);
+	wait_all_childrens(data, vars);
 	restore_fds(vars);
 	free_exec(vars);
 	return (0);

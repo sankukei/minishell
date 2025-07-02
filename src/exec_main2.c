@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:42 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/30 01:04:41 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/02 04:49:13 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 void	exec_builtin(int selector, char **args, t_data *data, int fd)
 {
 	if (selector == 1)
-		echo(args, fd);
+		echo(data, args, fd);
 	else if (selector == 2)
-		cd(args);
+		cd(data, args);
 	else if (selector == 3)
-		pwd(fd);
+		pwd(data, fd);
 	else if (selector == 4)
 		export(data, args);
 	else if (selector == 5)

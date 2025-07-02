@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:14:27 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/27 06:48:35 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/02 04:21:32 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,13 @@ int	handle_export_error(t_data *data, char **args)
 	if (!args[1])
 	{
 		env(data);
+		data->last_exit_status = 0;
 		return (1);
 	}
 	if (args[1][0] == '=')
 	{
 		printf("\"%s\": not a valid identifier\n", args[1]);
+		data->last_exit_status = 2;
 		return (1);
 	}
 	while (args[1][i] && args[1][i] != '=')
@@ -68,6 +70,7 @@ int	handle_export_error(t_data *data, char **args)
 		if ((!ft_isalpha(args[1][i]) && !ft_isdigit(args[1][i])))
 		{
 			printf("\"%s\": not a valid identifier\n", args[1]);
+			data->last_exit_status = 2;
 			return (1);
 		}
 		i++;
@@ -83,12 +86,15 @@ void	export(t_data *data, char **args)
 	int		exist;
 
 	if (handle_export_error(data, args))
-		return ;
+		return ;		
 	exist = 0;
 	i = count_env_size(data->env);
 	new_env = malloc(sizeof(char *) * (i + 2));
 	if (!new_env)
+	{
+		data->last_exit_status = 1;
 		return ;
+	}
 	bzero(new_env, sizeof(char *) * (i + 2));
 	j = 0;
 	while (j < i)
@@ -109,5 +115,5 @@ void	export(t_data *data, char **args)
 	if (!exist)
 		free(data->env);
 	data->env = new_env;
-	return ;
+	data->last_exit_status = 0;
 }
