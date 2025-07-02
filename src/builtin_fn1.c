@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:14:13 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/02 05:08:45 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/02 05:22:36 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ void	echo(t_data *data, char **args, int fd)
 		write(fd, str, ft_strlen(str));
 	if (!backslash)
 		write(fd, "\n", 1);
+	free(str);
 }
 
 void	ft_exit(t_data *data, char **args)

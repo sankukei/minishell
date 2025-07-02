@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:49:26 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/02 04:09:13 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/02 05:52:07 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	open_fds(char *fd_name, int type)
 	int	fd;
 
 	fd = 1;
-	if (type == 4)
+	if (type == TRUNC) // 4
 	{
 		fd = open(fd_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
@@ -34,7 +34,7 @@ int	open_fds(char *fd_name, int type)
 		if (fd < 0)
 			return (0);
 	}
-	else if (type == 3)
+	else if (type == INPUT) // 3
 	{
 		fd = open(fd_name, O_RDONLY, 0644);
 		if (fd < 0)
@@ -61,7 +61,7 @@ int	handle_redir(t_redir *redir)
 		printf("reddir detected\n");
 		fd = open_fds(redir->target, redir->type);
 		redir->fd = fd;
-		if (redir->next && redir->type == 4 && redir->type == 2 && redir->type == 3)
+		if (redir->next && redir->type != 1) // attenion c'est sombre
 			close(fd);
 		redir = redir->next;
 	}
@@ -91,6 +91,7 @@ int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
 	fd = handle_redir(commands->redirs);
 	// fd = commands->redirs->fd;
 	exec_builtin(check_if_builtin(commands->cmd[0]), commands->cmd, data, fd); // il faut passer data a cette fonction -_-
+	free(vars);
 	return (1);
 }
 
