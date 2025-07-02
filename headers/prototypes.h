@@ -113,6 +113,6 @@ char		**alloc_args_array(int count);
 char		**chang_args_ls(t_data *data, char **args);
 void		parser(t_data *data, t_cmd **cmd_list);
 void	close_unused_pipes(t_data *data, t_exec *vars, int i);
-void	check_for_heredoc(t_cmd *cmds);
+void	check_for_heredoc(t_exec *vars, t_cmd *cmds);
 
 

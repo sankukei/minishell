@@ -147,7 +147,7 @@ int	write_heredoc_into_fd(char *target)
 	return (heredoc_fd);
 }
 
-void	check_for_heredoc(t_cmd *cmds)
+void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
 {
 	int	fd;
 	t_redir	*temp;
@@ -163,6 +163,9 @@ void	check_for_heredoc(t_cmd *cmds)
 		{
 			printf("HEREDOC FOUND\n");
 			fd = write_heredoc_into_fd(temp->target);
+			vars->heredoc = 1;
+			vars->heredoc_fd = fd;
+			close(vars->heredoc_fd);
 		}
 		temp = temp->next;
 	}
