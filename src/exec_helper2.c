@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:57 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/27 06:58:10 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/02 03:48:56 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ void	close_pipes(t_exec *vars)
 	}
 }
 
-void	wait_all_childrens(t_exec *vars)
+void	wait_all_childrens(t_data *data, t_exec *vars)
 {
 	while (wait(&vars->status) > 0)
-		;
+		data->last_exit_status = WEXITSTATUS(vars->status);
 }
 
 void	restore_fds(t_exec *vars)

@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/30 04:04:45 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/02 04:55:24 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void		print_list(t_data **data, char const *option);
 void		handle_sigint(int signum);
 void		setup_signals(void);
 t_mode		*get_shell_mode(void);
+void		init_terminal(void);
 
 // string_utils
 int			ft_iscapitalise(char c);
@@ -68,24 +69,24 @@ void		lexer(t_data *data, char *str);
 // clear_utils
 void		prepare_next_input(t_data *data, t_cmd **cmd);
 void		clear_struct(t_token **tokens);
-void		exit_program(t_data *data);
+void		exit_program(t_data *data, char **args);
 void		clear_double_array(char **str);
 void		clear_cmds(t_cmd **cmds);
 
 // EXEC
-void		cd(char **args);
-void		pwd(int fd);
+void		cd(t_data *data, char **args);
+void		pwd(t_data *data, int fd);
 void		ft_exit(t_data *data, char **args);
-void		echo(char **args, int fd);
+void		echo(t_data *data, char **args, int fd);
 void		export(t_data *data, char **args);
 void		unset(t_data *data, char **args);
 void		env(t_data *data);
 void		children_exec(t_exec *vars, t_data *data, int i);
 void		init_exec_variables(t_exec *vars);
-int		init_pipes(t_exec *vars);
+int			init_pipes(t_exec *vars);
 void		start_children(t_exec *vars, t_data *data);
 void		close_pipes(t_exec *vars);
-void		wait_all_childrens(t_exec *vars);
+void		wait_all_childrens(t_data *data, t_exec *vars);
 void		restore_fds(t_exec *vars);
 void		exec_builtin(int selector, char **args, t_data *data, int fd);
 void		free_arr(char **arr);

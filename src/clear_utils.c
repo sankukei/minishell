@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 03:18:00 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/30 04:38:51 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/02 04:47:01 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +115,26 @@ void	prepare_next_input(t_data *data, t_cmd **cmds)
 	}
 }
 
-void	exit_program(t_data *data)
+void	exit_program(t_data *data, char **args)
 {
+	int	exit_tmp;
+	
+	exit_tmp = data->last_exit_status;
 	free(data->input);
 	clear_struct(&data->front_token);
 	clear_double_array(data->env);
-	clear_cmds(&data->cmd);
-	free(data);
-	exit(1);
+	if (args && args[1])
+	{
+		exit_tmp = ft_atoi(args[1]);
+		clear_cmds(&data->cmd);
+		free(data);
+		exit(exit_tmp);
+	}
+	else
+	{
+		clear_cmds(&data->cmd);
+		free(data);
+		exit(exit_tmp);
+	}
+	
 }
