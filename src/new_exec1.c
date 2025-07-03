@@ -49,8 +49,16 @@ int	open_fds(char *fd_name, int type)
 	return (fd);
 }
 
+//int	handle_infiles(t_redir *redir)
+//{
+
+//}
+
 int	handle_redir(t_redir *redir)
 {
+
+	// gerer les infiles seperament
+	// 1) detecter si il y a un infile et garder uniquement le dernier
 	int	fd;
 
 	fd = 1;

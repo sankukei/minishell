@@ -106,3 +106,9 @@ typedef struct s_exec
 	char	**args;
 }	t_exec;
 
+typedef struct s_dup
+{
+	int	heredoc;
+	int	infile;
+	int	outfile;
+} t_dup;
