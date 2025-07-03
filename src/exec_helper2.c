@@ -20,13 +20,11 @@ void	init_exec_variables(t_exec *vars)
 	vars->is_reddir = 0;
 	vars->n_command = 0;
 	vars->is_builtin = 0;
-	//vars->is_heredoc = 0;
 	vars->cmd = 0;
 	vars->heredoc_index = 0;
 	vars->current_pipe_index = 0;
 }
 
-// PAS OUBLIE DE REGARD LE RETURN
 int	init_pipes(t_exec *vars)
 {
 	int	i;
@@ -37,19 +35,17 @@ int	init_pipes(t_exec *vars)
 	if (n == 1 || n == 0)
 	{
 		vars->pipes = 0;
-		return 1;
+		return (1);
 	}
-	vars->pipes = malloc((n -1)* sizeof(int *));
+	vars->pipes = malloc((n -1) * sizeof(int *));
 	if (!vars->pipes)
 		return (1);
-	//bzero(vars->pipes, (n - 1) * sizeof(int *));
 	n--;
 	while (n--)
 	{
 		vars->pipes[i] = malloc(sizeof(int) * 2);
 		if (!vars->pipes[i])
 			return (1);
-		//bzero(vars->pipes[i], sizeof(int) * 2);
 		pipe(vars->pipes[i]);
 		i++;
 	}
@@ -77,8 +73,5 @@ void	wait_all_childrens(t_data *data, t_exec *vars)
 
 void	restore_fds(t_exec *vars)
 {
-
-	 //close(vars->old_stdin);
-	 dup2(vars->old_stdout, STDOUT_FILENO);
-	 //close(vars->old_stdout);
+	dup2(vars->old_stdout, STDOUT_FILENO);
 }

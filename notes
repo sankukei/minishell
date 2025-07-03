@@ -45,3 +45,5 @@ laisser passer dans le parsing << EOF
 
 refuser < ls (il manque infile dans la commande)
 refuser > fd (pas de commande)
+
+reddirection a la chaine ne marche plus

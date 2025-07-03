@@ -12,40 +12,6 @@
 
 #include "../headers/minishell.h"
 
-// char	**get_args(t_token **token, t_exec *vars)
-// {
-// 	int		is_reddir;
-// 	int		count;
-// 	int		filled;
-// 	char	**res;
-// 	t_token	*tmp;
-
-// 	is_reddir = 0;
-// 	tmp = *token;
-// 	count = skip_first_tokens(token);
-// 	res = alloc_args_array(count + 16);
-// 	if (!res)
-// 		return (NULL);
-// 	*token = tmp;
-// 	filled = fill_args(res, token, &is_reddir, vars);
-// 	if (filled == -1)
-// 	{
-// 		free_arr(res);
-// 		return (NULL);
-// 	}
-
-// 	while((*token) && (*token)->next && (*token)->type != 6)
-// 	{
-// 		if ((*token)-> type == APPEND || (*token)->type == TRUNC || (*token)->type == INPUT)
-// 		{
-// 			vars->reddir_fd_name = (*token)->next->str;
-// 			vars->reddir_fd_type = (*token)->type;
-// 		}
-// 		*token = (*token)->next;
-// 	}
-// 	return (res);
-// }
-
 static int	exec_given_path(t_data *data, char *cmd, char **args)
 {
 	if (!access(cmd, X_OK))
@@ -100,22 +66,6 @@ int	exec_single(t_data *data, char *cmd, char **args)
 	return (0);
 }
 
-// int	handle_single_builtin(t_exec *vars, t_data *data)
-// {
-// 	vars->is_builtin = check_if_builtin(data->token->str);
-// 	vars->is_reddir = check_if_redir(data->token);
-// 	if (vars->n_command == 1 && vars->is_builtin != 0)
-// 	{
-// 		vars->args = get_args(&data->token, vars);
-// 		if (vars->is_reddir)
-// 			vars->fd = get_fd_from_reddir(vars->reddir_fd_name,
-// 					vars->reddir_fd_type, vars);
-// 		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);
-// 		return (1);
-// 	}
-// 	return (0);
-// }
-
 void	align_pointer(t_token **token)
 {
 	while (token && *token && ((*token)->type == 6 || (*token)->type == 7))
@@ -125,9 +75,8 @@ void	align_pointer(t_token **token)
 int	write_heredoc_into_fd(char *target)
 {
 	char	*input;
-	int	heredoc_fd;
+	int		heredoc_fd;
 
-	//TODO: changer les permission pour eviter les prankex en corrections
 	heredoc_fd = open(".heredoc_buffer", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	input = 0;
 	while (1)
@@ -149,25 +98,22 @@ int	write_heredoc_into_fd(char *target)
 
 void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
 {
-	int	fd;
+	int		fd;
 	t_cmd	*temp;
-	t_redir *temp_redirs;
+	t_redir	*temp_redirs;
 
 	fd = 0;
 	temp = cmds;
 	while (temp)
 	{
-		printf("entering temp\n");
 		temp_redirs = temp->redirs;
 		while (temp_redirs)
 		{
-			printf("entering temp_redirs\n");
 			if (temp_redirs->type == 1)
 			{
-				printf("HEREDOC FOUND\n");
 				fd = write_heredoc_into_fd(temp_redirs->target);
 				vars->heredoc = 1;
-					vars->heredoc_fd = fd;
+				vars->heredoc_fd = fd;
 				close(vars->heredoc_fd);
 			}
 			temp_redirs = temp_redirs->next;
@@ -175,50 +121,3 @@ void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
 		temp = temp->next;
 	}
 }
-
-// void	start_children(t_exec *vars, t_data *data)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (i < vars->n_command)
-// 	{
-// 		vars->pid = fork();
-// 		printf("N_COMMANDS -> %d, i = %d\n", vars->n_command, i);
-// 		vars->is_reddir = check_if_redir(data->token);
-// 		vars->cmd = data->token->str;
-// 		vars->args = get_args(&data->token, vars);
-
-// 		 printf("vars->cmd = %s, current_pipe_index = %d, heredoc_index = %d\n", vars->cmd, vars->current_pipe_index, vars->heredoc_index);
-// 		 printf("vars->is_reddir = %d\n", vars->is_reddir);
-// 		 printf("vars->is_heredoc= %d\n", vars->is_heredoc);
-
-// 		vars->is_builtin = check_if_builtin(vars->cmd);
-// 		vars->xd = 0;
-// 		if (vars->pid == 0)
-// 			children_exec(vars, data, i);
-// 		i++;
-// 		vars->current_pipe_index = i;
-// 	}
-// }
-
-// void	children_exec(t_exec *vars, t_data *data, int i)
-// {
-// 	if (vars->is_reddir)
-// 		vars->fd = get_fd_from_reddir(vars->reddir_fd_name, vars->reddir_fd_type, vars);
-// 	else if(!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
-// 	{
-// 		free_exec(vars);
-// 		exit(1);
-// 	}
-// 	// close_pipes(vars);
-// 	if (vars->is_builtin != 0)
-// 		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);
-// 	else if (!exec_single(data, vars->cmd, vars->args))
-// 	{
-// 		printf("execve failed\n");
-// 		free_exec(vars);
-// 		exit(1);
-// 	}
-// 	exit(0);
-// }

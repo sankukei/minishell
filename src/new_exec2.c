@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../headers/minishell.h"
+
 int	open_fds(char *fd_name, int type)
 {
 	int	fd;

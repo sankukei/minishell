@@ -27,20 +27,6 @@ int	get_number_of_commands(t_token *token)
 	return (i);
 }
 
-
-void	close_all_pipes(int **pipes, int n)
-{
-	int	i;
-
-	i = 0;
-	while (i < n)
-	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-		i++;
-	}
-}
-
 int	check_if_builtin(char *str)
 {
 	if (ft_strncmp(str, "echo", 5) == 0)

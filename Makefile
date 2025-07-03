@@ -25,8 +25,8 @@ SRC = main.c \
 	  search_list_utils2.c \
       string_utils.c \
       clear_utils.c \
+      clear_utils2.c \
       setup_signals.c \
-      __EXEC_STARTUP__.c \
       init.c \
       join.c \
       builtin_fn1.c \
@@ -36,11 +36,13 @@ SRC = main.c \
 	  exec_main2.c \
 	  exec_helper1.c \
 	  exec_helper2.c \
-	  get_args_utils.c \
 	  echo_utils.c \
 	  exec_children_utils.c \
 	  parser.c \
+	  parser2.c \
+	  parser3.c \
 	  new_exec1.c \
+	  new_exec2.c \
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a

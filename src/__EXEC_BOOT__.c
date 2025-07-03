@@ -15,7 +15,7 @@
 void	print_tokens(t_data *data)
 {
 	t_token	*token;
-	int	i;
+	int		i;
 
 	i = 1;
 	token = data->front_token;
@@ -26,14 +26,13 @@ void	print_tokens(t_data *data)
 		i++;
 		token = token->next;
 	}
-	
 }
 
 void	print_cmd(t_data *data)
 {
 	t_cmd	*cmds;
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
 	j = 0;
 	i = 0;
@@ -53,16 +52,16 @@ void	print_cmd(t_data *data)
 
 void	print_redir(t_data *data)
 {
-	t_redir	*redirsX;
-	int	i;
+	t_redir	*redirs_x;
+	int		i;
 
 	i = 0;
-	redirsX = data->cmd->redirs;
+	redirs_x = data->cmd->redirs;
 	printf("#### REDIRS ###\n");
-	while (redirsX && redirsX->target)
+	while (redirs_x && redirs_x->target)
 	{
-		printf("%d redir: %s\n", i + 1, redirsX->target);
-		redirsX =  redirsX->next;
+		printf("%d redir: %s\n", i + 1, redirs_x->target);
+		redirs_x = redirs_x->next;
 		i++;
 	}
 }
@@ -74,7 +73,6 @@ void	print_stats_of_all_variable(t_data *data)
 	print_tokens(data);
 	print_cmd(data);
 	print_redir(data);
-
 }
 
 void	dzero(void *data, unsigned int size)
@@ -91,8 +89,9 @@ void	dzero(void *data, unsigned int size)
 
 void	minishell_launcher(t_data *data)
 {
-	char	*input;
+	char		*input;
 	t_cmd		*cmds;
+
 	setup_signals();
 	while (1)
 	{
@@ -101,8 +100,8 @@ void	minishell_launcher(t_data *data)
 		input = readline("minishell> ");
 		if (input == NULL)
 		{
-		    write(1, "exit\n", 5);
-		    exit(0); // Ctrl-D
+			write(1, "exit\n", 5);
+			exit(0);
 		}
 		if (ft_strlen(input))
 		{

@@ -114,5 +114,16 @@ char		**chang_args_ls(t_data *data, char **args);
 void		parser(t_data *data, t_cmd **cmd_list);
 void	close_unused_pipes(t_data *data, t_exec *vars, int i);
 void	check_for_heredoc(t_exec *vars, t_cmd *cmds);
-
-
+t_dup	handle_redir(t_redir *redir);
+void	handle_dups(t_dup dups);
+int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data);
+void	get_reddirs(t_token *token, t_redir **redir_list);
+int	check_for_redirs(t_token *token);
+int	check_for_cmds(int type);
+int	get_malloc_size_for_cmds(t_token *token);
+void	add_redir_list(t_token *token, t_redir **redir_list);
+char	**save_cmds_info(t_token *token, t_cmd *cmd_list);
+int	add_cmd_list(t_data *data, t_token *token, t_cmd **cmd_list);
+int	get_n_command(t_token *token);
+void	advance_pointer(t_token **token);
+void	clear_cmd_node(t_cmd *cmds);
