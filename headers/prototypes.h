@@ -58,6 +58,8 @@ void		handle_sigint(int signum);
 void		setup_signals(void);
 t_mode		*get_shell_mode(void);
 void		init_terminal(void);
+void	    sigint_heredoc_handler(int sig);
+int	        *get_sigint_flag(void);
 
 // string_utils
 int			ft_iscapitalise(char c);

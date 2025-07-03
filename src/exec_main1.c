@@ -126,10 +126,19 @@ int	write_heredoc_into_fd(char *target)
 {
 	char	*input;
 	int	heredoc_fd;
+	struct sigaction	sa;
 
 	//TODO: changer les permission pour eviter les prankex en corrections
 	heredoc_fd = open(".heredoc_buffer", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	input = 0;
+
+	// test
+	*get_sigint_flag() = 0;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = sigint_heredoc_handler;
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+	// signaux
 	while (1)
 	{
 		input = readline("heredoc> ");
@@ -144,13 +153,40 @@ int	write_heredoc_into_fd(char *target)
 	}
 	free(input);
 	close(heredoc_fd);
+	//test
+	setup_signals();
+	//signaux
 	return (heredoc_fd);
 }
 
+// void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
+// {
+// 	int	fd;
+// 	t_redir	*temp;
+
+// 	fd = 0;
+// 	if (!cmds->redirs)
+// 		return ;
+// 	temp = cmds->redirs;
+// 	while (temp)
+// 	{
+// 		printf("adasdasdasdasdasdsadasdasd %s\n", temp->target);
+// 		if (cmds->redirs->type == 1)
+// 		{
+// 			printf("HEREDOC FOUND\n");
+// 			fd = write_heredoc_into_fd(temp->target);
+// 			vars->heredoc = 1;
+// 			vars->heredoc_fd = fd;
+// 			close(vars->heredoc_fd);
+// 		}
+// 		temp = temp->next;
+// 	}
+// }
+
 void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
 {
-	int	fd;
-	t_redir	*temp;
+	int			fd;
+	t_redir		*temp;
 
 	fd = 0;
 	if (!cmds->redirs)
@@ -158,14 +194,16 @@ void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
 	temp = cmds->redirs;
 	while (temp)
 	{
-		printf("adasdasdasdasdasdsadasdasd %s\n", temp->target);
-		if (cmds->redirs->type == 1)
+		if (temp->type == 1)
 		{
-			printf("HEREDOC FOUND\n");
 			fd = write_heredoc_into_fd(temp->target);
+			if (fd == -1)
+			{
+				vars->heredoc = 0;
+				return ;
+			}
 			vars->heredoc = 1;
 			vars->heredoc_fd = fd;
-			close(vars->heredoc_fd);
 		}
 		temp = temp->next;
 	}

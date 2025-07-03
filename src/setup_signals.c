@@ -12,6 +12,8 @@
 
 #include "../headers/minishell.h"
 
+
+
 void	init_terminal(void)
 {
 	struct termios	term;
@@ -29,11 +31,27 @@ void	init_terminal(void)
 	}
 }
 
+int	*get_sigint_flag(void)
+{
+	static int	sigint_received = 0;
+
+	return (&sigint_received);
+}
+
 t_mode	*get_shell_mode(void)
 {
 	static t_mode	mode = MODE_MAIN;
 	return (&mode);
 }
+
+void	sigint_heredoc_handler(int sig)
+{
+	(void)sig;
+	*get_sigint_flag() = 1;
+	write(1, "\n", 1);
+}
+
+
 
 void	handle_sigint(int signum)
 {
