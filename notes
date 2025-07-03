@@ -42,3 +42,6 @@ cat << EOF > yo | ls, cas de merde a gerer (tres sombre)
 laisser passer dans le parsing << EOF
 
 < minishell cat > f > f | < Makefile cat > e
+
+refuser < ls (il manque infile dans la commande)
+refuser > fd (pas de commande)

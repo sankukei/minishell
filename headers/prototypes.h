@@ -88,7 +88,7 @@ void		start_children(t_exec *vars, t_data *data);
 void		close_pipes(t_exec *vars);
 void		wait_all_childrens(t_data *data, t_exec *vars);
 void		restore_fds(t_exec *vars);
-void		exec_builtin(int selector, char **args, t_data *data, int fd);
+void		exec_builtin(int selector, char **args, t_data *data, t_dup dups);
 void		free_arr(char **arr);
 void		free_exec(t_exec *vars);
 int			__exec_startup__(t_data *data, t_cmd *cmds);

@@ -109,6 +109,8 @@ typedef struct s_exec
 typedef struct s_dup
 {
 	int	heredoc;
-	int	infile;
-	int	outfile;
+	int	infile_redir;
+	int	infile_fd;
+	int	outfile_redir;
+	int	outfile_fd;
 } t_dup;

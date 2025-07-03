@@ -49,56 +49,90 @@ int	open_fds(char *fd_name, int type)
 	return (fd);
 }
 
-//int	handle_infiles(t_redir *redir)
-//{
+void	fill_t_dups(t_dup *dups, int type, int fd)
+{
+	if (type == INPUT)
+	{
+		dups->infile_fd = fd;
+		dups->infile_redir = type;
+	}
+	else if (type == APPEND)
+	{
+		dups->outfile_fd = fd;
+		dups->outfile_redir = type;
 
-//}
+	}
+	else if (type == TRUNC)
+	{
+		dups->outfile_fd = fd;
+		dups->outfile_redir = type;
+	}
+}
 
-int	handle_redir(t_redir *redir)
+t_dup	handle_redir(t_redir *redir)
 {
 
 	// gerer les infiles seperament
 	// 1) detecter si il y a un infile et garder uniquement le dernier
 	int	fd;
+	t_dup	dups;
 
+	dups.infile_fd = 0;
+	dups.outfile_fd = 0;
+	dups.infile_redir = 0;
+	dups.outfile_redir = 0;
 	fd = 1;
-	if (!redir)
-		return (1);
 	while (redir)
 	{
 		printf("reddir detected\n");
 		fd = open_fds(redir->target, redir->type);
-		redir->fd = fd;
-		if (redir->next && redir->type != 1) // attenion c'est sombre
-			close(fd);
+		//redir->fd = fd;
+		//if (redir->next && redir->type != 1) // attenion c'est sombre
+		//	close(fd);
+		fill_t_dups(&dups, redir->type, fd);
 		redir = redir->next;
 	}
-	return (fd);
+	return (dups);
 }
 
-void	handle_dups(int fd, int type)
+void	handle_dups(t_dup dups)
 {
-	if (type == 3)
-		dup2(fd, STDIN_FILENO);
-	else if (type == 4)
-		dup2(fd, STDOUT_FILENO);
-	else if (type == 2)
-		dup2(fd, STDOUT_FILENO);
-	//else if (type == 1)
-	//	dup2(fd, STDOUT_FILENO);
+	if (dups.infile_redir)
+	{
+		if (dups.infile_redir == 3)
+			dup2(dups.infile_fd, STDIN_FILENO);
+	}
+	if (dups.outfile_redir)
+	{
+		printf("%d\n", dups.outfile_redir);
+		if (dups.outfile_redir == 2)
+			dup2(dups.outfile_fd, STDOUT_FILENO);
+		else if (dups.outfile_redir == 4)
+			dup2(dups.outfile_fd, STDOUT_FILENO);
+	}
+//	if (type == 3)
+//		dup2(fd, STDIN_FILENO);
+//	else if (type == 4)
+//		dup2(fd, STDOUT_FILENO);
+//	else if (type == 2)
+//		dup2(fd, STDOUT_FILENO);
+//	else if (type == 1)
+//		dup2(fd, STDOUT_FILENO);
 }
 
 int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
 {	
 	int	fd;
+	t_dup	dups;
 
 	(void)vars;
 	fd = 1;
 	if (!(check_if_builtin(commands->cmd[0]) && commands && commands->cmd))
 		return (0);
-	fd = handle_redir(commands->redirs);
-	// fd = commands->redirs->fd;
-	exec_builtin(check_if_builtin(commands->cmd[0]), commands->cmd, data, fd); // il faut passer data a cette fonction -_-
+	dups = handle_redir(commands->redirs);
+	// fd = commands->;redirs->fd;
+	// il faut envoyer dups a exec_builtin
+	exec_builtin(check_if_builtin(commands->cmd[0]), commands->cmd, data, dups); // il faut passer data a cette fonction -_-
 	free(vars);
 	return (1);
 }
@@ -106,22 +140,24 @@ int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
 void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 {
     int	fd = 1;
+    t_dup dups;
 
     if (cmds->redirs)
     {
-        fd = handle_redir(cmds->redirs);
-        handle_dups(fd, cmds->redirs->type);
+        dups = handle_redir(cmds->redirs);
+	printf("asdasdasda sd %d\n", dups.outfile_redir);
+        handle_dups(dups);
     }
     if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
     {
-		clear_cmds(&data->cmd);
+	clear_cmds(&data->cmd);
         free_exec(vars);
         exit(1);
     }
     close_unused_pipes(data, vars, i);
 
     if (check_if_builtin(cmds->cmd[0]))
-        exec_builtin(check_if_builtin(cmds->cmd[0]), cmds->cmd, data, fd);
+        exec_builtin(check_if_builtin(cmds->cmd[0]), cmds->cmd, data, dups);
     else if (!(exec_single(data, cmds->cmd[0], cmds->cmd)))
     {
         printf("execve failed\n");
