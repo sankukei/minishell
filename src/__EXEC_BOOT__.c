@@ -100,7 +100,10 @@ void	minishell_launcher(t_data *data)
 		cmds = NULL;
 		input = readline("minishell> ");
 		if (input == NULL)
-			continue ;	// pour handle ctrl+d
+		{
+		    write(1, "exit\n", 5);
+		    exit(0); // Ctrl-D
+		}
 		if (ft_strlen(input))
 		{
 			data->input = input;

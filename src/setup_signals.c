@@ -12,7 +12,6 @@
 
 #include "../headers/minishell.h"
 
-
 void	init_terminal(void)
 {
 	struct termios	term;
@@ -23,7 +22,6 @@ void	init_terminal(void)
 		exit(EXIT_FAILURE);
 	}
 	term.c_lflag &= ~ECHOCTL;
-
 	if (tcsetattr(STDIN_FILENO, TCSANOW, &term) == -1)
 	{
 		perror("tcsetattr");
@@ -31,49 +29,54 @@ void	init_terminal(void)
 	}
 }
 
-t_mode *get_shell_mode(void)
+t_mode	*get_shell_mode(void)
 {
-    static t_mode mode = MODE_MAIN;
-    return &mode;
+	static t_mode	mode = MODE_MAIN;
+	return (&mode);
 }
 
 void	handle_sigint(int signum)
 {
-	t_mode	mode;
-
-	mode = *get_shell_mode();
+	t_mode	mode = *get_shell_mode();
 
 	if (signum == SIGINT)
 	{
-		if (mode == MODE_MAIN)
+		if (mode == MODE_MAIN || mode == MODE_HEREDOC)
 		{
 			write(1, "\n", 1);
-			rl_on_new_line();
 			rl_replace_line("", 0);
+			rl_on_new_line();
 			rl_redisplay();
-		}
-		else if (mode == MODE_HEREDOC)
-		{
-			write(1, "\n", 1);
 		}
 		else if (mode == MODE_CHILD)
 			write(1, "\n", 1);
-
-
 	}
-	else if (signum == SIGQUIT && mode == MODE_MAIN)
-        write(1, "minishell> ", 12);
-	else if (signum == SIGQUIT && mode == MODE_CHILD)
-        write(1, "Quit (core dumped)\n", 19);
+}
+
+void	handle_sigquit(int signum)
+{
+	t_mode	mode = *get_shell_mode();
+
+	if (signum == SIGQUIT)
+	{
+		if (mode == MODE_CHILD)
+			write(1, "Quit (core dumped)\n", 19);
+	}
 }
 
 void	setup_signals(void)
 {
-	struct sigaction	sa;
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
 
-	sa.sa_handler = handle_sigint;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
+	sigemptyset(&sa_int.sa_mask);
+	sigemptyset(&sa_quit.sa_mask);
+
+	sa_int.sa_handler = handle_sigint;
+	sa_int.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa_int, NULL);
+
+	sa_quit.sa_handler = handle_sigquit;
+	sa_quit.sa_flags = SA_RESTART;
+	sigaction(SIGQUIT, &sa_quit, NULL);
 }
