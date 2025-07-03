@@ -31,14 +31,17 @@ void	init_terminal(void)
 
 t_mode	*get_shell_mode(void)
 {
-	static t_mode	mode = MODE_MAIN;
+	static t_mode	mode;
+
+	mode = MODE_MAIN;
 	return (&mode);
 }
 
 void	handle_sigint(int signum)
 {
-	t_mode	mode = *get_shell_mode();
+	t_mode	mode;
 
+	mode = *get_shell_mode();
 	if (signum == SIGINT)
 	{
 		if (mode == MODE_MAIN || mode == MODE_HEREDOC)
@@ -55,8 +58,9 @@ void	handle_sigint(int signum)
 
 void	handle_sigquit(int signum)
 {
-	t_mode	mode = *get_shell_mode();
+	t_mode	mode;
 
+	mode = *get_shell_mode();
 	if (signum == SIGQUIT)
 	{
 		if (mode == MODE_CHILD)
@@ -71,11 +75,9 @@ void	setup_signals(void)
 
 	sigemptyset(&sa_int.sa_mask);
 	sigemptyset(&sa_quit.sa_mask);
-
 	sa_int.sa_handler = handle_sigint;
 	sa_int.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa_int, NULL);
-
 	sa_quit.sa_handler = handle_sigquit;
 	sa_quit.sa_flags = SA_RESTART;
 	sigaction(SIGQUIT, &sa_quit, NULL);

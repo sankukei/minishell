@@ -12,7 +12,6 @@
 
 #include "../headers/minishell.h"
 
-
 char	*remove_quote(char *str)
 {
 	int				i;

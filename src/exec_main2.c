@@ -12,7 +12,6 @@
 
 #include "../headers/minishell.h"
 
-
 int	get_fd(t_dup dups)
 {
 	int	fd;

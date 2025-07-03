@@ -37,73 +37,6 @@ char	*get_my_env(t_data *data, char *str)
 	return (free(str), NULL);
 }
 
-// LES DEUX FONTIONS EN DESSOUS SONT DES V1
-// void	var_env_handler(t_data *data)
-// {
-// 	char	*input;
-// 	char	*var;
-// 	int		i;
-// 	int		len;
-
-// 	input = data->input;
-// 	i = 0;
-// 	while (input[i])
-// 	{
-// 		quote_check(data, i);
-// 		if (input[i] == '$' && data->single_quote != true)
-// 		{
-// 			var = detect_var_env(&input[i]);
-// 			len = count_var_len(&input[i]);
-// 			if (len == 0)
-// 				free(var);
-// 			if (len && var_is_in_env(data, var, len))
-// 			{
-// 				var = get_my_env(data, var);
-// 				replace_var_env(data, var, i, len);
-// 				free(input);
-// 				input = data->input;
-// 			}
-// 		}
-// 		i++;
-// 	}
-// }
-
-// static void	handle_env_variable(t_data *data, char **input, int i)
-// {
-// 	char	*var;
-// 	int		len;
-
-// 	var = detect_var_env(&(*input)[i]);
-// 	len = count_var_len(&(*input)[i]);
-// 	if (len == 0)
-// 		return (free(var));
-// 	if (var_is_in_env(data, var, len))
-// 	{
-// 		var = get_my_env(data, var);
-// 		replace_var_env(data, var, i, len);
-// 		free(*input);
-// 		*input = data->input;
-// 	}
-// }
-
-// void	var_env_handler(t_data *data)
-// {
-// 	char	*input;
-// 	int		i;
-
-// 	input = data->input;
-// 	i = 0;
-// 	while (input[i])
-// 	{
-// 		printf("%c", input[i]);
-// 		quote_check(data, i);
-// 		if (input[i] == '$' && data->single_quote != true)
-// 			handle_env_variable(data, &input, i);
-// 		i++;
-// 	}
-// }
-
-
 static int	handle_env_variable(t_data *data, char **input, int i)
 {
 	char	*var;
@@ -118,22 +51,17 @@ static int	handle_env_variable(t_data *data, char **input, int i)
 		free(var);
 		return (1);
 	}
-
 	if (var_is_in_env(data, var, len))
 	{
 		value = get_my_env(data, var);
 		value_len = ft_strlen(value);
-
 		replace_var_env(data, value, i, len);
-
 		free(*input);
 		*input = data->input;
-
 		return (value_len);
 	}
 	return (len + 1);
 }
-
 
 void	var_env_handler(t_data *data)
 {
@@ -156,7 +84,6 @@ void	var_env_handler(t_data *data)
 	}
 	data->input = input;
 }
-
 
 int	check_quote_error(t_data *data)
 {
