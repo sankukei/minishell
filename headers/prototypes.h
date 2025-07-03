@@ -127,3 +127,5 @@ int	add_cmd_list(t_data *data, t_token *token, t_cmd **cmd_list);
 int	get_n_command(t_token *token);
 void	advance_pointer(t_token **token);
 void	clear_cmd_node(t_cmd *cmds);
+int	open_fds(char *fd_name, int type);
+void	fill_t_dups(t_dup *dups, int type, int fd);
