@@ -72,29 +72,63 @@ void	align_pointer(t_token **token)
 		*token = (*token)->next;
 }
 
-int	write_heredoc_into_fd(char *target)
+int write_heredoc_into_fd(char *target)
 {
-	char	*input;
-	int		heredoc_fd;
+    char            *input;
+    int             heredoc_fd;
+    struct sigaction    sa_int;
+    struct sigaction    old_sa_int;
+    t_mode          *mode = get_shell_mode();
 
-	heredoc_fd = open(".heredoc_buffer", O_CREAT | O_RDWR | O_TRUNC, 0644);
-	input = 0;
-	while (1)
-	{
-		input = readline("heredoc> ");
-		if (ft_strncmp(input, target, ft_strlen(target) + 1) == 0)
-			break ;
-		if (ft_strlen(input))
-		{
-			write(heredoc_fd, input, ft_strlen(input));
-			write(heredoc_fd, "\n", 1);
-		}
-		free(input);
-	}
-	free(input);
-	close(heredoc_fd);
-	return (heredoc_fd);
+    heredoc_fd = open(".heredoc_buffer", O_CREAT | O_RDWR | O_TRUNC, 0644);
+    if (heredoc_fd == -1)
+        return (-1);
+
+    sigaction(SIGINT, NULL, &old_sa_int);
+
+    *mode = MODE_HEREDOC;
+    *get_sigint_flag() = 0;
+    sigemptyset(&sa_int.sa_mask);
+    sa_int.sa_handler = sigint_heredoc_handler;
+    sa_int.sa_flags = 0;
+    sigaction(SIGINT, &sa_int, NULL);
+
+    while (1)
+    {
+        input = readline("heredoc> ");
+        if (*get_sigint_flag())
+        {
+            free(input);
+            close(heredoc_fd);
+            unlink(".heredoc_buffer");
+            // pop l'ancien handler
+            sigaction(SIGINT, &old_sa_int, NULL);
+            *mode = MODE_MAIN;
+            return (-1);
+        }
+        if (!input) // Ctrl-D
+        {
+            printf("minishell: warning: here-document delimited by end-of-file (wanted `%s\')\n", target);
+            break;
+        }
+        if (ft_strncmp(input, target, ft_strlen(target) + 1) == 0)
+        {
+            free(input);
+            break;
+        }
+        write(heredoc_fd, input, ft_strlen(input));
+        write(heredoc_fd, "\n", 1);
+        free(input);
+    }
+    close(heredoc_fd);
+
+    // pop l'ancien handler
+    sigaction(SIGINT, &old_sa_int, NULL);
+    *mode = MODE_MAIN;
+
+    return (open(".heredoc_buffer", O_RDONLY));
 }
+
 
 void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
 {
