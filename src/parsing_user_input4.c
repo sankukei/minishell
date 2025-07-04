@@ -84,6 +84,36 @@ void	type_tokens(t_data *data)
 	classify_cmd_and_args(data->token);
 }
 // A REFAIRE FIXME
+//
+int	check_pipe_rule(t_token *current)
+{
+	while (current != PIPE)
+	{
+		
+	}
+}
+
+int	check_syntax(int type, t_token *current)
+{
+	if (type == PIPE)
+		check_pipe_rule(current);
+	//etc
+}
+
+int	check_token_syntax_new(t_token *head)
+{
+	t_token	*current;
+
+	if (!head)
+		return (1);
+	current = head;
+	while (current)
+	{
+		if (current->type == PIPE)
+			check_syntax(PIPE, current);
+		//etc
+	}
+}
 
 int	check_token_syntax(t_token *head)
 {
@@ -111,3 +141,4 @@ int	check_token_syntax(t_token *head)
 	}
 	return (0);
 }
+
