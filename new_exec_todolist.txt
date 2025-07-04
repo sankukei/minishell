@@ -1,7 +1,0 @@
-extract_redirs(t_token data->token);
-
-
-
-
-
-destroy_node(t_token &data->token, int index);

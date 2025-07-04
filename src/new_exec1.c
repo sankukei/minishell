@@ -84,7 +84,8 @@ int	__exec_startup__(t_data *data, t_cmd *cmds)
 	commands = data->cmd;
 	check_for_heredoc(vars, commands);
 	vars->n_command = data->n_commands;
-	printf("TRUE n_command %d\n", vars->n_command);
+	if (vars->n_command > 100)
+		return (printf("Too many commands\n"));
 	if (vars->n_command == 1)
 		if (handle_single_builtin_new(vars, commands, data))
 			return (1);
