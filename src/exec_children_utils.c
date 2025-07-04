@@ -43,9 +43,11 @@ int	setup_output_pipes(t_exec *vars, int i)
 
 int	setup_input_pipes(t_exec *vars, int i)
 {
+	int	fd;
+
 	if (vars->heredoc)
 	{
-		int	fd = open(".heredoc_buffer", O_RDONLY);
+		fd = open(".heredoc_buffer", O_RDONLY);
 		if (dup2(fd, STDIN_FILENO) == -1)
 		{
 			write(1, "dup2 failed\n", 13);
@@ -69,17 +71,18 @@ int	setup_input_pipes(t_exec *vars, int i)
 
 void	close_unused_pipes(t_data *data, t_exec *vars, int i)
 {
-    int j;
-    int n = data->n_commands - 1;
+	int	j;
+	int	n;
 
-    if (!vars->pipes)
-        return;
-
-    for (j = 0; j < n; j++)
-    {
-        if (j != i - 1)
-            close(vars->pipes[j][0]);
-        if (j != i)
-            close(vars->pipes[j][1]);
-    }
+	n = data->n_commands - 1;
+	if (!vars->pipes)
+		return ;
+	while (j < n)
+	{
+		if (j != i - 1)
+			close(vars->pipes[j][0]);
+		if (j != i)
+			close(vars->pipes[j][1]);
+		j++;
+	}
 }

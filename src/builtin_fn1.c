@@ -56,7 +56,7 @@ void	cd(t_data *data, char **args)
 		i++;
 	if (i == 0)
 	{
-		home = get_my_env2(data,"HOME");
+		home = get_my_env2(data, "HOME");
 		if (!home)
 		{
 			data->last_exit_status = 1;
@@ -86,7 +86,7 @@ void	cd(t_data *data, char **args)
 void	pwd(t_data *data, int fd)
 {
 	char	*path;
-	
+
 	data->last_exit_status = 0;
 	path = getcwd(NULL, 0);
 	if (!path)
@@ -132,6 +132,6 @@ void	echo(t_data *data, char **args, int fd)
 
 void	ft_exit(t_data *data, char **args)
 {
-		printf("%s\n", "exit");
-		exit_program(data, args);
+	printf("%s\n", "exit");
+	exit_program(data, args);
 }

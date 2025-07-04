@@ -12,9 +12,23 @@
 
 #include "../headers/minishell.h"
 
-
-void	exec_builtin(int selector, char **args, t_data *data, int fd)
+int	get_fd(t_dup dups)
 {
+	int	fd;
+
+	fd = 1;
+	if (dups.outfile_redir)
+	{
+		fd = dups.outfile_fd;
+	}
+	return (fd);
+}
+
+void	exec_builtin(int selector, char **args, t_data *data, t_dup dups)
+{
+	int	fd;
+
+	fd = get_fd(dups);
 	if (selector == 1)
 		echo(data, args, fd);
 	else if (selector == 2)

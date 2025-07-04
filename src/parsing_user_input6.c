@@ -114,7 +114,6 @@ void	tokenisation(t_data *data)
 	data->token = list;
 }
 
-
 char	*get_operator_token(char *input, int *i)
 {
 	if ((input[*i] == '<' || input[*i] == '>')

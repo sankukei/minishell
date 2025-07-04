@@ -12,7 +12,6 @@
 
 #include "../headers/minishell.h"
 
-
 static int	exec_given_path(t_data *data, char *cmd, char **args)
 {
 	if (!access(cmd, X_OK))
@@ -72,7 +71,6 @@ void	align_pointer(t_token **token)
 	while (token && *token && ((*token)->type == 6 || (*token)->type == 7))
 		*token = (*token)->next;
 }
-
 
 int write_heredoc_into_fd(char *target)
 {
@@ -134,23 +132,25 @@ int write_heredoc_into_fd(char *target)
 
 void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
 {
-	int	fd;
-	t_redir	*temp;
+	int		fd;
+	t_cmd	*temp;
+	t_redir	*temp_redirs;
 
 	fd = 0;
-	if (!cmds->redirs)
-		return ;
-	temp = cmds->redirs;
+	temp = cmds;
 	while (temp)
 	{
-		printf("adasdasdasdasdasdsadasdasd %s\n", temp->target);
-		if (cmds->redirs->type == 1)
+		temp_redirs = temp->redirs;
+		while (temp_redirs)
 		{
-			printf("HEREDOC FOUND\n");
-			fd = write_heredoc_into_fd(temp->target);
-			vars->heredoc = 1;
-			vars->heredoc_fd = fd;
-			close(vars->heredoc_fd);
+			if (temp_redirs->type == 1)
+			{
+				fd = write_heredoc_into_fd(temp_redirs->target);
+				vars->heredoc = 1;
+				vars->heredoc_fd = fd;
+				close(vars->heredoc_fd);
+			}
+			temp_redirs = temp_redirs->next;
 		}
 		temp = temp->next;
 	}

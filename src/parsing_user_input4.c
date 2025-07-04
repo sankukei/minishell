@@ -58,7 +58,7 @@ void	classify_cmd_and_args(t_token *token)
 	while (token)
 	{
 		if (prev_type == INPUT)
-				token->type = FD;
+			token->type = FD;
 		if (token->type == -1)
 		{
 			if (expect_cmd)
@@ -83,14 +83,14 @@ void	type_tokens(t_data *data)
 	put_hard_coded_type(data);
 	classify_cmd_and_args(data->token);
 }
+// A REFAIRE FIXME
 
-int	check_token_syntax(t_token *head)	// fonction tres sombre a refaire
-{										// laisse pas passer des trucs tres sombre
+int	check_token_syntax(t_token *head)
+{
 	t_token	*curr;
 
 	if (!head)
 		return (1);
-
 	curr = head;
 	while (curr)
 	{
@@ -98,19 +98,15 @@ int	check_token_syntax(t_token *head)	// fonction tres sombre a refaire
 		{
 			if (!curr->next || curr->next->type == PIPE)
 				return (printf("Syntax error: unexpected token '|'\n"), 1);
-			
 		}
 		if (curr->type == TRUNC || curr->type == APPEND || curr->type == INPUT)
 		{
-			if (!curr->next || curr->next->type == TRUNC || curr->next->type == PIPE || curr->next->type == INPUT) 
+			if (!curr->next || curr->next->type == TRUNC
+				|| curr->next->type == PIPE || curr->next->type == INPUT)
 				return (printf("Syntax error: unexpected token '>'\n"), 1);
-
 		}
 		if (curr->type == INPUT)
-		{
-			// if (!curr->next)
-			// 	return (printf("Syntax error: unexpected token '<'\n"), 1);
-		}
+			;
 		curr = curr->next;
 	}
 	return (0);

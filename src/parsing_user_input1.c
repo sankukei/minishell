@@ -79,7 +79,7 @@ char	*detect_var_env(char *input)
 	dest = malloc(len + 1);
 	if (!dest)
 		return (NULL);
-	bzero(dest, len+1);
+	ft_bzero(dest, len + 1);
 	copy_var_name(dest, ptr);
 	return (dest);
 }
@@ -112,8 +112,7 @@ void	replace_var_env(t_data *data, char *var, int i, int len)
 	{
 		exit(1);
 	}
-	bzero(dest, sizeof(char) * len_new_input + 1);
-//	memset(dest, '\0', len_new_input);
+	ft_bzero(dest, sizeof(char) * len_new_input + 1);
 	dest[len_new_input] = '\0';
 	ft_strlcpy(dest, data->input, i + 1);
 	ft_strlcpy(dest + i, var, ft_strlen(var) + 1);
@@ -121,32 +120,6 @@ void	replace_var_env(t_data *data, char *var, int i, int len)
 		data->input + i + len + 1, len_new_input);
 	data->input = dest;
 }
-
-//"essaie de fix un truc de ouf mais c'etais pas ca"
-// void	replace_var_env(t_data *data, char *value, int start, int var_len)
-// {
-// 	int		prefix_len;
-// 	int		value_len;
-// 	int		suffix_len;
-// 	int		new_len;
-// 	char	*new_input;
-// 	if (!data || !data->input || !value)
-// 		return ;
-// 	prefix_len = start;
-// 	value_len = ft_strlen(value);
-// 	suffix_len = ft_strlen(data->input + start + var_len + 1);
-// 	new_len = prefix_len + value_len + suffix_len;
-// 	new_input = malloc(sizeof(char) * (new_len + 1));
-// 	if (!new_input)
-// 		exit(1);
-// 	ft_memcpy(new_input, data->input, prefix_len);
-// 	ft_memcpy(new_input + prefix_len, value, value_len);
-// 	ft_memcpy(new_input + prefix_len + value_len,
-// 		data->input + start + var_len + 1, suffix_len);
-// 	new_input[new_len] = '\0';
-// 	data->input = new_input;
-// }
-
 
 int	parsing(t_data	*data)
 {
@@ -157,8 +130,7 @@ int	parsing(t_data	*data)
 	data->front_token = data->token;
 	type_tokens(data);
 	if (check_token_syntax(data->token))
-	 	return (1);
+		return (1);
 	extern_quote_handler(data);
-	//affiche_token_test(data->token);
 	return (0);
 }
