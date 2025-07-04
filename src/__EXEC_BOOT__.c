@@ -97,11 +97,13 @@ void	minishell_launcher(t_data *data)
 	while (1)
 	{
 		*get_shell_mode() = MODE_MAIN;
+		*get_sigint_flag() = 0;
 		cmds = NULL;
 		input = readline("minishell> ");
 		if (input == NULL)
 		{
 		    write(1, "exit\n", 5);
+			unlink(".heredoc_buffer");
 		    exit(0); // Ctrl-D
 		}
 		if (ft_strlen(input))
@@ -124,3 +126,4 @@ void	minishell_launcher(t_data *data)
 			free(input);
 	}
 }
+

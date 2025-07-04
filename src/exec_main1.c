@@ -12,39 +12,6 @@
 
 #include "../headers/minishell.h"
 
-// char	**get_args(t_token **token, t_exec *vars)
-// {
-// 	int		is_reddir;
-// 	int		count;
-// 	int		filled;
-// 	char	**res;
-// 	t_token	*tmp;
-
-// 	is_reddir = 0;
-// 	tmp = *token;
-// 	count = skip_first_tokens(token);
-// 	res = alloc_args_array(count + 16);
-// 	if (!res)
-// 		return (NULL);
-// 	*token = tmp;
-// 	filled = fill_args(res, token, &is_reddir, vars);
-// 	if (filled == -1)
-// 	{
-// 		free_arr(res);
-// 		return (NULL);
-// 	}
-
-// 	while((*token) && (*token)->next && (*token)->type != 6)
-// 	{
-// 		if ((*token)-> type == APPEND || (*token)->type == TRUNC || (*token)->type == INPUT)
-// 		{
-// 			vars->reddir_fd_name = (*token)->next->str;
-// 			vars->reddir_fd_type = (*token)->type;
-// 		}
-// 		*token = (*token)->next;
-// 	}
-// 	return (res);
-// }
 
 static int	exec_given_path(t_data *data, char *cmd, char **args)
 {
@@ -100,93 +67,75 @@ int	exec_single(t_data *data, char *cmd, char **args)
 	return (0);
 }
 
-// int	handle_single_builtin(t_exec *vars, t_data *data)
-// {
-// 	vars->is_builtin = check_if_builtin(data->token->str);
-// 	vars->is_reddir = check_if_redir(data->token);
-// 	if (vars->n_command == 1 && vars->is_builtin != 0)
-// 	{
-// 		vars->args = get_args(&data->token, vars);
-// 		if (vars->is_reddir)
-// 			vars->fd = get_fd_from_reddir(vars->reddir_fd_name,
-// 					vars->reddir_fd_type, vars);
-// 		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);
-// 		return (1);
-// 	}
-// 	return (0);
-// }
-
 void	align_pointer(t_token **token)
 {
 	while (token && *token && ((*token)->type == 6 || (*token)->type == 7))
 		*token = (*token)->next;
 }
 
-int	write_heredoc_into_fd(char *target)
+
+int write_heredoc_into_fd(char *target)
 {
-	char	*input;
-	int	heredoc_fd;
-	struct sigaction	sa;
+    char            *input;
+    int             heredoc_fd;
+    struct sigaction    sa_int;
+    struct sigaction    old_sa_int;
+    t_mode          *mode = get_shell_mode();
 
-	//TODO: changer les permission pour eviter les prankex en corrections
-	heredoc_fd = open(".heredoc_buffer", O_CREAT | O_RDWR | O_TRUNC, 0644);
-	input = 0;
+    heredoc_fd = open(".heredoc_buffer", O_CREAT | O_RDWR | O_TRUNC, 0644);
+    if (heredoc_fd == -1)
+        return (-1);
 
-	// test
-	*get_sigint_flag() = 0;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_handler = sigint_heredoc_handler;
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
-	// signaux
-	while (1)
-	{
-		input = readline("heredoc> ");
-		if (ft_strncmp(input, target, ft_strlen(target) + 1) == 0)
-			break ;
-		if (ft_strlen(input))
-		{
-			write(heredoc_fd, input, ft_strlen(input));
-			write(heredoc_fd, "\n", 1);
-		}
-		free(input);
-	}
-	free(input);
-	close(heredoc_fd);
-	//test
-	setup_signals();
-	//signaux
-	return (heredoc_fd);
+    sigaction(SIGINT, NULL, &old_sa_int);
+
+    *mode = MODE_HEREDOC;
+    *get_sigint_flag() = 0;
+    sigemptyset(&sa_int.sa_mask);
+    sa_int.sa_handler = sigint_heredoc_handler;
+    sa_int.sa_flags = 0;
+    sigaction(SIGINT, &sa_int, NULL);
+
+    while (1)
+    {
+        input = readline("heredoc> ");
+        if (*get_sigint_flag())
+        {
+            free(input);
+            close(heredoc_fd);
+            unlink(".heredoc_buffer");
+            // pop l'ancien handler
+            sigaction(SIGINT, &old_sa_int, NULL);
+            *mode = MODE_MAIN;
+            return (-1);
+        }
+        if (!input) // Ctrl-D
+        {
+            printf("minishell: warning: here-document delimited by end-of-file (wanted `%s\')\n", target);
+            break;
+        }
+        if (ft_strncmp(input, target, ft_strlen(target) + 1) == 0)
+        {
+            free(input);
+            break;
+        }
+        write(heredoc_fd, input, ft_strlen(input));
+        write(heredoc_fd, "\n", 1);
+        free(input);
+    }
+    close(heredoc_fd);
+
+    // pop l'ancien handler
+    sigaction(SIGINT, &old_sa_int, NULL);
+    *mode = MODE_MAIN;
+
+    return (open(".heredoc_buffer", O_RDONLY));
 }
 
-// void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
-// {
-// 	int	fd;
-// 	t_redir	*temp;
-
-// 	fd = 0;
-// 	if (!cmds->redirs)
-// 		return ;
-// 	temp = cmds->redirs;
-// 	while (temp)
-// 	{
-// 		printf("adasdasdasdasdasdsadasdasd %s\n", temp->target);
-// 		if (cmds->redirs->type == 1)
-// 		{
-// 			printf("HEREDOC FOUND\n");
-// 			fd = write_heredoc_into_fd(temp->target);
-// 			vars->heredoc = 1;
-// 			vars->heredoc_fd = fd;
-// 			close(vars->heredoc_fd);
-// 		}
-// 		temp = temp->next;
-// 	}
-// }
 
 void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
 {
-	int			fd;
-	t_redir		*temp;
+	int	fd;
+	t_redir	*temp;
 
 	fd = 0;
 	if (!cmds->redirs)
@@ -194,64 +143,15 @@ void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
 	temp = cmds->redirs;
 	while (temp)
 	{
-		if (temp->type == 1)
+		printf("adasdasdasdasdasdsadasdasd %s\n", temp->target);
+		if (cmds->redirs->type == 1)
 		{
+			printf("HEREDOC FOUND\n");
 			fd = write_heredoc_into_fd(temp->target);
-			if (fd == -1)
-			{
-				vars->heredoc = 0;
-				return ;
-			}
 			vars->heredoc = 1;
 			vars->heredoc_fd = fd;
+			close(vars->heredoc_fd);
 		}
 		temp = temp->next;
 	}
 }
-
-// void	start_children(t_exec *vars, t_data *data)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (i < vars->n_command)
-// 	{
-// 		vars->pid = fork();
-// 		printf("N_COMMANDS -> %d, i = %d\n", vars->n_command, i);
-// 		vars->is_reddir = check_if_redir(data->token);
-// 		vars->cmd = data->token->str;
-// 		vars->args = get_args(&data->token, vars);
-
-// 		 printf("vars->cmd = %s, current_pipe_index = %d, heredoc_index = %d\n", vars->cmd, vars->current_pipe_index, vars->heredoc_index);
-// 		 printf("vars->is_reddir = %d\n", vars->is_reddir);
-// 		 printf("vars->is_heredoc= %d\n", vars->is_heredoc);
-
-// 		vars->is_builtin = check_if_builtin(vars->cmd);
-// 		vars->xd = 0;
-// 		if (vars->pid == 0)
-// 			children_exec(vars, data, i);
-// 		i++;
-// 		vars->current_pipe_index = i;
-// 	}
-// }
-
-// void	children_exec(t_exec *vars, t_data *data, int i)
-// {
-// 	if (vars->is_reddir)
-// 		vars->fd = get_fd_from_reddir(vars->reddir_fd_name, vars->reddir_fd_type, vars);
-// 	else if(!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
-// 	{
-// 		free_exec(vars);
-// 		exit(1);
-// 	}
-// 	// close_pipes(vars);
-// 	if (vars->is_builtin != 0)
-// 		exec_builtin(vars->is_builtin, vars->args, data, vars->fd);
-// 	else if (!exec_single(data, vars->cmd, vars->args))
-// 	{
-// 		printf("execve failed\n");
-// 		free_exec(vars);
-// 		exit(1);
-// 	}
-// 	exit(0);
-// }
