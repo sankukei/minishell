@@ -87,7 +87,7 @@ void	var_env_handler(t_data *data)
 
 int	check_quote_error(t_data *data)
 {
-	char		*input;
+	char	*input;
 
 	input = data->input;
 	while (*input)

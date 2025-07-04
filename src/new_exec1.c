@@ -14,10 +14,8 @@
 
 void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 {
-	int		fd;
 	t_dup	dups;
 
-	fd = 1;
 	if (cmds->redirs)
 	{
 		dups = handle_redir(cmds->redirs);

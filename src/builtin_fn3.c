@@ -86,7 +86,7 @@ void	export(t_data *data, char **args)
 	int		exist;
 
 	if (handle_export_error(data, args))
-		return ;		
+		return ;
 	exist = 0;
 	i = count_env_size(data->env);
 	new_env = malloc(sizeof(char *) * (i + 2));

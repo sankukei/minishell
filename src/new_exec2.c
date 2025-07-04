@@ -16,31 +16,16 @@ int	open_fds(char *fd_name, int type)
 {
 	int	fd;
 
-	fd = 1;
 	if (type == TRUNC)
-	{
 		fd = open(fd_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (fd < 0)
-			return (0);
-	}
 	else if (type == 2)
-	{
 		fd = open(fd_name, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		if (fd < 0)
-			return (0);
-	}
 	else if (type == INPUT)
-	{
 		fd = open(fd_name, O_RDONLY, 0644);
-		if (fd < 0)
-			return (0);
-	}
-	else if (type == 1)
-	{
+	else
 		fd = open(".heredoc_buffer", O_RDONLY, 0644);
-		if (fd < 0)
-			return (0);
-	}
+	if (fd < 0)
+		return (0);
 	return (fd);
 }
 
@@ -104,11 +89,9 @@ void	handle_dups(t_dup dups)
 
 int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
 {
-	int		fd;
 	t_dup	dups;
 
 	(void)vars;
-	fd = 1;
 	if (!(check_if_builtin(commands->cmd[0]) && commands && commands->cmd))
 		return (0);
 	dups = handle_redir(commands->redirs);

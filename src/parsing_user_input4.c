@@ -104,13 +104,9 @@ int	check_token_syntax(t_token *head)
 			if (!curr->next || curr->next->type == TRUNC
 				|| curr->next->type == PIPE || curr->next->type == INPUT)
 				return (printf("Syntax error: unexpected token '>'\n"), 1);
-
 		}
 		if (curr->type == INPUT)
-		{
-			// if (!curr->next)
-			// 	return (printf("Syntax error: unexpected token '<'\n"), 1);
-		}
+			;
 		curr = curr->next;
 	}
 	return (0);

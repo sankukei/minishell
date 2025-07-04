@@ -48,7 +48,7 @@ int	add_cmd_list(t_data *data, t_token *token, t_cmd **cmd_list)
 	new = malloc(sizeof(t_cmd));
 	if (!new)
 		return (0);
-	bzero(new, sizeof(t_cmd));
+	ft_bzero(new, sizeof(t_cmd));
 	new->cmd = save_cmds_info(token, *cmd_list);
 	if (!new->cmd)
 	{
