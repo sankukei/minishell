@@ -16,16 +16,16 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 {
 	t_dup	dups;
 
-	if (cmds->redirs)
-	{
-		dups = handle_redir(cmds->redirs);
-		handle_dups(dups);
-	}
 	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
 	{
 		clear_cmds(&data->cmd);
 		free_exec(vars);
 		exit(1);
+	}
+	if (cmds->redirs)
+	{
+		dups = handle_redir(cmds->redirs);
+		handle_dups(dups);
 	}
 	close_unused_pipes(data, vars, i);
 	if (check_if_builtin(cmds->cmd[0]))

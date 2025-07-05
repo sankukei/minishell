@@ -6,7 +6,7 @@
 /*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 20:17:35 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/03 20:18:12 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/07/05 23:15:38 by leothoma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,9 @@ t_dup	handle_redir(t_redir *redir)
 	{
 		printf("reddir detected\n");
 		fd = open_fds(redir->target, redir->type);
-		if (redir->next && redir->type != 1)
-			close(fd);
+		printf("%s\n", redir->target);
+	//	if (redir->next && redir->type != 1)
+	//		close(fd);
 		fill_t_dups(&dups, redir->type, fd);
 		redir = redir->next;
 	}
@@ -79,7 +80,6 @@ void	handle_dups(t_dup dups)
 	}
 	if (dups.outfile_redir)
 	{
-		printf("%d\n", dups.outfile_redir);
 		if (dups.outfile_redir == 2)
 			dup2(dups.outfile_fd, STDOUT_FILENO);
 		else if (dups.outfile_redir == 4)
