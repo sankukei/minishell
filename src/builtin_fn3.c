@@ -22,10 +22,30 @@ int	var_name_len(char *arg)
 	return (i);
 }
 
+int	higher_number(int a, int b)
+{
+	if (a > b)
+		return (a);
+	else
+		return (b);
+}
+
+int	check_for_no_equal(char *var_entry, char *arg)
+{
+	int	len;
+
+	len = higher_number(ft_strlen(var_entry), ft_strlen(arg));
+	if (ft_strncmp(var_entry, arg, len) == 0)
+		return (1);
+	return (0);
+}
+
 int	is_same_var(char *env_entry, char *arg)
 {
 	int	len;
 
+	if (check_for_no_equal(env_entry, arg))
+		return (1);
 	len = var_name_len(arg);
 	if (!env_entry)
 		return (0);

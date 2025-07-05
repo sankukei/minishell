@@ -2,7 +2,7 @@
 minishell> $?  //leak
 a tester sur les pc de l'ecole (CTRL + \)
 signaux minishell dans minishell +shell level a augmenter
-problemes avec unset si on export 1234, on peut plus unset la valeur
+problemes avec unset si on export 1234, on peut plus unset la valeur // DONE
 
 
 
