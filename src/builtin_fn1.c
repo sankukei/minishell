@@ -48,10 +48,7 @@ void	cd(t_data *data, char **args)
 	i = 0;
 	path = getcwd(NULL, 0);
 	if (!path)
-	{
-		data->last_exit_status = 1;
-		return ;
-	}
+		return ((void)(data->last_exit_status = 1));
 	args++;
 	while (args[i])
 		i++;
@@ -115,10 +112,7 @@ void	echo(t_data *data, char **args, int fd)
 	data->last_exit_status = 0;
 	backslash = 0;
 	if (!args[1])
-	{
-		write(fd, "\n", 1);
-		return ;
-	}
+		return ((void)(write(fd, "\n", 1)));
 	args++;
 	if (check_flag(*args))
 	{

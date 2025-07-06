@@ -12,40 +12,40 @@
 
 #include "../headers/minishell.h"
 
+static int	should_skip(char *env_var, char **args)
+{
+	int	k;
+
+	k = 1;
+	while (args[k])
+	{
+		if (is_same_var(env_var, args[k]))
+			return (1);
+		k++;
+	}
+	return (0);
+}
+
 void	unset(t_data *data, char **args)
 {
 	char	**new_env;
 	int		i;
 	int		j;
 	int		k;
-	int		skip;
 
 	i = 0;
+	j = 0;
 	k = count_env_size(data->env);
 	new_env = malloc(sizeof(char *) * (k + 1));
 	if (!new_env)
-	{
-		data->last_exit_status = 1;
-		return ;
-	}
-	bzero(new_env, sizeof(char *) * (k + 1));
-	j = 0;
+		return ((void)(data->last_exit_status = 1));
+	ft_bzero(new_env, sizeof(char *) * (k + 1));
 	while (data->env[i])
 	{
-		skip = 0;
-		k = 1;
-		while (args[k])
-		{
-			if (is_same_var(data->env[i], args[k++]))
-			{
-				skip = 1;
-				break ;
-			}
-		}
-		if (!skip)
-			new_env[j++] = data->env[i];
-		else
+		if (should_skip(data->env[i], args))
 			free(data->env[i]);
+		else
+			new_env[j++] = data->env[i];
 		i++;
 	}
 	new_env[j] = NULL;

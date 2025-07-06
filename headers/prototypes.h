@@ -133,3 +133,17 @@ void		advance_pointer(t_token **token);
 void		clear_cmd_node(t_cmd *cmds);
 int			open_fds(char *fd_name, int type);
 void		fill_t_dups(t_dup *dups, int type, int fd);
+
+// heredoc_utils
+
+int			is_delimiter(char *input, char *target);
+void		write_line(int fd, char *line);
+
+int			handle_sigint_for_heredoc(int fd, char *input, struct sigaction *old, t_mode *mode);
+
+int			handle_eof(int fd, char *target,
+				struct sigaction *old, t_mode *mode);
+int			finish_heredoc(int fd, char *input,
+				struct sigaction *old, t_mode *mode);
+void		setup_sigint(struct sigaction *sa,
+				struct sigaction *old, t_mode *mode);

@@ -1,0 +1,62 @@
+
+#include "../headers/minishell.h"
+
+int	is_delimiter(char *input, char *target)
+{
+	int	len;
+
+	len = ft_strlen(target);
+	if (ft_strncmp(input, target, len) == 0 && input[len] == '\0')
+		return (1);
+	return (0);
+}
+
+void	write_line(int fd, char *line)
+{
+	write(fd, line, ft_strlen(line));
+	write(fd, "\n", 1);
+}
+
+int	handle_sigint_for_heredoc(int fd, char *input,
+	struct sigaction *old, t_mode *mode)
+{
+	free(input);
+	close(fd);
+	unlink(".heredoc_buffer");
+	sigaction(SIGINT, old, NULL);
+	*mode = MODE_MAIN;
+	return (-1);
+}
+
+int	handle_eof(int fd, char *target,
+	struct sigaction *old, t_mode *mode)
+{
+	printf("minishell: warning: here-document delimited by end-of-file"
+		" (wanted `%s')\n", target);
+	sigaction(SIGINT, old, NULL);
+	*mode = MODE_MAIN;
+	close(fd);
+	return (open(".heredoc_buffer", O_RDONLY));
+}
+
+int	finish_heredoc(int fd, char *input,
+	struct sigaction *old, t_mode *mode)
+{
+	free(input);
+	close(fd);
+	sigaction(SIGINT, old, NULL);
+	*mode = MODE_MAIN;
+	return (open(".heredoc_buffer", O_RDONLY));
+}
+
+void	setup_sigint(struct sigaction *sa,
+	struct sigaction *old, t_mode *mode)
+{
+	*mode = MODE_HEREDOC;
+	*get_sigint_flag() = 0;
+	sigaction(SIGINT, NULL, old);
+	sigemptyset(&sa->sa_mask);
+	sa->sa_handler = sigint_heredoc_handler;
+	sa->sa_flags = 0;
+	sigaction(SIGINT, sa, NULL);
+}
