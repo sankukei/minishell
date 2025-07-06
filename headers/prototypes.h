@@ -36,7 +36,7 @@ int			is_operator(char c);
 int			is_space(char c);
 char		*ft_itoa_stack(int n);
 void		classify_cmd_and_args(t_token *token);
-void	copy_var_name(char *dest, char *src);
+void		copy_var_name(char *dest, char *src);
 
 // parsing tokinsation
 void		init_token_rules(t_data *data);
@@ -58,8 +58,8 @@ void		handle_sigint(int signum);
 void		setup_signals(void);
 t_mode		*get_shell_mode(void);
 void		init_terminal(void);
-void	    sigint_heredoc_handler(int sig);
-int	        *get_sigint_flag(void);
+void		sigint_heredoc_handler(int sig);
+int			*get_sigint_flag(void);
 
 // string_utils
 int			ft_iscapitalise(char c);
@@ -97,7 +97,8 @@ int			__exec_startup__(t_data *data, t_cmd *cmds);
 int			exec_single(t_data *data, char *cmd, char **args);
 int			setup_output_pipes(t_exec *vars, int i);
 int			setup_input_pipes(t_exec *vars, int i);
-int			fill_args(char **res, t_token **token, int *is_reddir, t_exec *vars);
+int			fill_args(char **res, t_token **token,
+				int *is_reddir, t_exec *vars);
 int			handle_export_error(t_data *data, char **args);
 int			count_env_size(char **env);
 int			is_same_var(char *env_entry, char *arg);
@@ -114,20 +115,21 @@ char		*join_args(char **args);
 char		**alloc_args_array(int count);
 char		**chang_args_ls(t_data *data, char **args);
 void		parser(t_data *data, t_cmd **cmd_list);
-void	close_unused_pipes(t_data *data, t_exec *vars, int i);
-void	check_for_heredoc(t_exec *vars, t_cmd *cmds);
-t_dup	handle_redir(t_redir *redir);
-void	handle_dups(t_dup dups);
-int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data);
-void	get_reddirs(t_token *token, t_redir **redir_list);
-int	check_for_redirs(t_token *token);
-int	check_for_cmds(int type);
-int	get_malloc_size_for_cmds(t_token *token);
-void	add_redir_list(t_token *token, t_redir **redir_list);
-char	**save_cmds_info(t_token *token, t_cmd *cmd_list);
-int	add_cmd_list(t_data *data, t_token *token, t_cmd **cmd_list);
-int	get_n_command(t_token *token);
-void	advance_pointer(t_token **token);
-void	clear_cmd_node(t_cmd *cmds);
-int	open_fds(char *fd_name, int type);
-void	fill_t_dups(t_dup *dups, int type, int fd);
+void		close_unused_pipes(t_data *data, t_exec *vars, int i);
+void		check_for_heredoc(t_exec *vars, t_cmd *cmds);
+t_dup		handle_redir(t_redir *redir);
+void		handle_dups(t_dup dups);
+int			handle_single_builtin_new(t_exec *vars, t_cmd *commands,
+				t_data *data);
+void		get_reddirs(t_token *token, t_redir **redir_list);
+int			check_for_redirs(t_token *token);
+int			check_for_cmds(int type);
+int			get_malloc_size_for_cmds(t_token *token);
+void		add_redir_list(t_token *token, t_redir **redir_list);
+char		**save_cmds_info(t_token *token, t_cmd *cmd_list);
+int			add_cmd_list(t_data *data, t_token *token, t_cmd **cmd_list);
+int			get_n_command(t_token *token);
+void		advance_pointer(t_token **token);
+void		clear_cmd_node(t_cmd *cmds);
+int			open_fds(char *fd_name, int type);
+void		fill_t_dups(t_dup *dups, int type, int fd);

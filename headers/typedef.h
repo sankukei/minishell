@@ -27,10 +27,10 @@ typedef enum s_type
 
 typedef enum s_mode
 {
-    MODE_MAIN,
-    MODE_HEREDOC,
-    MODE_CHILD,
-    MODE_IGNORE
+	MODE_MAIN,
+	MODE_HEREDOC,
+	MODE_CHILD,
+	MODE_IGNORE
 }	t_mode;
 
 typedef enum s_boolen
@@ -39,7 +39,7 @@ typedef enum s_boolen
 	true,
 }	t_boolen;
 
-typedef	struct s_values
+typedef struct s_values
 {
 	int	n_cmds;
 	int	n_infiles;
@@ -49,18 +49,18 @@ typedef	struct s_values
 
 typedef struct s_redir
 {
-	int	type;
-	char	*target;
-	int	fd;
-	struct s_redir *next;
+	int				type;
+	char			*target;
+	int				fd;
+	struct s_redir	*next;
 }	t_redir;
 
 typedef struct s_cmd
 {
-	char	**cmd;
-	char	**path;
-	t_redir *redirs;
-	struct	s_cmd *next;
+	char			**cmd;
+	char			**path;
+	t_redir			*redirs;
+	struct s_cmd	*next;
 }	t_cmd;
 
 typedef struct s_token
@@ -113,4 +113,4 @@ typedef struct s_dup
 	int	infile_fd;
 	int	outfile_redir;
 	int	outfile_fd;
-} t_dup;
+}	t_dup;

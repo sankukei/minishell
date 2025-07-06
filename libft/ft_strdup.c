@@ -22,7 +22,6 @@ char	*ft_strdup(char *src)
 	if (!dest)
 		return (NULL);
 	ft_bzero(dest, (len + 1) * sizeof(char));
-//	dest[len] = '\0';
 	while (len--)
 		dest[len] = src[len];
 	return (dest);
