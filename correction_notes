@@ -13,4 +13,4 @@ si rm -rf curr dir on reste bloque sans pouvoir rien faire
 si on unset PATH on peut plus rien faire meme ne chemin absolu
 
 SOMBRE)
-wc -l en fin de command line se redirige mal
+wc -l en fin de command line se redirige mal // done

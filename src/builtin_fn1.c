@@ -40,6 +40,7 @@ char	*get_my_env2(t_data *data, char *str)
 void	cd(t_data *data, char **args)
 {
 	char	*path;
+	char	*old_pwd = getcwd(NULL, 0);
 	int		i;
 	char	*home;
 
@@ -80,6 +81,13 @@ void	cd(t_data *data, char **args)
 		write(1, "too many arguments\n", 19);
 		data->last_exit_status = 2;
 	}
+
+	char *new_pwd = getcwd(NULL, 0);
+	if (!new_pwd)
+		new_pwd = ft_strdup(args[0]);
+
+	free(old_pwd);
+	free(new_pwd);
 	free(path);
 }
 
