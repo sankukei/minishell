@@ -40,6 +40,11 @@ char	**save_cmds_info(t_token *token, t_cmd *cmd_list)
 	return (cmd_array);
 }
 
+static void	free_add_cmd_list(t_cmd *new, t_data *data)
+{
+	free(new);
+	clear_cmds(&data->cmd);
+}
 int	add_cmd_list(t_data *data, t_token *token, t_cmd **cmd_list)
 {
 	t_cmd	*new;
@@ -51,11 +56,7 @@ int	add_cmd_list(t_data *data, t_token *token, t_cmd **cmd_list)
 	ft_bzero(new, sizeof(t_cmd));
 	new->cmd = save_cmds_info(token, *cmd_list);
 	if (!new->cmd)
-	{
-		free(new);
-		clear_cmds(&data->cmd);
-		return (0);
-	}
+		return (free_add_cmd_list(new, data), 0);
 	if (check_for_redirs(token))
 		get_reddirs(token, &new->redirs);
 	new->next = NULL;
