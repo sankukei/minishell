@@ -16,6 +16,11 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 {
 	t_dup	dups;
 
+	//dups.infile_redir = 0;
+	//dups.infile_fd = 0;
+	//dups.outfile_redir = 0;
+	//dups.outfile_fd = 0;
+	ft_bzero(&dups, sizeof(dups));
 	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
 	{
 		clear_cmds(&data->cmd);

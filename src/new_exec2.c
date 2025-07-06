@@ -60,9 +60,8 @@ t_dup	handle_redir(t_redir *redir)
 	fd = 1;
 	while (redir)
 	{
-		printf("reddir detected\n");
 		fd = open_fds(redir->target, redir->type);
-		printf("%s\n", redir->target);
+	//	FIXME
 	//	if (redir->next && redir->type != 1)
 	//		close(fd);
 		fill_t_dups(&dups, redir->type, fd);
