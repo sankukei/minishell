@@ -83,8 +83,7 @@ void	type_tokens(t_data *data)
 	put_hard_coded_type(data);
 	classify_cmd_and_args(data->token);
 }
-// A REFAIRE FIXME
-//
+
 int	check_pipe_rule(t_token *previous, t_token *current)
 {
 	if (previous == NULL || !current->next)
@@ -181,31 +180,4 @@ int	check_token_syntax(t_token *head)
 	}
 	return (0);
 }
-
-// int	check_token_syntax(t_token *head)
-// {
-// 	t_token	*curr;
-
-// 	if (!head)
-// 		return (1);
-// 	curr = head;
-// 	while (curr)
-// 	{
-// 		if (curr->type == PIPE)
-// 		{
-// 			if (!curr->next || curr->next->type == PIPE)
-// 				return (printf("Syntax error: unexpected token '|'\n"), 1);
-// 		}
-// 		if (curr->type == TRUNC || curr->type == APPEND || curr->type == INPUT)
-// 		{
-// 			if (!curr->next || curr->next->type == TRUNC
-// 				|| curr->next->type == PIPE || curr->next->type == INPUT)
-// 				return (printf("Syntax error: unexpected token '>'\n"), 1);
-// 		}
-// 		if (curr->type == INPUT)
-// 			;
-// 		curr = curr->next;
-// 	}
-// 	return (0);
-// }
 

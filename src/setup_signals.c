@@ -12,8 +12,6 @@
 
 #include "../headers/minishell.h"
 
-
-
 void	init_terminal(void)
 {
 	struct termios	term;
@@ -46,15 +44,14 @@ t_mode	*get_shell_mode(void)
 	return (&mode);
 }
 
-void sigint_heredoc_handler(int sig)
+void	sigint_heredoc_handler(int sig)
 {
-    (void)sig;
-    *get_sigint_flag() = 1;
-    ioctl(STDIN_FILENO, TIOCSTI, "\n");
-    rl_replace_line("", 0);
-    rl_on_new_line();
+	(void)sig;
+	*get_sigint_flag() = 1;
+	ioctl(STDIN_FILENO, TIOCSTI, "\n");
+	rl_replace_line("", 0);
+	rl_on_new_line();
 }
-
 
 void	handle_sigquit(int signum)
 {
@@ -68,30 +65,31 @@ void	handle_sigquit(int signum)
 	}
 }
 
-void handle_sigint(int signum)
+void	handle_sigint(int signum)
 {
-    t_mode mode = *get_shell_mode();
+	t_mode	mode;
 
-    if (signum == SIGINT)
-    {
-        if (mode == MODE_MAIN)
-        {
-            write(1, "\n", 1);
-            rl_replace_line("", 0);
-            rl_on_new_line();
+	mode = *get_shell_mode();
+	if (signum == SIGINT)
+	{
+		if (mode == MODE_MAIN)
+		{
+			write(1, "\n", 1);
+			rl_replace_line("", 0);
+			rl_on_new_line();
 			ioctl(STDIN_FILENO, TIOCSTI, "\0");
-           // rl_redisplay();
-        }
-        else if (mode == MODE_HEREDOC)
-        {
-            // voir sigint_heredoc_handler
-            return;
-        }
-        else if (mode == MODE_CHILD)
-        {
-            write(1, "\n", 1);
-        }
-    }
+			// rl_redisplay();
+		}
+		else if (mode == MODE_HEREDOC)
+		{
+			// voir sigint_heredoc_handler
+			return ;
+		}
+		else if (mode == MODE_CHILD)
+		{
+			write(1, "\n", 1);
+		}
+	}
 }
 
 void	setup_signals(void)

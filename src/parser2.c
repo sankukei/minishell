@@ -45,6 +45,7 @@ static void	free_add_cmd_list(t_cmd *new, t_data *data)
 	free(new);
 	clear_cmds(&data->cmd);
 }
+
 int	add_cmd_list(t_data *data, t_token *token, t_cmd **cmd_list)
 {
 	t_cmd	*new;

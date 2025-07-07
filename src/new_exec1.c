@@ -16,10 +16,6 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 {
 	t_dup	dups;
 
-	//dups.infile_redir = 0;
-	//dups.infile_fd = 0;
-	//dups.outfile_redir = 0;
-	//dups.outfile_fd = 0;
 	ft_bzero(&dups, sizeof(dups));
 	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
 	{
@@ -34,7 +30,16 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 	}
 	close_unused_pipes(data, vars, i);
 	if (check_if_builtin(cmds->cmd[0]))
+	{
 		exec_builtin(check_if_builtin(cmds->cmd[0]), cmds->cmd, data, dups);
+		int	i = 0;
+
+		while (i < vars->n_command - 1)
+			free(vars->pipes[i++]);
+		free(vars->pipes);
+		free(vars);
+	//	free_exec(vars);
+	}
 	else if (!(exec_single(data, cmds->cmd[0], cmds->cmd)))
 	{
 		printf("execve failed\n");
@@ -42,6 +47,7 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 		clear_cmds(&data->cmd);
 		exit(127);
 	}
+	clear_double_array(data->env);
 	exit(0);
 }
 
@@ -57,7 +63,9 @@ void	start_children_new(t_exec *vars, t_data *data, t_cmd *cmds)
 	{
 		vars->pid = fork();
 		if (vars->pid == 0)
+		{
 			children_exec_new(vars, data, i, commands);
+		}
 		i++;
 		commands = commands->next;
 	}
@@ -100,5 +108,6 @@ int	__exec_startup__(t_data *data, t_cmd *cmds)
 	wait_all_childrens(data, vars);
 	restore_fds(vars);
 	free_exec(vars);
+	//free(vars);
 	return (0);
 }

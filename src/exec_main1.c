@@ -55,8 +55,8 @@ int	exec_single(t_data *data, char *cmd, char **args)
 				execve(test1, str, data->env);
 			}
 			execve(test1, args, data->env);
-			free(test1);
-			break ;
+		//	free(test1);
+		//	break ;
 		}
 		free(test1);
 		i++;

@@ -41,5 +41,6 @@ void	exec_builtin(int selector, char **args, t_data *data, t_dup dups)
 		env(data);
 	else if (selector == 7)
 		ft_exit(data, args);
+	prepare_next_input(data, &data->cmd);
 	return ;
 }

@@ -61,9 +61,6 @@ t_dup	handle_redir(t_redir *redir)
 	while (redir)
 	{
 		fd = open_fds(redir->target, redir->type);
-	//	FIXME
-	//	if (redir->next && redir->type != 1)
-	//		close(fd);
 		fill_t_dups(&dups, redir->type, fd);
 		redir = redir->next;
 	}
