@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 04:16:05 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/30 06:38:08 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/16 14:23:55 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	init_terminal(void)
 	}
 }
 
-int	*get_sigint_flag(void)
+volatile int	*get_sigint_flag(void)
 {
 	volatile static int	sigint_received = 0;
 
@@ -38,9 +38,8 @@ int	*get_sigint_flag(void)
 
 t_mode	*get_shell_mode(void)
 {
-	static t_mode	mode;
+	static t_mode	mode = MODE_MAIN;
 
-	mode = MODE_MAIN;
 	return (&mode);
 }
 
@@ -58,6 +57,7 @@ void	handle_sigquit(int signum)
 	t_mode	mode;
 
 	mode = *get_shell_mode();
+	//printf("JAA%d\n", mode);
 	if (signum == SIGQUIT)
 	{
 		if (mode == MODE_CHILD)
@@ -105,4 +105,19 @@ void	setup_signals(void)
 	sa_quit.sa_handler = handle_sigquit;
 	sa_quit.sa_flags = SA_RESTART;
 	sigaction(SIGQUIT, &sa_quit, NULL);
+}
+
+void	update_sigquit(void)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+
+	if (*get_shell_mode() == MODE_MAIN)
+		sa.sa_handler = SIG_IGN;
+	else
+		sa.sa_handler = handle_sigquit;
+
+	sigaction(SIGQUIT, &sa, NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/02 04:55:24 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/16 14:24:26 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ void		setup_signals(void);
 t_mode		*get_shell_mode(void);
 void		init_terminal(void);
 void		sigint_heredoc_handler(int sig);
-int			*get_sigint_flag(void);
+volatile int			*get_sigint_flag(void);
+void		handle_sigquit(int signum);
+void		update_sigquit(void);
 
 // string_utils
 int			ft_iscapitalise(char c);

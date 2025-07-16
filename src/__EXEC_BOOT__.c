@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   __EXEC_BOOT__.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 00:13:06 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/03 23:49:54 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/07/16 14:23:47 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,10 @@ void	minishell_launcher(t_data *data)
 	while (1)
 	{
 		*get_shell_mode() = MODE_MAIN;
+		update_sigquit();
 		*get_sigint_flag() = 0;
 		cmds = NULL;
+		signal(SIGQUIT, SIG_IGN);
 		input = readline("minishell> ");
 		if (!input)
 			handle_ctrl_d();

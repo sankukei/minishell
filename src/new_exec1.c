@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_exec1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:49:26 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/03 20:18:10 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/07/16 14:22:23 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,12 @@ void	start_children_new(t_exec *vars, t_data *data, t_cmd *cmds)
 	commands = cmds;
 	i = 0;
 	*get_shell_mode() = MODE_CHILD;
+	update_sigquit();
 	while (i < vars->n_command && commands && commands->cmd)
 	{
 		vars->pid = fork();
 		if (vars->pid == 0)
-		{
 			children_exec_new(vars, data, i, commands);
-		}
 		i++;
 		commands = commands->next;
 	}
