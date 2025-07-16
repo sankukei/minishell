@@ -73,7 +73,8 @@ void	close_unused_pipes(t_data *data, t_exec *vars, int i)
 {
 	int	j;
 	int	n;
-
+	
+	j = 0;
 	n = data->n_commands - 1;
 	if (!vars->pipes)
 		return ;
