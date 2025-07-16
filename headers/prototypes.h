@@ -147,6 +147,10 @@ void		advance_pointer(t_token **token);
 void		clear_cmd_node(t_cmd *cmds);
 int			open_fds(char *fd_name, int type);
 void		fill_t_dups(t_dup *dups, int type, int fd);
+int			handle_export_error(t_data *data, char **args);
+void	export(t_data *data, char **args);
+
+
 
 // heredoc_utils
 

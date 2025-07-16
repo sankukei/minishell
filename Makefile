@@ -35,6 +35,7 @@ SRC = main.c \
       builtin_fn1.c \
       builtin_fn2.c \
       builtin_fn3.c \
+      builtin_fn4.c \
 	  exec_main1.c \
 	  exec_main2.c \
 	  exec_helper1.c \

@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 04:16:05 by amedenec          #+#    #+#             */
-/*   Updated: 2025/07/16 22:59:06 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/16 23:12:37 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,9 @@ void	handle_sigquit(int signum)
 	t_mode	mode;
 
 	mode = *get_shell_mode();
-	//printf("JAA%d\n", mode);
 	if (signum == SIGQUIT)
 	{
 		if (mode == MODE_CHILD)
 			write(1, "Quit (core dumped)\n", 19);
 	}
 }
-
-
