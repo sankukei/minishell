@@ -6,43 +6,13 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/07/16 16:13:54 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/16 23:02:45 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 #include <limits.h>
 
-// me pas enlever pour l instant
-// char	*detect_var_env(char *input)
-// {
-// 	int		len;
-// 	char	*dest;
-// 	char	*ptr;
-
-// 	input++;
-// 	ptr = input;
-// 	len = 0;
-// 	if (*input == '?')
-// 	{
-// 		dest = malloc(sizeof(char) * 2);
-// 		dest[0] = '?';
-// 		dest[1] = '\0';
-// 		return (dest);
-// 	}
-// 	while (*input != ' ' && *input != '\0'
-// 		&& (ft_isalnum(*input) == 1 || *input == '_'))
-// 	{
-// 		len++;
-// 		input++;
-// 	}
-// 	dest = malloc(sizeof(char) * len + 1);
-// 	while (*ptr != ' ' && *ptr != '\0'
-// 		&& (ft_isalnum(*ptr) == 1 || *ptr == '_'))
-// 		*dest++ = *ptr++;
-// 	*dest = '\0';
-// 	return (dest - len);
-// }
 
 static int	var_len(char *input)
 {

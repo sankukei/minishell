@@ -29,6 +29,7 @@ SRC = main.c \
       clear_utils.c \
       clear_utils2.c \
       setup_signals.c \
+      setup_signals2.c \
       init.c \
       join.c \
       builtin_fn1.c \

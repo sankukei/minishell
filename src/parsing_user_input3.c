@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 03:01:17 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/30 00:54:56 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/16 23:01:57 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ char	*remove_quote(char *str)
 			dest[l++] = str[i++];
 		dest[l] = 0;
 	}
-	free(str);
-	return (dest);
+	return (free(str), dest);
 }
 
 void	extern_quote_handler(t_data *data)
