@@ -1,21 +1,9 @@
-1_ double prompt apres ctrl + C un cat
 minishell> $?  //leak
+
 a tester sur les pc de l'ecole (CTRL + \)
+
 signaux minishell dans minishell +shell level a augmenter
-problemes avec unset si on export 1234, on peut plus unset la valeur // DONE
 
-
-
-
-
-EASY)
 si rm -rf curr dir on reste bloque sans pouvoir rien faire
+
 si on unset PATH on peut plus rien faire meme ne chemin absolu
-
-SOMBRE)
-wc -l en fin de command line se redirige mal // done
-
-
-
-
-fermer tout les fd a un moment dans l'exec, pe les stock qq part avant

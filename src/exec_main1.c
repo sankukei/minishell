@@ -129,7 +129,6 @@ void	align_pointer(t_token **token)
 //     return (open(".heredoc_buffer", O_RDONLY));
 // }
 
-
 int	write_heredoc_into_fd(char *target)
 {
 	int					fd;
@@ -183,4 +182,3 @@ void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
 		temp = temp->next;
 	}
 }
-

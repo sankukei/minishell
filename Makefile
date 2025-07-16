@@ -1,7 +1,8 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra  -g3 -I. -O1 #-fsanitize=address,undefined,signed-integer-overflow,null,leak,bounds -fno-omit-frame-pointer #-Werror
+CFLAGS = -Wall -Wextra -g3 -I. -O1 
+#-fsanitize=address,undefined,signed-integer-overflow,null,leak,bounds -fno-omit-frame-pointer
 
 # Couleurs
 RED = \033[0;31m
@@ -21,6 +22,7 @@ SRC = main.c \
       parsing_user_input4.c \
       parsing_user_input5.c \
       parsing_user_input6.c \
+      parsing_user_input7.c \
       search_list_utils1.c \
 	  search_list_utils2.c \
       string_utils.c \
