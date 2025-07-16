@@ -26,6 +26,12 @@ static int	exec_given_path(t_data *data, char *cmd, char **args)
 	}
 	return (1);
 }
+// EXPERIMENTAL
+void	exit_child_process(t_data *data)
+{
+	clear_struct(&data->front_token);
+	clear_double_array(data->env);
+}
 
 int	exec_single(t_data *data, char *cmd, char **args)
 {
@@ -38,6 +44,12 @@ int	exec_single(t_data *data, char *cmd, char **args)
 	path = ft_split(get_my_env2(data, "PATH"), ':');
 	if (!path)
 		return (0);
+	if (!cmd)
+	{
+		clear_double_array(path);
+		exit_child_process(data);
+		return (0);
+	}
 	i = 0;
 	if (ft_strncmp(cmd, "/", 1) == 0)
 		if (!exec_given_path(data, cmd, args))
@@ -55,13 +67,12 @@ int	exec_single(t_data *data, char *cmd, char **args)
 				execve(test1, str, data->env);
 			}
 			execve(test1, args, data->env);
-		//	free(test1);
-		//	break ;
 		}
 		free(test1);
 		i++;
 	}
 	clear_double_array(path);
+	exit_child_process(data);
 	write(1, "Command not found\n", 18);
 	return (0);
 }

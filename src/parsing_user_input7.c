@@ -23,17 +23,17 @@ int	check_infile_rule(t_token *previous, t_token *current)
 
 	i = 0;
 	current = current->next;
-	if (previous && previous->type == CMD)
-		i++;
+//	if (previous && previous->type == CMD)
+//		i++;
 	while (current && current->type != PIPE && !is_redir_token(current))
 	{
-		if (current->type == CMD)
-			i++;
-		else if (current->type == FD)
+	//	if (current->type == CMD)
+	//		i++;
+		if (current->type == FD)
 			i++;
 		current = current->next;
 	}
-	if (i < 2)
+	if (i < 1)
 		return (printf("Syntax error: unexpected token '<'\n"));
 	return (0);
 }

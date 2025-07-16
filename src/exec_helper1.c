@@ -29,6 +29,8 @@ int	get_number_of_commands(t_token *token)
 
 int	check_if_builtin(char *str)
 {
+	if (!str)
+		return (0);
 	if (ft_strncmp(str, "echo", 5) == 0)
 		return (1);
 	else if (ft_strncmp(str, "cd", 3) == 0)

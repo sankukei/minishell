@@ -131,7 +131,7 @@ char		**chang_args_ls(t_data *data, char **args);
 void		parser(t_data *data, t_cmd **cmd_list);
 void		close_unused_pipes(t_data *data, t_exec *vars, int i);
 void		check_for_heredoc(t_exec *vars, t_cmd *cmds);
-t_dup		handle_redir(t_redir *redir);
+t_dup		handle_redir(t_data *data, t_redir *redir, t_exec *vars);
 void		handle_dups(t_dup dups);
 int			handle_single_builtin_new(t_exec *vars, t_cmd *commands,
 				t_data *data);
@@ -161,3 +161,6 @@ int			finish_heredoc(int fd, char *input,
 				struct sigaction *old, t_mode *mode);
 void		setup_sigint(struct sigaction *sa,
 				struct sigaction *old, t_mode *mode);
+
+// fonction test free child
+void	exit_child_process(t_data *data);

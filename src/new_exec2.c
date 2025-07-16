@@ -25,7 +25,7 @@ int	open_fds(char *fd_name, int type)
 	else
 		fd = open(".heredoc_buffer", O_RDONLY, 0644);
 	if (fd < 0)
-		return (0);
+		return(-1);
 	return (fd);
 }
 
@@ -48,7 +48,7 @@ void	fill_t_dups(t_dup *dups, int type, int fd)
 	}
 }
 
-t_dup	handle_redir(t_redir *redir)
+t_dup	handle_redir(t_data *data, t_redir *redir, t_exec *vars)
 {
 	int		fd;
 	t_dup	dups;
@@ -57,10 +57,19 @@ t_dup	handle_redir(t_redir *redir)
 	dups.outfile_fd = 0;
 	dups.infile_redir = 0;
 	dups.outfile_redir = 0;
-	fd = 1;
+	fd = STDOUT_FILENO;
 	while (redir)
 	{
 		fd = open_fds(redir->target, redir->type);
+		if (fd < 0)
+		{
+			printf("file doesnt exist\n");
+			clear_cmds(&data->cmd);
+			exit_child_process(data);
+			free(data);
+			free(vars);
+			exit(2);
+		}
 		fill_t_dups(&dups, redir->type, fd);
 		redir = redir->next;
 	}
@@ -71,8 +80,14 @@ void	handle_dups(t_dup dups)
 {
 	if (dups.infile_redir)
 	{
-		if (dups.infile_redir == 3)
+		printf("%d\n", dups.infile_redir);
+		if (dups.infile_redir == 3 && dups.infile_fd != 0)
 			dup2(dups.infile_fd, STDIN_FILENO);
+		else
+		{
+			printf("error\n");
+			return ;
+		}
 	}
 	if (dups.outfile_redir)
 	{
@@ -90,7 +105,7 @@ int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
 	(void)vars;
 	if (!(check_if_builtin(commands->cmd[0]) && commands && commands->cmd))
 		return (0);
-	dups = handle_redir(commands->redirs);
+	dups = handle_redir(data, commands->redirs, vars);
 	exec_builtin(check_if_builtin(commands->cmd[0]), commands->cmd, data, dups);
 	free(vars);
 	return (1);
