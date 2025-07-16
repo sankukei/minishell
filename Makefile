@@ -1,7 +1,7 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -g3 -I. -O1 -fsanitize=address,undefined,signed-integer-overflow,null,leak,bounds -fno-omit-frame-pointer
+CFLAGS = -Wall -Wextra  -g3 -I. -O1 #-fsanitize=address,undefined,signed-integer-overflow,null,leak,bounds -fno-omit-frame-pointer #-Werror
 
 # Couleurs
 RED = \033[0;31m

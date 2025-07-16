@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/06/30 07:51:40 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/16 16:13:54 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ int	parsing(t_data	*data)
 	tokenisation(data);
 	data->front_token = data->token;
 	type_tokens(data);
+	// affiche_token_test(data->token);
 	if (check_token_syntax(data->token))
 		return (1);
 	extern_quote_handler(data);

@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/16 14:24:26 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/16 15:38:51 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,9 @@ void		sigint_heredoc_handler(int sig);
 volatile int			*get_sigint_flag(void);
 void		handle_sigquit(int signum);
 void		update_sigquit(void);
+t_data		*get_data_ctx(t_data *new_data);
+
+
 
 // string_utils
 int			ft_iscapitalise(char c);

@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:40:16 by amedenec          #+#    #+#             */
-/*   Updated: 2025/07/16 11:57:52 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/16 15:39:35 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	init(data, envp);
+	get_data_ctx(&data);
 	init_terminal();
 	minishell_launcher(data);
 	return (0);

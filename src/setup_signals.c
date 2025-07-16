@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 04:16:05 by amedenec          #+#    #+#             */
-/*   Updated: 2025/07/16 14:23:55 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/16 15:53:30 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,20 @@ void	handle_sigquit(int signum)
 	}
 }
 
+void	handle_sigint_exit(void)
+{
+	t_data **data = get_data_ctx(NULL);
+
+	if (data)
+		(*data)->last_exit_status = 130;
+}
+
 void	handle_sigint(int signum)
 {
 	t_mode	mode;
 
 	mode = *get_shell_mode();
+	handle_sigint_exit();
 	if (signum == SIGINT)
 	{
 		if (mode == MODE_MAIN)
@@ -91,6 +100,7 @@ void	handle_sigint(int signum)
 		}
 	}
 }
+
 
 void	setup_signals(void)
 {
@@ -120,4 +130,14 @@ void	update_sigquit(void)
 		sa.sa_handler = handle_sigquit;
 
 	sigaction(SIGQUIT, &sa, NULL);
+}
+
+
+t_data *get_data_ctx(t_data *new_data)
+{
+	static t_data *ctx = NULL;
+
+	if (new_data != NULL)
+		ctx = new_data;
+	return (ctx);
 }

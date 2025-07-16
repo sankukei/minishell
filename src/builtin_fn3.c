@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:14:27 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/02 04:21:32 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/16 14:55:13 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	handle_export_error(t_data *data, char **args)
 	}
 	while (args[1][i] && args[1][i] != '=')
 	{
-		if ((!ft_isalpha(args[1][i]) && !ft_isdigit(args[1][i])))
+		if ((!ft_isalpha(args[1][i]) && !ft_isdigit(args[1][i]) && args[1][i] != '_'))
 		{
 			printf("\"%s\": not a valid identifier\n", args[1]);
 			return (data->last_exit_status = 2, 1);
