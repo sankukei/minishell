@@ -16,7 +16,7 @@ int	get_fd(t_dup dups)
 {
 	int	fd;
 
-	fd = 0;
+	fd = 1;
 	if (dups.outfile_redir)
 		fd = dups.outfile_fd;
 	return (fd);
