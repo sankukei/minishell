@@ -37,6 +37,15 @@ int			is_space(char c);
 char		*ft_itoa_stack(int n);
 void		classify_cmd_and_args(t_token *token);
 void		copy_var_name(char *dest, char *src);
+int		is_redir_token(t_token *current);
+int		check_infile_rule(t_token *previous, t_token *current);
+int		check_outfile_rule(t_token *previous, t_token *current);
+int		check_syntax(int type, t_token *previous, t_token *current);
+int		check_token_syntax(t_token *head);
+int		check_pipe_rule(t_token *previous, t_token *current);
+void		type_tokens(t_data *data);
+void		classify_cmd_and_args(t_token *token);
+void		put_hard_coded_type(t_data *data);
 
 // parsing tokinsation
 void		init_token_rules(t_data *data);
