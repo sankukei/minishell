@@ -53,6 +53,7 @@ int	setup_input_pipes(t_exec *vars, int i)
 			write(1, "dup2 failed\n", 13);
 			return (0);
 		}
+		close(fd);
 	}
 	if (i != 0)
 	{
