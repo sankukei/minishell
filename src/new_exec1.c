@@ -12,18 +12,10 @@
 
 #include "../headers/minishell.h"
 
-
-void	close_all_fds(t_dup *dups)
-{
-	if (dups)
-	{
-		return ;
-	}
-}
-
 void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 {
 	t_dup	dups;
+	int	a;
 
 	ft_bzero(&dups, sizeof(dups));
 	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
@@ -37,15 +29,13 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 		dups = handle_redir(data, cmds->redirs, vars);
 		handle_dups(dups);
 	}
-	close_all_fds(&dups);
 	close_unused_pipes(data, vars, i);
 	if (check_if_builtin(cmds->cmd[0]))
 	{
 		exec_builtin(check_if_builtin(cmds->cmd[0]), cmds->cmd, data, dups);
-		int	i = 0;
-
-		while (i < vars->n_command - 1)
-			free(vars->pipes[i++]);
+		a = 0;
+		while (a < vars->n_command - 1)
+			free(vars->pipes[a++]);
 		free(vars->pipes);
 		free(vars);
 	//	free_exec(vars);
