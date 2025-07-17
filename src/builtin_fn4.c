@@ -86,3 +86,9 @@ void	export(t_data *data, char **args)
 	data->env = new_env;
 	data->last_exit_status = 0;
 }
+
+void	ft_exit(t_data *data, char **args)
+{
+	printf("%s\n", "exit");
+	exit_program(data, args);
+}

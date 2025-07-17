@@ -37,11 +37,37 @@ char	*get_my_env2(t_data *data, char *str)
 	return (NULL);
 }
 
+void	cd_helper(t_data *data, char *path, int i, char **args)
+{
+	char	*home;
+
+	if (i == 0)
+	{
+		home = get_my_env2(data, "HOME");
+		if (!home)
+			return (data->last_exit_status = 1, (void)0);
+		chdir(home);
+	}
+	else if (i == 1)
+	{
+		if (chdir(*args) < 0)
+		{
+			printf("cd: no such file or directory: %s\n", *args);
+			return (data->last_exit_status = 1, (void)0);
+		}
+		printf("PWD -> %s\n", path);
+	}
+	else
+	{
+		write(1, "too many arguments\n", 19);
+		data->last_exit_status = 2;
+	}
+}
+
 void	cd(t_data *data, char **args)
 {
 	char	*path;
 	int		i;
-	char	*home;
 
 	data->last_exit_status = 0;
 	i = 0;
@@ -51,32 +77,7 @@ void	cd(t_data *data, char **args)
 	args++;
 	while (args[i])
 		i++;
-	if (i == 0)
-	{
-		home = get_my_env2(data, "HOME");
-		if (!home)
-		{
-			data->last_exit_status = 1;
-			return ;
-		}
-		chdir(home);
-	}
-	else if (i == 1)
-	{
-		if (chdir(*args) < 0)
-		{
-			data->last_exit_status = 1;
-			printf("cd: no such file or directory: %s\n", *args);
-			free(path);
-			return ;
-		}
-		printf("PWD -> %s\n", path);
-	}
-	else
-	{
-		write(1, "too many arguments\n", 19);
-		data->last_exit_status = 2;
-	}
+	cd_helper(data, path, i, args);
 	free(path);
 }
 
@@ -122,10 +123,4 @@ void	echo(t_data *data, char **args, int fd)
 		write(fd, "\n", 1);
 	free(str);
 	data->last_exit_status = 0;
-}
-
-void	ft_exit(t_data *data, char **args)
-{
-	printf("%s\n", "exit");
-	exit_program(data, args);
 }

@@ -20,7 +20,7 @@ void	add_token_refacto(t_token **list, char *str)
 	new = malloc(sizeof(t_token));
 	if (!new)
 		return ;
-	bzero(new, sizeof(t_token));
+	ft_bzero(new, sizeof(t_token));
 	new->str = str;
 	new->type = -1;
 	new->next = NULL;
@@ -33,4 +33,10 @@ void	add_token_refacto(t_token **list, char *str)
 			tmp = tmp->next;
 		tmp->next = new;
 	}
+}
+
+void	type_tokens(t_data *data)
+{
+	put_hard_coded_type(data);
+	classify_cmd_and_args(data->token);
 }

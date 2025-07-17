@@ -22,7 +22,6 @@ int	get_len_of_double_char(char **str)
 	return (i);
 }
 
-// CHECK LE RETURN SI YA MALLOC QUI FAIL
 char	**dup_envp(char **envp)
 {
 	char	**dest;
@@ -35,7 +34,7 @@ char	**dup_envp(char **envp)
 	dest = malloc(sizeof(char *) * (len + 1));
 	if (!dest)
 		return (NULL);
-	bzero(dest, sizeof(char *) * (len + 1));
+	ft_bzero(dest, sizeof(char *) * (len + 1));
 	while (envp[i])
 	{
 		tmp = ft_strdup(envp[i]);

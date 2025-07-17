@@ -22,5 +22,4 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <termios.h>
-//#include <asm/termbits.h>
 #include <sys/ioctl.h>

@@ -44,3 +44,9 @@ void	exec_builtin(int selector, char **args, t_data *data, t_dup dups)
 	prepare_next_input(data, &data->cmd);
 	return ;
 }
+
+void	exit_child_process(t_data *data)
+{
+	clear_struct(&data->front_token);
+	clear_double_array(data->env);
+}

@@ -71,7 +71,7 @@ int	add_token(t_token **token, char *str, int type)
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
 		return (1);
-	bzero(new_token, sizeof(t_token));
+	ft_bzero(new_token, sizeof(t_token));
 	new_token->next = NULL;
 	new_token->str = ft_strdup(str);
 	new_token->type = type;

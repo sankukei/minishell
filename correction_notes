@@ -1,9 +1,0 @@
-minishell> $?  //leak
-
-a tester sur les pc de l'ecole (CTRL + \)
-
-signaux minishell dans minishell +shell level a augmenter
-
-si rm -rf curr dir on reste bloque sans pouvoir rien faire
-
-si on unset PATH on peut plus rien faire meme ne chemin absolu

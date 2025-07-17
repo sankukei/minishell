@@ -42,7 +42,6 @@ char	*extract_token(char *str, int *i)
 	return (ft_substr(str, start, *i - start));
 }
 
-
 static char	*extract_operator(char *input, int *i)
 {
 	char	*token;
@@ -98,14 +97,4 @@ char	*get_operator_token(char *input, int *i)
 		(*i)++;
 		return (ft_substr(input, *i - 1, 1));
 	}
-}
-
-int	is_space(char c)
-{
-	return (c == ' ' || (c >= 9 && c <= 13));
-}
-
-int	is_operator(char c)
-{
-	return (c == '<' || c == '>' || c == '|');
 }

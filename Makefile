@@ -1,8 +1,7 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -g3 -I. -O1 
-#-fsanitize=address,undefined,signed-integer-overflow,null,leak,bounds -fno-omit-frame-pointer
+CFLAGS = -Wall -Wextra -Werror -g3 -I. -O1 
 
 # Couleurs
 RED = \033[0;31m
@@ -49,6 +48,7 @@ SRC = main.c \
 	  new_exec2.c \
 	  print_utils.c \
 	  heredoc_utils.c \
+	  heredoc_utils2.c \
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a

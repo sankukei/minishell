@@ -26,20 +26,37 @@ static int	exec_given_path(t_data *data, char *cmd, char **args)
 	}
 	return (1);
 }
-// EXPERIMENTAL
-void	exit_child_process(t_data *data)
+
+void	exec_single_helper(t_data *data, char *cmd, char **args, char **path)
 {
-	clear_struct(&data->front_token);
-	clear_double_array(data->env);
+	char	*tmp;
+	int		i;
+	char	*buffer;
+	char	**str;
+
+	i = 0;
+	while (path[i])
+	{
+		tmp = ft_strjoin(path[i], "/");
+		buffer = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (!access(buffer, X_OK))
+		{
+			if (ft_strncmp(cmd, "ls", 3) == 0)
+			{
+				str = chang_args_ls(data, args);
+				execve(buffer, str, data->env);
+			}
+			execve(buffer, args, data->env);
+		}
+		free(buffer);
+		i++;
+	}
 }
 
 int	exec_single(t_data *data, char *cmd, char **args)
 {
 	char	**path;
-	char	*tmp;
-	char	*test1;
-	char	**str;
-	int		i;
 
 	path = ft_split(get_my_env2(data, "PATH"), ':');
 	if (!path)
@@ -50,95 +67,15 @@ int	exec_single(t_data *data, char *cmd, char **args)
 		exit_child_process(data);
 		return (0);
 	}
-	i = 0;
+	exec_single_helper(data, cmd, args, path);
 	if (ft_strncmp(cmd, "/", 1) == 0)
 		if (!exec_given_path(data, cmd, args))
 			return (0);
-	while (path[i])
-	{
-		tmp = ft_strjoin(path[i], "/");
-		test1 = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (!access(test1, X_OK))
-		{
-			if (ft_strncmp(cmd, "ls", 3) == 0)
-			{
-				str = chang_args_ls(data, args);
-				execve(test1, str, data->env);
-			}
-			execve(test1, args, data->env);
-		}
-		free(test1);
-		i++;
-	}
 	clear_double_array(path);
 	exit_child_process(data);
 	write(1, "Command not found\n", 18);
 	return (0);
 }
-
-void	align_pointer(t_token **token)
-{
-	while (token && *token && ((*token)->type == 6 || (*token)->type == 7))
-		*token = (*token)->next;
-}
-// NE PAS ENLEVER DEMANDER A ADAM AVANT
-// int write_heredoc_into_fd(char *target)
-// {
-//     char            *input;
-//     int             heredoc_fd;
-//     struct sigaction    sa_int;
-//     struct sigaction    old_sa_int;
-//     t_mode          *mode = get_shell_mode();
-
-//     heredoc_fd = open(".heredoc_buffer", O_CREAT | O_RDWR | O_TRUNC, 0644);
-//     if (heredoc_fd == -1)
-//         return (-1);
-
-//     sigaction(SIGINT, NULL, &old_sa_int);
-
-//     *mode = MODE_HEREDOC;
-//     *get_sigint_flag() = 0;
-//     sigemptyset(&sa_int.sa_mask);
-//     sa_int.sa_handler = sigint_heredoc_handler;
-//     sa_int.sa_flags = 0;
-//     sigaction(SIGINT, &sa_int, NULL);
-
-//     while (1)
-//     {
-//         input = readline("heredoc> ");
-//         if (*get_sigint_flag())
-//         {
-//             free(input);
-//             close(heredoc_fd);
-//             unlink(".heredoc_buffer");
-//             // pop l'ancien handler
-//             sigaction(SIGINT, &old_sa_int, NULL);
-//             *mode = MODE_MAIN;
-//             return (-1);
-//         }
-//         if (!input) // Ctrl-D
-//         {
-//             printf("minishell: warning: here-document delimited by end-of-file (wanted `%s\')\n", target);
-//             break;
-//         }
-//         if (ft_strncmp(input, target, ft_strlen(target) + 1) == 0)
-//         {
-//             free(input);
-//             break;
-//         }
-//         write(heredoc_fd, input, ft_strlen(input));
-//         write(heredoc_fd, "\n", 1);
-//         free(input);
-//     }
-//     close(heredoc_fd);
-
-//     // pop l'ancien handler
-//     sigaction(SIGINT, &old_sa_int, NULL);
-//     *mode = MODE_MAIN;
-
-//     return (open(".heredoc_buffer", O_RDONLY));
-// }
 
 int	write_heredoc_into_fd(char *target)
 {

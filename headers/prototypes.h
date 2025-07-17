@@ -38,14 +38,20 @@ char		*ft_itoa_stack(int n);
 void		classify_cmd_and_args(t_token *token);
 void		copy_var_name(char *dest, char *src);
 int		is_redir_token(t_token *current);
-int		check_infile_rule(t_token *previous, t_token *current);
-int		check_outfile_rule(t_token *previous, t_token *current);
+int		check_infile_rule(t_token *current);
+int		check_outfile_rule(t_token *current);
 int		check_syntax(int type, t_token *previous, t_token *current);
 int		check_token_syntax(t_token *head);
 int		check_pipe_rule(t_token *previous, t_token *current);
 void		type_tokens(t_data *data);
 void		classify_cmd_and_args(t_token *token);
 void		put_hard_coded_type(t_data *data);
+int		is_space(char c);
+int		is_operator(char c);
+int		get_n_command_new(t_cmd *cmds);
+void		exit_child_process(t_data *data);
+
+
 
 // parsing tokinsation
 void		init_token_rules(t_data *data);
@@ -61,7 +67,7 @@ int			count_token(t_token *token);
 int			add_token(t_token **token, char *str, int type);
 void		add_token_refacto(t_token **list, char *str);
 void		print_list(t_data **data, char const *option);
-
+void		type_tokens(t_data *data);
 // setup_signals
 void		handle_sigint(int signum);
 void		setup_signals(void);
@@ -71,7 +77,8 @@ void		sigint_heredoc_handler(int sig);
 volatile int			*get_sigint_flag(void);
 void		handle_sigquit(int signum);
 void		update_sigquit(void);
-t_data		*get_data_ctx(t_data *new_data);
+t_data		**get_data_ctx(t_data *new_data);
+void		type_tokens(t_data *data);
 
 
 

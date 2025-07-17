@@ -25,7 +25,7 @@ int	open_fds(char *fd_name, int type)
 	else
 		fd = open(".heredoc_buffer", O_RDONLY, 0644);
 	if (fd < 0)
-		return(-1);
+		return (-1);
 	return (fd);
 }
 
@@ -80,14 +80,10 @@ void	handle_dups(t_dup dups)
 {
 	if (dups.infile_redir)
 	{
-		printf("%d\n", dups.infile_redir);
 		if (dups.infile_redir == 3 && dups.infile_fd != 0)
 			dup2(dups.infile_fd, STDIN_FILENO);
 		else
-		{
-			printf("error\n");
 			return ;
-		}
 	}
 	if (dups.outfile_redir)
 	{

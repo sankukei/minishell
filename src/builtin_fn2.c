@@ -78,7 +78,7 @@ char	**chang_args_ls(t_data *data, char **args)
 	new_args = malloc(sizeof(char *) * (count + 2));
 	if (!new_args)
 		return (NULL);
-	bzero(new_args, sizeof(char *) * (count + 2));
+	ft_bzero(new_args, sizeof(char *) * (count + 2));
 	new_args[0] = ft_strdup("ls");
 	new_args[1] = ft_strdup("--color=auto");
 	i = 1;

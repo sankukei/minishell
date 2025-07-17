@@ -17,18 +17,14 @@ int	is_redir_token(t_token *current)
 	return (current->type >= 1 && current->type <= 4);
 }
 
-int	check_infile_rule(t_token *previous, t_token *current)
+int	check_infile_rule(t_token *current)
 {
 	int	i;
 
 	i = 0;
 	current = current->next;
-//	if (previous && previous->type == CMD)
-//		i++;
 	while (current && current->type != PIPE && !is_redir_token(current))
 	{
-	//	if (current->type == CMD)
-	//		i++;
 		if (current->type == FD)
 			i++;
 		current = current->next;
@@ -38,7 +34,7 @@ int	check_infile_rule(t_token *previous, t_token *current)
 	return (0);
 }
 
-int	check_outfile_rule(t_token *previous, t_token *current)
+int	check_outfile_rule(t_token *current)
 {
 	int		i;
 	char	str[3];
@@ -64,10 +60,10 @@ int	check_syntax(int type, t_token *previous, t_token *current)
 		if (check_pipe_rule(previous, current))
 			return (1);
 	if (type == INPUT)
-		if (check_infile_rule(previous, current))
+		if (check_infile_rule(current))
 			return (1);
 	if (type == TRUNC)
-		if (check_outfile_rule(previous, current))
+		if (check_outfile_rule(current))
 			return (1);
 	return (0);
 }

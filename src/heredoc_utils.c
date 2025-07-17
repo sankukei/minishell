@@ -59,15 +59,3 @@ int	finish_heredoc(int fd, char *input,
 	*mode = MODE_MAIN;
 	return (open(".heredoc_buffer", O_RDONLY));
 }
-
-void	setup_sigint(struct sigaction *sa,
-	struct sigaction *old, t_mode *mode)
-{
-	*mode = MODE_HEREDOC;
-	*get_sigint_flag() = 0;
-	sigaction(SIGINT, NULL, old);
-	sigemptyset(&sa->sa_mask);
-	sa->sa_handler = sigint_heredoc_handler;
-	sa->sa_flags = 0;
-	sigaction(SIGINT, sa, NULL);
-}

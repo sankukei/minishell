@@ -48,6 +48,12 @@ void	put_hard_coded_type(t_data *data)
 	}
 }
 
+static void	update_token(t_type *prev_type, t_token **token)
+{
+	*prev_type = (*token)->type;
+	*token = (*token)->next;
+}
+
 void	classify_cmd_and_args(t_token *token)
 {
 	t_boolen	expect_cmd;
@@ -73,15 +79,8 @@ void	classify_cmd_and_args(t_token *token)
 		}
 		if (token->type == PIPE)
 			expect_cmd = true;
-		prev_type = token->type;
-		token = token->next;
+		update_token(&prev_type, &token);
 	}
-}
-
-void	type_tokens(t_data *data)
-{
-	put_hard_coded_type(data);
-	classify_cmd_and_args(data->token);
 }
 
 int	check_pipe_rule(t_token *previous, t_token *current)
@@ -93,4 +92,3 @@ int	check_pipe_rule(t_token *previous, t_token *current)
 		return (printf("Syntax error: unexpected token '|'\n"), 1);
 	return (0);
 }
-
