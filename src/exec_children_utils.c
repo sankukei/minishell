@@ -6,12 +6,12 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 11:47:46 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/02 05:18:02 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/18 04:48:24 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
-
+// fonction inutile a present
 void	free_exec(t_exec *vars)
 {
 	int	i;
@@ -23,7 +23,6 @@ void	free_exec(t_exec *vars)
 			free(vars->pipes[i++]);
 		free (vars->pipes);
 	}
-	free(vars);
 }
 
 int	setup_output_pipes(t_exec *vars, int i)
@@ -32,10 +31,7 @@ int	setup_output_pipes(t_exec *vars, int i)
 	{
 		close(vars->pipes[i][0]);
 		if (dup2(vars->pipes[i][1], STDOUT_FILENO) == -1)
-		{
-			write(1, "dup2 failed\n", 13);
 			return (0);
-		}
 		close(vars->pipes[i][1]);
 	}
 	return (1);

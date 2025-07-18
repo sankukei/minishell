@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clear_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 23:10:20 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/03 23:11:16 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/07/18 03:36:42 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,11 @@ void	exit_program(t_data *data, char **args)
 	{
 		exit_tmp = ft_atoi(args[1]);
 		clear_cmds(&data->cmd);
-		free(data);
 		exit(exit_tmp);
 	}
 	else
 	{
 		clear_cmds(&data->cmd);
-		free(data);
 		exit(exit_tmp);
 	}
 }

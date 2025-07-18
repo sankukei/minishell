@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:49:26 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/16 14:22:23 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/18 06:33:48 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	setup_pipes(t_exec *vars, int i, t_data *data)
 {
 	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
 	{
+		clear_double_array(data->env);
+		clear_struct(&data->front_token);
 		clear_cmds(&data->cmd);
 		free_exec(vars);
 		exit(1);
@@ -52,11 +54,10 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 	{
 		free_exec(vars);
 		clear_cmds(&data->cmd);
-		free(data);
+		free(data->input);
 		exit(127);
 	}
 	clear_double_array(data->env);
-	free(data);
 	exit(0);
 }
 
@@ -81,27 +82,25 @@ void	start_children_new(t_exec *vars, t_data *data, t_cmd *cmds)
 
 int	__exec_startup__(t_data *data, t_cmd *cmds)
 {
-	t_exec	*vars;
+	t_exec	vars;
 	t_cmd	*commands;
-
-	vars = malloc(sizeof(t_exec));
-	if (!vars)
-		return (1);
-	ft_bzero(vars, sizeof(t_exec));
-	vars->heredoc = 0;
+	
+	data->vars = &vars;
+	ft_bzero(&vars, sizeof(t_exec));
+	(&vars)->heredoc = 0;
 	commands = data->cmd;
-	check_for_heredoc(vars, commands);
-	vars->n_command = data->n_commands;
-	if (vars->n_command > 100)
+	check_for_heredoc(&vars, commands);
+	(&vars)->n_command = data->n_commands;
+	if ((&vars)->n_command > 100)
 		return (printf("Too many commands\n"));
-	if (vars->n_command == 1)
-		if (handle_single_builtin_new(vars, commands, data))
+	if ((&vars)->n_command == 1)
+		if (handle_single_builtin_new(&vars, commands, data))
 			return (1);
-	init_pipes(vars);
-	start_children_new(vars, data, cmds);
-	close_pipes(vars);
-	wait_all_childrens(data, vars);
-	restore_fds(vars);
-	free_exec(vars);
+	init_pipes(&vars);
+	start_children_new(&vars, data, cmds);
+	close_pipes(&vars);
+	wait_all_childrens(data, &vars);
+	restore_fds(&vars);
+	free_exec(&vars);
 	return (0);
 }

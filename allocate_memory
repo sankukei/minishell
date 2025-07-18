@@ -1,0 +1,15 @@
+Allocate Memory
+by order
+
+
+data->env -in init call by main (allocate a char ** to stock env)
+
+---------------------------------------------------------------------
+all bellow is in the while (1) form our shell
+
+input	-in minishell_launcher (allocate a char * form the user input aka readline)
+
+parsing
+--------------------------------------------------------------------------------
+var_env_handler
+
