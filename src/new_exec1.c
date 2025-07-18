@@ -48,7 +48,6 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 		while (i < vars->n_command - 1)
 			free(vars->pipes[i++]);
 		free(vars->pipes);
-		free(vars);
 	}
 	else if (!(exec_single(data, cmds->cmd[0], cmds->cmd)))
 	{

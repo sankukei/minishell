@@ -66,7 +66,6 @@ t_dup	handle_redir(t_data *data, t_redir *redir, t_exec *vars)
 			printf("file doesnt exist\n");
 			clear_cmds(&data->cmd);
 			exit_child_process(data);
-			free(vars);
 			exit(2);
 		}
 		fill_t_dups(&dups, redir->type, fd);
@@ -102,6 +101,5 @@ int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
 		return (0);
 	dups = handle_redir(data, commands->redirs, vars);
 	exec_builtin(check_if_builtin(commands->cmd[0]), commands->cmd, data, dups);
-	free(vars);
 	return (1);
 }
