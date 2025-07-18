@@ -12,6 +12,21 @@
 
 #include "../headers/minishell.h"
 
+int	exec_relative_path(t_data *data, char *cmd, char **args)
+{
+	if (!access(cmd, X_OK))
+	{
+		if (ft_strnstr(cmd, "ls", ft_strlen(cmd)))
+		{
+			args = chang_args_ls(data, args);
+			execve("ls", args, data->env);
+		}
+		execve(cmd, args, data->env);
+		return (0);
+	}
+	return (1);
+}
+
 static int	exec_given_path(t_data *data, char *cmd, char **args)
 {
 	if (!access(cmd, X_OK))
@@ -71,6 +86,9 @@ int	exec_single(t_data *data, char *cmd, char **args)
 	if (ft_strncmp(cmd, "/", 1) == 0)
 		if (!exec_given_path(data, cmd, args))
 			return (0);
+	if (ft_strncmp(cmd, ".", 1) == 0)
+		if (!exec_relative_path(data, cmd, args))
+			return (0);
 	clear_double_array(path);
 	exit_child_process(data);
 	write(1, "Command not found\n", 18);
@@ -103,30 +121,4 @@ int	write_heredoc_into_fd(char *target)
 		free(input);
 	}
 	return (finish_heredoc(fd, input, &old, mode));
-}
-
-void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
-{
-	int		fd;
-	t_cmd	*temp;
-	t_redir	*temp_redirs;
-
-	fd = 0;
-	temp = cmds;
-	while (temp)
-	{
-		temp_redirs = temp->redirs;
-		while (temp_redirs)
-		{
-			if (temp_redirs->type == 1)
-			{
-				fd = write_heredoc_into_fd(temp_redirs->target);
-				vars->heredoc = 1;
-				vars->heredoc_fd = fd;
-				close(vars->heredoc_fd);
-			}
-			temp_redirs = temp_redirs->next;
-		}
-		temp = temp->next;
-	}
 }

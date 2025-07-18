@@ -47,3 +47,29 @@ int	check_if_builtin(char *str)
 		return (7);
 	return (0);
 }
+
+void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
+{
+	int		fd;
+	t_cmd	*temp;
+	t_redir	*temp_redirs;
+
+	fd = 0;
+	temp = cmds;
+	while (temp)
+	{
+		temp_redirs = temp->redirs;
+		while (temp_redirs)
+		{
+			if (temp_redirs->type == 1)
+			{
+				fd = write_heredoc_into_fd(temp_redirs->target);
+				vars->heredoc = 1;
+				vars->heredoc_fd = fd;
+				close(vars->heredoc_fd);
+			}
+			temp_redirs = temp_redirs->next;
+		}
+		temp = temp->next;
+	}
+}

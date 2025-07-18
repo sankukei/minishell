@@ -156,6 +156,8 @@ int			open_fds(char *fd_name, int type);
 void		fill_t_dups(t_dup *dups, int type, int fd);
 int			handle_export_error(t_data *data, char **args);
 void	export(t_data *data, char **args);
+int	write_heredoc_into_fd(char *target);
+
 
 
 
