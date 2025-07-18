@@ -73,22 +73,22 @@ int	exec_single(t_data *data, char *cmd, char **args)
 {
 	char	**path;
 
-	path = ft_split(get_my_env2(data, "PATH"), ':');
-	if (!path)
-		return (0);
 	if (!cmd)
 	{
 		clear_double_array(path);
 		exit_child_process(data);
 		return (0);
 	}
-	exec_single_helper(data, cmd, args, path);
 	if (ft_strncmp(cmd, "/", 1) == 0)
 		if (!exec_given_path(data, cmd, args))
 			return (0);
 	if (ft_strncmp(cmd, ".", 1) == 0)
 		if (!exec_relative_path(data, cmd, args))
 			return (0);
+	path = ft_split(get_my_env2(data, "PATH"), ':');
+	if (!path)
+		return (0);
+	exec_single_helper(data, cmd, args, path);
 	clear_double_array(path);
 	exit_child_process(data);
 	write(1, "Command not found\n", 18);

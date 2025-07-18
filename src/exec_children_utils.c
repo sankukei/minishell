@@ -33,7 +33,6 @@ int	setup_output_pipes(t_exec *vars, int i)
 		close(vars->pipes[i][0]);
 		if (dup2(vars->pipes[i][1], STDOUT_FILENO) == -1)
 		{
-			write(1, "dup2 failed\n", 13);
 			return (0);
 		}
 		close(vars->pipes[i][1]);
@@ -50,7 +49,6 @@ int	setup_input_pipes(t_exec *vars, int i)
 		fd = open(".heredoc_buffer", O_RDONLY);
 		if (dup2(fd, STDIN_FILENO) == -1)
 		{
-			write(1, "dup2 failed\n", 13);
 			return (0);
 		}
 		close(fd);
@@ -60,7 +58,6 @@ int	setup_input_pipes(t_exec *vars, int i)
 		close(vars->pipes[i - 1][1]);
 		if (!vars->heredoc && dup2(vars->pipes[i - 1][0], STDIN_FILENO) == -1)
 		{
-			write(1, "dup2 failed\n", 13);
 			return (0);
 		}
 		close(vars->pipes[i - 1][0]);
