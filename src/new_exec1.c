@@ -16,6 +16,8 @@ void	setup_pipes(t_exec *vars, int i, t_data *data)
 {
 	if (!(setup_output_pipes(vars, i)) || !(setup_input_pipes(vars, i)))
 	{
+		clear_double_array(data->env);
+		clear_struct(&data->front_token);
 		clear_cmds(&data->cmd);
 		free_exec(vars);
 		exit(1);
