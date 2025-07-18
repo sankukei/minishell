@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:41:26 by amedenec          #+#    #+#             */
-/*   Updated: 2025/07/16 23:15:24 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/18 04:40:29 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	replace_var_env(t_data *data, char *var, int i, int len)
 	dest = malloc(sizeof(char) * len_new_input + 1);
 	if (!dest)
 	{
+		// A PROTEGER
 		exit(1);
 	}
 	ft_bzero(dest, sizeof(char) * len_new_input + 1);

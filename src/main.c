@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 02:40:16 by amedenec          #+#    #+#             */
-/*   Updated: 2025/07/16 15:39:35 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/18 03:37:05 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,13 @@
 
 int	main(int ac, char **av, char **envp)
 {
-	t_data		*data;
+	t_data		data;
 
-	data = (t_data *)malloc(sizeof(t_data));
-	if (!data)
-		return (1);
-	ft_bzero(data, sizeof(t_data));
 	(void)ac;
 	(void)av;
-	init(data, envp);
-	get_data_ctx(data);
+	init(&data, envp);
+	get_data_ctx(&data);
 	init_terminal();
-	minishell_launcher(data);
+	minishell_launcher(&data);
 	return (0);
 }
