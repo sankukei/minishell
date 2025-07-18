@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 14:32:37 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/06 14:32:40 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/07/18 06:26:04 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@ void	write_line(int fd, char *line)
 int	handle_sigint_for_heredoc(int fd, char *input,
 	struct sigaction *old, t_mode *mode)
 {
+	//t_data **data;
+	
+	//data = get_data_ctx(NULL);
+	//free_exec((*data)->vars);
 	free(input);
 	close(fd);
 	unlink(".heredoc_buffer");

@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:03:53 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/16 15:32:44 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/18 05:49:40 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,20 +70,6 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_data
-{
-	char		*input;
-	t_boolen	single_quote;
-	t_boolen	double_quote;
-	t_token		*token;
-	t_token		*front_token;
-	t_cmd		*cmd;
-	char		**env;
-	int			test;
-	int			n_commands;
-	int			last_exit_status;
-}	t_data;
-
 typedef struct s_exec
 {
 	pid_t	pid;
@@ -105,6 +91,23 @@ typedef struct s_exec
 	char	*reddir_fd_name;
 	char	**args;
 }	t_exec;
+
+typedef struct s_data
+{
+	char		*input;
+	t_boolen	single_quote;
+	t_boolen	double_quote;
+	t_token		*token;
+	t_token		*front_token;
+	t_cmd		*cmd;
+	t_exec		*vars;
+	char		**env;
+	int			test;
+	int			n_commands;
+	int			last_exit_status;
+}	t_data;
+
+
 
 typedef struct s_dup
 {

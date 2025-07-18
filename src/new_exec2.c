@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_exec2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <sankukei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 20:17:35 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/05 23:15:38 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/07/18 03:36:46 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ t_dup	handle_redir(t_data *data, t_redir *redir, t_exec *vars)
 			printf("file doesnt exist\n");
 			clear_cmds(&data->cmd);
 			exit_child_process(data);
-			free(data);
-			free(vars);
 			exit(2);
 		}
 		fill_t_dups(&dups, redir->type, fd);
@@ -103,6 +101,5 @@ int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
 		return (0);
 	dups = handle_redir(data, commands->redirs, vars);
 	exec_builtin(check_if_builtin(commands->cmd[0]), commands->cmd, data, dups);
-	free(vars);
 	return (1);
 }
