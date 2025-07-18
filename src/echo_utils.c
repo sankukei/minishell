@@ -14,7 +14,7 @@
 
 int	check_flag(char *arg)
 {
-	return (arg && ft_strncmp(arg, "-n", ft_strlen(arg)) == 0);
+	return (arg && ft_strncmp(arg, "-n", ft_strlen("-n")) == 0);
 }
 
 char	*join_args(char **args)

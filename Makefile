@@ -62,11 +62,10 @@ $(NAME): $(OBJS) $(LIBFT)
 	@echo "$(BLUE)Linking object files and libft...$(RESET)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L$(LIBFT_DIR) -lft -lreadline
 	@echo "$(GREEN)Compilation complete! ✅$(RESET)"
-	@cat ./ascii/sky
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@echo "$(YELLOW)Compiling $<...$(RESET)"
-	@$(CC) $(CFLAGS) -c $< -o $@ || (echo "$(RED)Compilation failed!$(RESET)"; cat ./ascii/prankex; exit 1)
+	@$(CC) $(CFLAGS) -c $< -o $@ || (echo "$(RED)Compilation failed!$(RESET)"; exit 1)
 	@echo "$(GREEN)$< compiled successfully! ✅$(RESET)"
 
 $(OBJ_DIR):
