@@ -65,8 +65,7 @@ void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
 			{
 				fd = write_heredoc_into_fd(temp_redirs->target);
 				vars->heredoc = 1;
-				vars->heredoc_fd = fd;
-				close(vars->heredoc_fd);
+				close(fd);
 			}
 			temp_redirs = temp_redirs->next;
 		}
