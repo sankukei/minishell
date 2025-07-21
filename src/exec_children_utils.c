@@ -77,10 +77,10 @@ void	close_unused_pipes(t_data *data, t_exec *vars, int i)
 		return ;
 	while (j < n)
 	{
-		if (j != i - 1)
-			close(vars->pipes[j][0]);
-		if (j != i)
-			close(vars->pipes[j][1]);
+	//	if (j != i - 1)
+	//		close(vars->pipes[j][0]);
+	//	if (j != i)
+	//		close(vars->pipes[j][1]);
 		j++;
 	}
 }
