@@ -23,7 +23,7 @@ int	open_fds(char *fd_name, int type)
 	else if (type == INPUT)
 		fd = open(fd_name, O_RDONLY, 0644);
 	else
-		fd = open(".heredoc_buffer", O_RDONLY, 0644);
+		return (fd = 1);
 	if (fd < 0)
 		return (-1);
 	return (fd);
