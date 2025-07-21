@@ -91,7 +91,6 @@ int	exec_single(t_data *data, char *cmd, char **args)
 	exec_single_helper(data, cmd, args, path);
 	clear_double_array(path);
 	exit_child_process(data);
-	write(1, "Command not found\n", 18);
 	return (0);
 }
 

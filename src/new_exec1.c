@@ -51,6 +51,7 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 	}
 	else if (!(exec_single(data, cmds->cmd[0], cmds->cmd)))
 	{
+		printf("%s : command not found\n", cmds->cmd[0]);
 		free_exec(vars);
 		clear_cmds(&data->cmd);
 		free(data->input);
