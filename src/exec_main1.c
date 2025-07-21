@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:30 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/21 21:20:56 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/21 22:10:41 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int	exec_single(t_data *data, char *cmd, char **args)
 
 	if (!cmd)
 	{
-		clear_double_array(data->env);
 		exit_child_process(data);
 		return (0);
 	}

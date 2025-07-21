@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 20:17:35 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/18 03:36:46 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/21 22:37:38 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,27 @@ void	fill_t_dups(t_dup *dups, int type, int fd, t_redir *redir)
 	{
 		dups->infile_fd = fd;
 		if (check_to_close_fd(redir, 1))
+		{
 			close(fd);
+		}
 		dups->infile_redir = type;
 	}
 	else if (type == APPEND)
 	{
 		dups->outfile_fd = fd;
 		if (check_to_close_fd(redir, 2))
+		{
 			close(fd);
+		}
 		dups->outfile_redir = type;
 	}
 	else if (type == TRUNC)
 	{
 		dups->outfile_fd = fd;
 		if (check_to_close_fd(redir, 2))
+		{
 			close(fd);
+		}
 		dups->outfile_redir = type;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:13:53 by leothoma          #+#    #+#             */
-/*   Updated: 2025/06/24 03:02:13 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/21 22:38:10 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void	check_for_heredoc(t_exec *vars, t_cmd *cmds)
 				fd = write_heredoc_into_fd(temp_redirs->target);
 				vars->heredoc = 1;
 				vars->heredoc_fd = fd;
-				close(vars->heredoc_fd);
+				if (fd >= 0)
+					close(vars->heredoc_fd);
 			}
 			temp_redirs = temp_redirs->next;
 		}
