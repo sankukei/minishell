@@ -49,6 +49,7 @@ SRC = main.c \
 	  print_utils.c \
 	  heredoc_utils.c \
 	  heredoc_utils2.c \
+	  new_exec3.c \
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
