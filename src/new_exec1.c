@@ -29,7 +29,7 @@ void	setup_redirs(t_cmd *cmds, t_data *data, t_exec *vars, t_dup dups)
 	if (cmds->redirs)
 	{
 		dups = handle_redir(data, cmds->redirs, vars);
-		handle_dups(dups);
+		handle_dups(dups, data);
 	}
 }
 

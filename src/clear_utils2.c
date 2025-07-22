@@ -17,7 +17,9 @@ void	clear_cmds(t_cmd **cmds)
 	t_cmd	*temp;
 
 	if (!cmds || !*cmds)
+	{
 		return ;
+	}
 	while (*cmds)
 	{
 		temp = (*cmds)->next;
