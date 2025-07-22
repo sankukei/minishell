@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 20:17:35 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/21 22:37:38 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/22 05:30:41 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	open_fds(char *fd_name, int type)
 
 int	check_to_close_fd(t_redir *redir, int check)
 {
-	t_redir *tmp;
+	t_redir	*tmp;
 
 	tmp = redir;
 	if (!tmp->next)
@@ -46,8 +46,8 @@ int	check_to_close_fd(t_redir *redir, int check)
 		tmp = tmp->next;
 	}
 	return (0);
-
 }
+
 void	fill_t_dups(t_dup *dups, int type, int fd, t_redir *redir)
 {
 	if (type == INPUT)
@@ -63,18 +63,14 @@ void	fill_t_dups(t_dup *dups, int type, int fd, t_redir *redir)
 	{
 		dups->outfile_fd = fd;
 		if (check_to_close_fd(redir, 2))
-		{
 			close(fd);
-		}
 		dups->outfile_redir = type;
 	}
 	else if (type == TRUNC)
 	{
 		dups->outfile_fd = fd;
 		if (check_to_close_fd(redir, 2))
-		{
 			close(fd);
-		}
 		dups->outfile_redir = type;
 	}
 }
@@ -84,6 +80,7 @@ t_dup	handle_redir(t_data *data, t_redir *redir, t_exec *vars)
 	int		fd;
 	t_dup	dups;
 
+	(void)vars;
 	dups.infile_fd = 0;
 	dups.outfile_fd = 0;
 	dups.infile_redir = 0;
@@ -121,16 +118,4 @@ void	handle_dups(t_dup dups)
 			dup2(dups.outfile_fd, STDOUT_FILENO);
 		close(dups.outfile_fd);
 	}
-}
-
-int	handle_single_builtin_new(t_exec *vars, t_cmd *commands, t_data *data)
-{
-	t_dup	dups;
-
-	(void)vars;
-	if (!(check_if_builtin(commands->cmd[0]) && commands && commands->cmd))
-		return (0);
-	dups = handle_redir(data, commands->redirs, vars);
-	exec_builtin(check_if_builtin(commands->cmd[0]), commands->cmd, data, dups);
-	return (1);
 }

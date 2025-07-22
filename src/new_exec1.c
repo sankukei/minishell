@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 14:49:26 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/18 06:33:48 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/22 05:29:39 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	__exec_startup__(t_data *data, t_cmd *cmds)
 {
 	t_exec	vars;
 	t_cmd	*commands;
-	
+
 	data->vars = &vars;
 	ft_bzero(&vars, sizeof(t_exec));
 	(&vars)->heredoc = 0;
