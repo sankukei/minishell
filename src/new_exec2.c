@@ -94,8 +94,9 @@ t_dup	handle_redir(t_data *data, t_redir *redir, t_exec *vars)
 		fd = open_fds(redir->target, redir->type);
 		if (fd < 0)
 		{
-			printf("file doesnt exist\n");
+			printf("%s : file doesnt exist\n", redir->target);
 			clear_cmds(&data->cmd);
+			free_exec(data->vars);
 			exit_child_process(data);
 			exit(2);
 		}
@@ -105,12 +106,18 @@ t_dup	handle_redir(t_data *data, t_redir *redir, t_exec *vars)
 	return (dups);
 }
 
-void	handle_dups(t_dup dups)
+void	handle_dups(t_dup dups, t_data *data)
 {
 	if (dups.infile_redir)
 	{
 		if (dups.infile_redir == 3 && dups.infile_fd != 0)
-			dup2(dups.infile_fd, STDIN_FILENO);
+		{
+			if (dup2(dups.infile_fd, STDIN_FILENO) == -1)
+			{
+				clear_cmds(&data->cmd);
+				return ;
+			}
+		}
 		close(dups.infile_fd);
 	}
 	if (dups.outfile_redir)

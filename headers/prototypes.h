@@ -139,7 +139,7 @@ void		parser(t_data *data, t_cmd **cmd_list);
 void		close_unused_pipes(t_data *data, t_exec *vars, int i);
 void		check_for_heredoc(t_exec *vars, t_cmd *cmds);
 t_dup		handle_redir(t_data *data, t_redir *redir, t_exec *vars);
-void		handle_dups(t_dup dups);
+void		handle_dups(t_dup dups, t_data *data);
 int			handle_single_builtin_new(t_exec *vars, t_cmd *commands,
 				t_data *data);
 void		get_reddirs(t_token *token, t_redir **redir_list);

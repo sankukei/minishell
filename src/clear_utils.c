@@ -66,7 +66,9 @@ void	clear_redir_struct(t_redir **redirs)
 void	clear_cmd_node(t_cmd *cmds)
 {
 	if (!cmds)
+	{
 		return ;
+	}
 	clear_array(cmds->cmd);
 	clear_redir_struct(&cmds->redirs);
 	free(cmds);
