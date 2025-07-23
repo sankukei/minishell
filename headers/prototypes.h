@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 17:02:56 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/16 15:38:51 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:15:06 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,9 +155,10 @@ void		clear_cmd_node(t_cmd *cmds);
 int			open_fds(char *fd_name, int type);
 void		fill_t_dups(t_dup *dups, int type, int fd, t_redir *redir);
 int			handle_export_error(t_data *data, char **args);
-void	export(t_data *data, char **args);
-int	write_heredoc_into_fd(char *target);
-
+void		export(t_data *data, char **args);
+int			write_heredoc_into_fd(char *target);
+void		init_t_dup(t_dup *dups);
+void		handle_file_error(t_data *data, t_exec *vars);
 
 
 

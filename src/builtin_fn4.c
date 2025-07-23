@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_fn4.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leothoma <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 23:01:32 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/16 23:01:32 by leothoma         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:16:28 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,51 +42,49 @@ int	handle_export_error(t_data *data, char **args)
 }
 
 static void	copy_env_with_export(t_data *data, char **args,
-				char **new_env, int *exist)
+				char **new_env)
 {
 	int	i;
 	int	j;
+	int	found;
 
+	j = 0;
 	i = 0;
+	found = 0;
 	while (data->env[i])
 	{
 		if (is_same_var(data->env[i], args[1]))
 		{
-			free(data->env[i]);
-			new_env[i] = ft_strdup(args[1]);
-			*exist = 1;
+			new_env[j++] = ft_strdup(args[1]);
+			found = 1;
 		}
 		else
-			new_env[i] = data->env[i];
+		{
+			new_env[j++] = ft_strdup(data->env[i]);
+		}
 		i++;
 	}
-	j = i;
-	if (!*exist)
+	if (!found)
 		new_env[j++] = ft_strdup(args[1]);
 	new_env[j] = NULL;
-	if (!*exist)
-	{
-		free(data->env);
-		data->bool_for_free_env = 1;
-	}
 }
 
 void	export(t_data *data, char **args)
 {
 	char	**new_env;
-	int		exist;
 	int		size;
 
 	if (handle_export_error(data, args))
 		return ;
-	exist = 0;
 	size = count_env_size(data->env);
 	new_env = malloc(sizeof(char *) * (size + 2));
 	if (!new_env)
 		return ((void)(data->last_exit_status = 1));
 	ft_bzero(new_env, sizeof(char *) * (size + 2));
-	copy_env_with_export(data, args, new_env, &exist);
+	copy_env_with_export(data, args, new_env);
+	clear_double_array(data->env);
 	data->env = new_env;
+	data->bool_for_free_env = 1;
 	data->last_exit_status = 0;
 }
 

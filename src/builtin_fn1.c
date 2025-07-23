@@ -6,7 +6,7 @@
 /*   By: amedenec <amedenec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 02:14:13 by leothoma          #+#    #+#             */
-/*   Updated: 2025/07/16 15:54:27 by amedenec         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:13:55 by amedenec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	cd_helper(t_data *data, char *path, int i, char **args)
 {
 	char	*home;
 
+	(void)path;
 	if (i == 0)
 	{
 		home = get_my_env2(data, "HOME");
