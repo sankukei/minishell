@@ -19,7 +19,7 @@ int	handle_export_error(t_data *data, char **args)
 	i = 0;
 	if (!args[1])
 	{
-		env(data);
+		env(data, 1);
 		data->last_exit_status = 0;
 		return (1);
 	}

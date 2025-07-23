@@ -38,10 +38,12 @@ void	exec_builtin(int selector, char **args, t_data *data, t_dup dups)
 	else if (selector == 5)
 		unset(data, args);
 	else if (selector == 6)
-		env(data);
+		env(data, fd);
 	else if (selector == 7)
 		ft_exit(data, args);
 	prepare_next_input(data, &data->cmd);
+	if (fd != 1)
+		close(fd);
 	return ;
 }
 

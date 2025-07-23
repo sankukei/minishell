@@ -54,15 +54,20 @@ void	unset(t_data *data, char **args)
 	data->last_exit_status = 0;
 }
 
-void	env(t_data *data)
+void	env(t_data *data, int fd)
 {
 	int		i;
 	char	**env;
 
-	i = 0;
+	i = -1;
 	env = data->env;
-	while (env[i])
-		printf("%s\n", env[i++]);
+	while (env[++i])
+	{
+		write(fd, env[i], ft_strlen(env[i]));
+		write(fd, "\n", 1);
+	}
+		//printf("%s\n", env[i++]);
+	//write(fd, &env[i], ft_strlen(env[i]))
 }
 
 char	**chang_args_ls(t_data *data, char **args)

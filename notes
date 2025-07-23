@@ -1,0 +1,12 @@
+single '/' fait leak le parsing // DONE
+echo + redir close pas le fd // DONE
+env n'ecris pasd dans un fd, tjr dans stdout // DONE
+
+export leak si pipe + grep
+cat < loup | cat < notes -> ecrire dans stderr
+si unset path, les commandes lea dans le parsing 
+exit | exit leak
+chmod un file puis echo > file , ca exit au lieu de return
+expot ne redirige pas
+export abc=$extension maybe garbage ==> puis un builtin | builtin ===>leaks
+rajouter un message derreur pour exit si argc > 1 ou si c un alphabet + exit code 2 au lieu de 0

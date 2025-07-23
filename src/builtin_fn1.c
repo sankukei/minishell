@@ -122,5 +122,6 @@ void	echo(t_data *data, char **args, int fd)
 	if (!backslash)
 		write(fd, "\n", 1);
 	free(str);
+	//close(fd);
 	data->last_exit_status = 0;
 }

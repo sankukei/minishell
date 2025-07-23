@@ -103,7 +103,7 @@ void		ft_exit(t_data *data, char **args);
 void		echo(t_data *data, char **args, int fd);
 void		export(t_data *data, char **args);
 void		unset(t_data *data, char **args);
-void		env(t_data *data);
+void		env(t_data *data, int fd);
 void		children_exec(t_exec *vars, t_data *data, int i);
 void		init_exec_variables(t_exec *vars);
 int			init_pipes(t_exec *vars);
