@@ -66,8 +66,6 @@ void	env(t_data *data, int fd)
 		write(fd, env[i], ft_strlen(env[i]));
 		write(fd, "\n", 1);
 	}
-		//printf("%s\n", env[i++]);
-	//write(fd, &env[i], ft_strlen(env[i]))
 }
 
 char	**chang_args_ls(t_data *data, char **args)

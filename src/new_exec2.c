@@ -80,11 +80,7 @@ t_dup	handle_redir(t_data *data, t_redir *redir, t_exec *vars)
 	int		fd;
 	t_dup	dups;
 
-	(void)vars;
-	dups.infile_fd = 0;
-	dups.outfile_fd = 0;
-	dups.infile_redir = 0;
-	dups.outfile_redir = 0;
+	init_t_dup(&dups);
 	fd = STDOUT_FILENO;
 	while (redir)
 	{
@@ -92,17 +88,7 @@ t_dup	handle_redir(t_data *data, t_redir *redir, t_exec *vars)
 		if (fd < 0)
 		{
 			printf("%s : file doesnt exist\n", redir->target);
-				int i = 0;
-			while (i < vars->n_command - 1)
-			{
-				close(vars->pipes[i][1]);
-				close(vars->pipes[i][0]);
-				i++;
-			}
-			clear_cmds(&data->cmd);
-			clear_double_array(data->env);
-			exit_child_process(data, data->bool_for_free_env);
-			free_exec(data->vars);
+			handle_file_error(data, vars);
 			exit(2);
 		}
 		fill_t_dups(&dups, redir->type, fd, redir);
