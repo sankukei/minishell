@@ -10,8 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include <sys/types.h>
+#ifndef TYPEDEF_H
+# define TYPEDEF_H
+# include "minishell.h"
+# include <sys/types.h>
 
 typedef enum s_type
 {
@@ -108,8 +110,6 @@ typedef struct s_data
 	int			bool_for_free_env;
 }	t_data;
 
-
-
 typedef struct s_dup
 {
 	int	heredoc;
@@ -118,3 +118,4 @@ typedef struct s_dup
 	int	outfile_redir;
 	int	outfile_fd;
 }	t_dup;
+#endif

@@ -10,12 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#define HEREDOC 1 // <<
-#define APPEND 2 // >>
-#define INPUT 3 // <
-#define TRUNC 4 // >
-#define PIPE 5 // |
-#define CMD 6
-#define ARG 7
-#define FD 8 
-#define BUFFER_SIZE 50
+#ifndef DEFINES_H
+# define DEFINES_H
+# define HEREDOC 1 
+# define APPEND 2 
+# define INPUT 3
+# define TRUNC 4
+# define PIPE 5
+# define CMD 6
+# define ARG 7
+# define FD 8
+#endif

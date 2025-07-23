@@ -10,16 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#define _GNU_SOURCE
-#include <sys/types.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <signal.h>
-#include "libft/libft.h"
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <termios.h>
-#include <sys/ioctl.h>
+#ifndef INCLUDES_H
+# define INCLUDES_H
+# define _GNU_SOURCE
+# include <sys/types.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <signal.h>
+# include "libft/libft.h"
+# include <sys/wait.h>
+# include <fcntl.h>
+# include <termios.h>
+# include <sys/ioctl.h>
+#endif
