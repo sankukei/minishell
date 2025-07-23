@@ -56,14 +56,17 @@ void	exit_program(t_data *data, char **args)
 	free(data->input);
 	clear_struct(&data->front_token);
 	clear_double_array(data->env);
+	data->bool_for_free_env = 1;
 	if (args && args[1])
 	{
 		exit_tmp = ft_atoi(args[1]);
+		free_exec(data->vars);
 		clear_cmds(&data->cmd);
 		exit(exit_tmp);
 	}
 	else
 	{
+		free_exec(data->vars);
 		clear_cmds(&data->cmd);
 		exit(exit_tmp);
 	}

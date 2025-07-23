@@ -105,6 +105,7 @@ typedef struct s_data
 	int			test;
 	int			n_commands;
 	int			last_exit_status;
+	int			bool_for_free_env;
 }	t_data;
 
 

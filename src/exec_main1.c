@@ -75,21 +75,21 @@ int	exec_single(t_data *data, char *cmd, char **args)
 
 	if (!cmd)
 	{
-		exit_child_process(data);
+		exit_child_process(data, data->bool_for_free_env);
 		return (0);
 	}
 	if (ft_strncmp(cmd, "/", 1) == 0)
 		if (!exec_given_path(data, cmd, args))
-			return (exit_child_process(data), 0);
+			return (exit_child_process(data, data->bool_for_free_env), 0);
 	if (ft_strncmp(cmd, ".", 1) == 0)
 		if (!exec_relative_path(data, cmd, args))
-			return (exit_child_process(data), 0);
+			return (exit_child_process(data, data->bool_for_free_env), 0);
 	path = ft_split(get_my_env2(data, "PATH"), ':');
 	if (!path)
 		return (0);
 	exec_single_helper(data, cmd, args, path);
 	clear_double_array(path);
-	exit_child_process(data);
+	exit_child_process(data, data->bool_for_free_env);
 	return (0);
 }
 

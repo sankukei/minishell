@@ -65,7 +65,10 @@ static void	copy_env_with_export(t_data *data, char **args,
 		new_env[j++] = ft_strdup(args[1]);
 	new_env[j] = NULL;
 	if (!*exist)
+	{
 		free(data->env);
+		data->bool_for_free_env = 1;
+	}
 }
 
 void	export(t_data *data, char **args)

@@ -52,5 +52,6 @@ void	init(t_data *data, char **envp)
 	data->single_quote = false;
 	data->double_quote = false;
 	data->front_token = NULL;
+	data->bool_for_free_env = 0;
 	data->env = dup_envp(envp);
 }

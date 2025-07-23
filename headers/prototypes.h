@@ -49,7 +49,7 @@ void		put_hard_coded_type(t_data *data);
 int		is_space(char c);
 int		is_operator(char c);
 int		get_n_command_new(t_cmd *cmds);
-void		exit_child_process(t_data *data);
+void		exit_child_process(t_data *data, int flag);
 
 
 
@@ -176,4 +176,3 @@ void		setup_sigint(struct sigaction *sa,
 				struct sigaction *old, t_mode *mode);
 
 // fonction test free child
-void	exit_child_process(t_data *data);

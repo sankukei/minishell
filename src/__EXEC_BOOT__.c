@@ -15,6 +15,7 @@
 static void	handle_ctrl_d(t_data *data)
 {
 	clear_double_array(data->env);
+	data->bool_for_free_env = 1;
 	write(1, "exit\n", 5);
 	unlink(".heredoc_buffer");
 	exit(0);

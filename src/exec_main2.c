@@ -47,8 +47,9 @@ void	exec_builtin(int selector, char **args, t_data *data, t_dup dups)
 	return ;
 }
 
-void	exit_child_process(t_data *data)
+void	exit_child_process(t_data *data, int flag)
 {
 	clear_struct(&data->front_token);
-	clear_double_array(data->env);
+	if (flag == 1)
+		clear_double_array(data->env);
 }

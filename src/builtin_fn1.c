@@ -55,7 +55,6 @@ void	cd_helper(t_data *data, char *path, int i, char **args)
 			printf("cd: no such file or directory: %s\n", *args);
 			return (data->last_exit_status = 1, (void)0);
 		}
-		printf("PWD -> %s\n", path);
 	}
 	else
 	{

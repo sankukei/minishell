@@ -33,6 +33,18 @@ void	setup_redirs(t_cmd *cmds, t_data *data, t_exec *vars, t_dup dups)
 	}
 }
 
+//int	find_path_in_env(char **env)
+//{
+//	int	i;
+//
+//	i = 0;
+//	while (env[i])
+//	{
+//		if ()
+//		i++
+//	}
+//}
+
 void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 {
 	t_dup	dups;
@@ -52,8 +64,10 @@ void	children_exec_new(t_exec *vars, t_data *data, int i, t_cmd *cmds)
 	else if (!(exec_single(data, cmds->cmd[0], cmds->cmd)))
 	{
 		printf("%s : command not found\n", cmds->cmd[0]);
+		clear_struct(&data->front_token);
 		free_exec(vars);
 		clear_cmds(&data->cmd);
+		clear_double_array(data->env);
 		free(data->input);
 		exit(127);
 	}
